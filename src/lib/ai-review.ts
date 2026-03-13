@@ -1,9 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
 import type { Level } from "@/types";
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-});
 
 export interface AIReviewResult {
   passed: boolean;
@@ -50,23 +45,55 @@ Passing threshold for this level: ${level.passingScore}
 
 Be encouraging but honest. The student built this with AI — judge the result, not the process. Working code > perfect code.`;
 
-  const message = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 1024,
-    messages: [
-      {
-        role: "user",
-        content: `Review these files for Level ${level.id} "${level.title}":\n\n${filesText}`,
-      },
-    ],
-    system: systemPrompt,
-  });
+  // Use OpenAI API (or Anthropic if ANTHROPIC_API_KEY is set)
+  const useOpenAI = !!process.env.OPENAI_API_KEY;
 
-  const text =
-    message.content[0].type === "text" ? message.content[0].text : "";
+  let text = "";
+
+  if (useOpenAI) {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: systemPrompt },
+          {
+            role: "user",
+            content: `Review these files for Level ${level.id} "${level.title}":\n\n${filesText}`,
+          },
+        ],
+        max_tokens: 1024,
+        temperature: 0.3,
+      }),
+    });
+    const data = await res.json();
+    text = data.choices?.[0]?.message?.content ?? "";
+  } else {
+    // Anthropic fallback
+    const Anthropic = (await import("@anthropic-ai/sdk")).default;
+    const anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY!,
+    });
+    const message = await anthropic.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1024,
+      messages: [
+        {
+          role: "user",
+          content: `Review these files for Level ${level.id} "${level.title}":\n\n${filesText}`,
+        },
+      ],
+      system: systemPrompt,
+    });
+    text =
+      message.content[0].type === "text" ? message.content[0].text : "";
+  }
 
   try {
-    // Parse JSON - handle potential markdown fences
     const cleaned = text.replace(/```json?\n?/g, "").replace(/```/g, "").trim();
     const result = JSON.parse(cleaned) as AIReviewResult;
 
