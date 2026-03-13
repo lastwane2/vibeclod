@@ -57,4 +57,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/login",
   },
+  // Allow linking GitHub OAuth to existing users with same email
+  allowDangerousEmailAccountLinking: true,
 });
