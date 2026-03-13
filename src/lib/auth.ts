@@ -15,6 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           scope: "repo read:user user:email",
         },
       },
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   callbacks: {
@@ -57,6 +58,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/login",
   },
-  // Allow linking GitHub OAuth to existing users with same email
-  allowDangerousEmailAccountLinking: true,
 });
