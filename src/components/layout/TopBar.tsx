@@ -68,6 +68,13 @@ export function TopBar() {
                       My Path
                     </Link>
                     <Link
+                      href="/toolkit"
+                      className="block px-4 py-3 sm:py-2.5 text-sm text-[#2D2016] hover:bg-[#FAF6F0] transition-colors"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      📚 Prompt Toolkit
+                    </Link>
+                    <Link
                       href="/settings"
                       className="block px-4 py-3 sm:py-2.5 text-sm text-[#2D2016] hover:bg-[#FAF6F0] transition-colors"
                       onClick={() => setMenuOpen(false)}

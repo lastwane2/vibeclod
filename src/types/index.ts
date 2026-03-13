@@ -37,6 +37,7 @@ export interface Level {
   passingScore: number;
   buddyMood: "idle" | "happy" | "think" | "celebrate" | "confused";
   icon: string;
+  blocks?: import("@/types/blocks").Block[];
 }
 
 export interface World {

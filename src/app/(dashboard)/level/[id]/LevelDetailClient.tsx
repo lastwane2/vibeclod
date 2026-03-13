@@ -4,122 +4,115 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Level } from "@/types";
+import type { Block } from "@/types/blocks";
 import { PixelCharacter } from "@/components/pixel-buddy/PixelCharacter";
 import { XPGain } from "@/components/ui/XPGain";
 import { LevelUpModal } from "@/components/ui/LevelUpModal";
+import { BlockRenderer } from "@/components/blocks/BlockRenderer";
+import { BlockProgress } from "@/components/blocks/BlockProgress";
+import { BlockNavigator } from "@/components/blocks/BlockNavigator";
 
-interface SubmissionData {
-  id: string;
-  status: string;
-  aiScore: number | null;
-  aiFeedback: string | null;
-  aiPassed: boolean | null;
-  githubPassed: boolean | null;
-  createdAt: string;
-}
+type BlockWithStatus = Block & {
+  completed: boolean;
+};
 
 interface LevelDetailClientProps {
   level: Level;
+  blocks: BlockWithStatus[];
   worldColor: string;
   worldAccentColor: string;
   worldTitle: string;
   nextWorldTitle?: string;
   isCompleted: boolean;
   connectedRepo: string | null;
-  submissions: SubmissionData[];
+  completedBlockIds: string[];
 }
-
-type VerifyPhase = "idle" | "github" | "ai" | "done";
 
 export function LevelDetailClient({
   level,
+  blocks,
   worldColor,
   worldAccentColor,
   worldTitle,
   nextWorldTitle,
   isCompleted: initialCompleted,
   connectedRepo,
-  submissions: initialSubmissions,
+  completedBlockIds: initialCompletedIds,
 }: LevelDetailClientProps) {
   const router = useRouter();
-  const [verifying, setVerifying] = useState(false);
-  const [phase, setPhase] = useState<VerifyPhase>("idle");
-  const [result, setResult] = useState<SubmissionData | null>(null);
+  const [currentBlockIndex, setCurrentBlockIndex] = useState(() => {
+    // Start at first incomplete block
+    const firstIncomplete = blocks.findIndex(
+      (b) => !initialCompletedIds.includes(b.id)
+    );
+    return firstIncomplete >= 0 ? firstIncomplete : 0;
+  });
+  const [completedIds, setCompletedIds] = useState<Set<string>>(
+    new Set(initialCompletedIds)
+  );
   const [isCompleted, setIsCompleted] = useState(initialCompleted);
-  const [showConfetti, setShowConfetti] = useState(false);
   const [showXPGain, setShowXPGain] = useState(false);
+  const [xpAmount, setXpAmount] = useState(0);
   const [showLevelUp, setShowLevelUp] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const isBoss = level.type === "boss";
+  const currentBlock = blocks[currentBlockIndex];
+  const hasBlocks = blocks.length > 0;
 
-  const handleVerify = useCallback(async () => {
-    setVerifying(true);
-    setResult(null);
-    setPhase("github");
+  const totalRequired = blocks.filter((b) => b.required).length;
+  const completedRequired = blocks.filter(
+    (b) => b.required && completedIds.has(b.id)
+  ).length;
 
-    // Simulate phase progress for UX
-    const aiTimer = setTimeout(() => setPhase("ai"), 2000);
+  const handleBlockComplete = useCallback(
+    (data: Record<string, unknown>) => {
+      if (!currentBlock) return;
 
-    try {
-      const res = await fetch(`/api/levels/${level.id}/verify`, {
-        method: "POST",
-      });
-      clearTimeout(aiTimer);
-      const data = await res.json();
+      const newCompleted = new Set(completedIds);
+      newCompleted.add(currentBlock.id);
+      setCompletedIds(newCompleted);
 
-      setPhase("done");
-      setResult(data);
+      // Show XP
+      setXpAmount(currentBlock.xp);
+      setShowXPGain(true);
 
-      if (data.status === "PASSED") {
+      // Check if we got level completion from the API
+      if (data.levelCompleted) {
         setIsCompleted(true);
         setShowConfetti(true);
-        setShowXPGain(true);
         setTimeout(() => setShowConfetti(false), 4000);
-
-        // Show boss level-up modal after XP animation finishes
         if (isBoss) {
           setTimeout(() => setShowLevelUp(true), 1600);
         }
       }
-    } catch {
-      clearTimeout(aiTimer);
-      setPhase("done");
-      setResult({
-        id: "",
-        status: "ERROR",
-        aiScore: null,
-        aiFeedback: "Something went wrong. Please try again.",
-        aiPassed: false,
-        githubPassed: false,
-        createdAt: new Date().toISOString(),
-      });
-    } finally {
-      setVerifying(false);
-    }
-  }, [level.id, isBoss]);
 
-  const latestResult = result;
-  const buddyMood = verifying
-    ? "think"
-    : isCompleted
-      ? "celebrate"
-      : result?.status === "FAILED"
-        ? "confused"
-        : level.buddyMood;
+      // Auto-advance to next incomplete block
+      const nextIncomplete = blocks.findIndex(
+        (b, i) => i > currentBlockIndex && !newCompleted.has(b.id)
+      );
+      if (nextIncomplete >= 0) {
+        setTimeout(() => setCurrentBlockIndex(nextIncomplete), 800);
+      }
+    },
+    [currentBlock, completedIds, blocks, currentBlockIndex, isBoss]
+  );
 
-  const buddyMessage = verifying
-    ? phase === "github"
-      ? "Checking your repo..."
-      : "AI is reviewing your code..."
-    : isCompleted && result?.status === "PASSED"
-      ? `+${level.xp} XP! Amazing work!`
-      : result?.status === "FAILED"
-        ? "Almost there! Check the feedback."
-        : level.teaches;
+  const buddyMood = isCompleted
+    ? "celebrate"
+    : completedRequired > 0
+      ? "happy"
+      : level.buddyMood;
+
+  const buddyMessage = isCompleted
+    ? "Level complete! Amazing work!"
+    : completedRequired > 0
+      ? `${completedRequired}/${totalRequired} blocks done!`
+      : level.teaches;
 
   return (
     <div className="min-h-screen pb-12 relative">
-      {/* Confetti overlay */}
+      {/* Confetti */}
       {showConfetti && (
         <div className="fixed inset-0 z-50 pointer-events-none overflow-hidden">
           {Array.from({ length: 40 }).map((_, i) => (
@@ -140,12 +133,10 @@ export function LevelDetailClient({
         </div>
       )}
 
-      {/* XP gain animation */}
       {showXPGain && (
-        <XPGain amount={level.xp} onComplete={() => setShowXPGain(false)} />
+        <XPGain amount={xpAmount} onComplete={() => setShowXPGain(false)} />
       )}
 
-      {/* Boss level-up modal */}
       {showLevelUp && (
         <LevelUpModal
           worldTitle={worldTitle}
@@ -178,6 +169,11 @@ export function LevelDetailClient({
           <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] text-white/80">
             {level.duration}
           </span>
+          {hasBlocks && (
+            <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] text-white/80">
+              {blocks.length} blocks
+            </span>
+          )}
         </div>
 
         <h1 className="text-3xl font-bold text-white mt-3">
@@ -195,9 +191,9 @@ export function LevelDetailClient({
         </div>
       </div>
 
-      <div className="mx-auto max-w-lg px-4 pt-10">
+      <div className="mx-auto max-w-lg px-4 pt-8">
         {/* Buddy */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-4">
           <PixelCharacter
             mood={buddyMood as "idle" | "happy" | "think" | "celebrate" | "confused"}
             size="lg"
@@ -205,265 +201,80 @@ export function LevelDetailClient({
           />
         </div>
 
-        {/* Mission */}
-        <div className="rounded-2xl bg-white border border-[#E8E0D4] p-5 shadow-sm mb-5">
-          <h2 className="flex items-center gap-2 text-xs font-bold text-[#8B7355] uppercase tracking-wider mb-3">
-            <span className="flex h-5 w-5 items-center justify-center rounded-md text-[10px]" style={{ backgroundColor: `${worldColor}15`, color: worldColor }}>
-              📋
-            </span>
-            Mission
-          </h2>
-          <p className="text-[15px] text-[#2D2016] leading-relaxed">
-            {level.mission}
-          </p>
-        </div>
+        {/* Block progress dots */}
+        {hasBlocks && (
+          <BlockProgress
+            blocks={blocks}
+            completedBlockIds={completedIds}
+            currentBlockIndex={currentBlockIndex}
+            worldColor={worldColor}
+            onBlockClick={setCurrentBlockIndex}
+          />
+        )}
 
-        {/* Concepts */}
-        <div className="rounded-2xl bg-white border border-[#E8E0D4] p-5 shadow-sm mb-5">
-          <h2 className="flex items-center gap-2 text-xs font-bold text-[#8B7355] uppercase tracking-wider mb-3">
-            <span className="flex h-5 w-5 items-center justify-center rounded-md text-[10px]" style={{ backgroundColor: `${worldColor}15`, color: worldColor }}>
-              💡
-            </span>
-            Key Concepts
-          </h2>
-          <ul className="space-y-3">
-            {level.concepts.map((concept, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <span
-                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                  style={{ backgroundColor: worldColor }}
-                >
-                  {i + 1}
-                </span>
-                <span className="text-sm text-[#4A3728] leading-snug pt-0.5">
-                  {concept}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Verification progress */}
-        {verifying && (
-          <div className="rounded-2xl bg-white border border-[#E8E0D4] p-5 shadow-sm mb-5 animate-fade-in">
-            <h3 className="text-xs font-bold text-[#8B7355] uppercase tracking-wider mb-4">
-              Verifying...
-            </h3>
-            <div className="space-y-3">
-              {/* GitHub check step */}
-              <div className="flex items-center gap-3">
-                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs ${
-                  phase === "github"
-                    ? "bg-[#E8A445]/20 text-[#E8A445]"
-                    : phase === "ai" || phase === "done"
-                      ? "bg-[#E8F5E8] text-[#4CAF50]"
-                      : "bg-[#F5EDE0] text-[#B8A898]"
-                }`}>
-                  {phase === "github" ? (
-                    <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                  ) : "✓"}
-                </div>
-                <div>
-                  <p className={`text-sm font-medium ${phase === "github" ? "text-[#2D2016]" : "text-[#6B8B6B]"}`}>
-                    GitHub Checks
-                  </p>
-                  <p className="text-xs text-[#8B7355]">Files, commits, structure</p>
-                </div>
-              </div>
-
-              {/* AI review step */}
-              <div className="flex items-center gap-3">
-                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs ${
-                  phase === "ai"
-                    ? "bg-[#5B8DEF]/20 text-[#5B8DEF]"
-                    : phase === "done"
-                      ? "bg-[#E8F5E8] text-[#4CAF50]"
-                      : "bg-[#F5EDE0] text-[#B8A898]"
-                }`}>
-                  {phase === "ai" ? (
-                    <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                  ) : phase === "done" ? "✓" : "·"}
-                </div>
-                <div>
-                  <p className={`text-sm font-medium ${phase === "ai" ? "text-[#2D2016]" : phase === "done" ? "text-[#6B8B6B]" : "text-[#B8A898]"}`}>
-                    AI Code Review
-                  </p>
-                  <p className="text-xs text-[#8B7355]">Quality, requirements, style</p>
-                </div>
-              </div>
-            </div>
+        {/* Current block content */}
+        {hasBlocks && currentBlock && (
+          <div className="rounded-2xl bg-white border border-[#E8E0D4] p-5 shadow-sm mb-5">
+            <BlockRenderer
+              block={currentBlock}
+              worldColor={worldColor}
+              completed={completedIds.has(currentBlock.id)}
+              connectedRepo={connectedRepo}
+              onComplete={handleBlockComplete}
+            />
           </div>
         )}
 
-        {/* Result card */}
-        {latestResult && !verifying && (
-          <div
-            className={`rounded-2xl border p-5 mb-5 animate-slide-up ${
-              latestResult.status === "PASSED"
-                ? "bg-[#E8F5E8] border-[#C8E6C8]"
-                : latestResult.status === "FAILED"
-                  ? "bg-[#FFF5F5] border-[#F5D5D5]"
-                  : "bg-[#FFF8F0] border-[#F5E0C0]"
-            }`}
-          >
-            {/* Header */}
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">
-                {latestResult.status === "PASSED" ? "🎉" : latestResult.status === "FAILED" ? "💪" : "⚠️"}
-              </span>
-              <h3 className="text-base font-bold text-[#2D2016]">
-                {latestResult.status === "PASSED"
-                  ? "Level Complete!"
-                  : latestResult.status === "FAILED"
-                    ? "Not quite yet"
-                    : "Something went wrong"}
-              </h3>
-              {latestResult.aiScore !== null && (
-                <div className="ml-auto flex items-center gap-1">
-                  <span
-                    className="text-xl font-bold font-mono"
-                    style={{
-                      color:
-                        latestResult.aiScore >= 80
-                          ? "#4CAF50"
-                          : latestResult.aiScore >= 60
-                            ? "#E8A445"
-                            : "#E06B6B",
-                    }}
-                  >
-                    {latestResult.aiScore}
-                  </span>
-                  <span className="text-xs text-[#8B7355]">/100</span>
-                </div>
-              )}
-            </div>
-
-            {/* Score bar */}
-            {latestResult.aiScore !== null && (
-              <div className="h-2 w-full rounded-full bg-black/5 overflow-hidden mb-4">
-                <div
-                  className="h-full rounded-full transition-all duration-1000 ease-out"
-                  style={{
-                    width: `${latestResult.aiScore}%`,
-                    backgroundColor:
-                      latestResult.aiScore >= 80
-                        ? "#4CAF50"
-                        : latestResult.aiScore >= 60
-                          ? "#E8A445"
-                          : "#E06B6B",
-                  }}
-                />
-              </div>
-            )}
-
-            {/* Feedback */}
-            {latestResult.aiFeedback && (
-              <div className="text-sm text-[#4A3728] leading-relaxed whitespace-pre-wrap">
-                {latestResult.aiFeedback}
-              </div>
-            )}
-
-            {/* XP earned on pass */}
-            {latestResult.status === "PASSED" && (
-              <div className="mt-4 flex items-center justify-center gap-2 py-2 rounded-xl bg-white/60">
-                <span className="text-lg">⚡</span>
-                <span className="text-sm font-bold" style={{ color: worldColor }}>
-                  +{level.xp} XP earned!
-                </span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Action buttons */}
-        <div className="space-y-3">
-          {isCompleted && !verifying ? (
-            <button
-              onClick={() => router.push("/dashboard")}
-              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
-              style={{
-                backgroundColor: worldColor,
-                boxShadow: `0 4px 14px ${worldColor}50`,
-              }}
-            >
-              Continue to next level →
-            </button>
-          ) : !connectedRepo ? (
-            <Link
-              href="/settings"
-              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#F5EDE0] text-[#8B7355] text-sm font-semibold hover:bg-[#EDE5D8] transition-colors"
-            >
-              Connect a repository first →
-            </Link>
-          ) : (
-            <button
-              onClick={handleVerify}
-              disabled={verifying}
-              className="w-full py-3.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
-              style={{
-                backgroundColor: worldColor,
-                boxShadow: `0 4px 14px ${worldColor}50`,
-              }}
-            >
-              {verifying
-                ? "Verifying..."
-                : result?.status === "FAILED"
-                  ? "Try Again"
-                  : isBoss
-                    ? "🏆 Begin Boss Fight"
-                    : "✓ Verify My Code"}
-            </button>
-          )}
-        </div>
-
-        {/* Previous submissions */}
-        {initialSubmissions.length > 0 && !verifying && (
-          <details className="mt-4 group">
+        {/* Block navigator (collapsible) */}
+        {hasBlocks && (
+          <details className="mb-5 group">
             <summary className="cursor-pointer text-xs text-[#8B7355] hover:text-[#2D2016] transition-colors text-center py-2">
-              Previous attempts ({initialSubmissions.length})
+              All blocks ({completedIds.size}/{blocks.length})
             </summary>
-            <div className="mt-2 space-y-2">
-              {initialSubmissions.map((sub) => (
-                <div
-                  key={sub.id}
-                  className="flex items-center justify-between rounded-xl bg-white border border-[#E8E0D4] px-4 py-3 text-xs"
-                >
-                  <span className="text-[#8B7355]">
-                    {new Date(sub.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {sub.aiScore !== null && (
-                      <span className="font-mono font-semibold text-[#2D2016]">
-                        {sub.aiScore}/100
-                      </span>
-                    )}
-                    <span
-                      className={`rounded-full px-2.5 py-0.5 font-bold ${
-                        sub.status === "PASSED"
-                          ? "bg-[#E8F5E8] text-[#2D6A2D]"
-                          : sub.status === "FAILED"
-                            ? "bg-[#FFF5F5] text-[#B8553A]"
-                            : "bg-[#F5EDE0] text-[#8B7355]"
-                      }`}
-                    >
-                      {sub.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-2 rounded-2xl bg-white border border-[#E8E0D4] p-3 shadow-sm">
+              <BlockNavigator
+                blocks={blocks}
+                completedBlockIds={completedIds}
+                currentBlockIndex={currentBlockIndex}
+                worldColor={worldColor}
+                onBlockClick={setCurrentBlockIndex}
+              />
             </div>
           </details>
+        )}
+
+        {/* Navigation buttons */}
+        <div className="flex gap-2 mb-5">
+          <button
+            onClick={() => setCurrentBlockIndex(Math.max(0, currentBlockIndex - 1))}
+            disabled={currentBlockIndex === 0}
+            className="flex-1 py-2.5 rounded-xl border border-[#E8E0D4] text-sm font-medium text-[#8B7355] hover:bg-[#FAF6F0] disabled:opacity-30 transition-colors"
+          >
+            ← Previous
+          </button>
+          <button
+            onClick={() =>
+              setCurrentBlockIndex(Math.min(blocks.length - 1, currentBlockIndex + 1))
+            }
+            disabled={currentBlockIndex === blocks.length - 1}
+            className="flex-1 py-2.5 rounded-xl border border-[#E8E0D4] text-sm font-medium text-[#8B7355] hover:bg-[#FAF6F0] disabled:opacity-30 transition-colors"
+          >
+            Next →
+          </button>
+        </div>
+
+        {/* Level complete action */}
+        {isCompleted && (
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              backgroundColor: worldColor,
+              boxShadow: `0 4px 14px ${worldColor}50`,
+            }}
+          >
+            Continue to next level →
+          </button>
         )}
       </div>
     </div>

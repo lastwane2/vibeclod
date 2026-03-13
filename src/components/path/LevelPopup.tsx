@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import type { LevelWithStatus } from "@/types";
 import { getWorld } from "@/lib/levels";
+import { getBlocksForLevel } from "@/lib/blocks";
+import { BLOCK_ICONS } from "@/types/blocks";
 import { PixelCharacter } from "@/components/pixel-buddy/PixelCharacter";
 
 interface LevelPopupProps {
@@ -38,6 +40,7 @@ export function LevelPopup({ level, onClose, onVerify, hasRepo }: LevelPopupProp
   const worldColor = world?.color ?? "#E8A445";
   const isCompleted = level.status === "completed";
   const isBoss = level.type === "boss";
+  const blocks = getBlocksForLevel(level.id);
 
   return (
     <div
@@ -77,6 +80,24 @@ export function LevelPopup({ level, onClose, onVerify, hasRepo }: LevelPopupProp
                 {level.duration}
               </span>
             </div>
+
+            {/* Block type icons */}
+            {blocks.length > 0 && (
+              <div className="flex items-center gap-1 mt-2 mb-1">
+                {blocks.map((b) => (
+                  <span
+                    key={b.id}
+                    className="flex h-5 w-5 items-center justify-center rounded bg-white/15 text-[10px]"
+                    title={b.title}
+                  >
+                    {BLOCK_ICONS[b.type]}
+                  </span>
+                ))}
+                <span className="text-white/50 text-[10px] ml-1">
+                  {blocks.length} blocks
+                </span>
+              </div>
+            )}
 
             {/* Title */}
             <h2 className="text-2xl font-bold text-white leading-tight">
@@ -158,16 +179,16 @@ export function LevelPopup({ level, onClose, onVerify, hasRepo }: LevelPopupProp
                   Connect a repo to start →
                 </a>
               ) : (
-                <button
-                  onClick={() => onVerify(level.id)}
-                  className="w-full py-3.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                <a
+                  href={`/level/${level.id}`}
+                  className="flex items-center justify-center w-full py-3.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
                   style={{
                     backgroundColor: worldColor,
                     boxShadow: `0 4px 14px ${worldColor}50`,
                   }}
                 >
-                  {isBoss ? "🏆 Begin Boss Fight" : "✓ Verify Completion"}
-                </button>
+                  {isBoss ? "🏆 Begin Boss Fight" : "Start Level →"}
+                </a>
               )}
             </div>
           </div>

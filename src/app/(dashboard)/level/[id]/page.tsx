@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getLevel, getWorld, WORLDS } from "@/lib/levels";
+import { getBlocksForLevel } from "@/lib/blocks";
 import { LevelDetailClient } from "./LevelDetailClient";
 import { LevelPaywallWrapper } from "./LevelPaywallWrapper";
 
@@ -27,10 +28,9 @@ export default async function LevelPage({ params }: Props) {
         where: { levelId },
         take: 1,
       },
-      submissions: {
+      blockCompletions: {
         where: { levelId },
-        orderBy: { createdAt: "desc" },
-        take: 5,
+        select: { blockId: true },
       },
     },
   });
@@ -51,7 +51,10 @@ export default async function LevelPage({ params }: Props) {
   }
 
   const completion = user.completions[0] ?? null;
-  const submissions = user.submissions;
+  const completedBlockIds = user.blockCompletions.map((bc) => bc.blockId);
+
+  // Get blocks for this level
+  const blocks = getBlocksForLevel(levelId);
 
   // Determine next world title for boss level celebration
   const isBoss = level.type === "boss";
@@ -62,21 +65,17 @@ export default async function LevelPage({ params }: Props) {
   return (
     <LevelDetailClient
       level={level}
+      blocks={blocks.map((b) => ({
+        ...b,
+        completed: completedBlockIds.includes(b.id),
+      }))}
       worldColor={world?.color ?? "#E8A445"}
       worldAccentColor={world?.accentColor ?? "#D4932E"}
       worldTitle={world?.title ?? "Unknown World"}
       nextWorldTitle={nextWorld?.title}
       isCompleted={!!completion}
       connectedRepo={user.connectedRepo}
-      submissions={submissions.map((s) => ({
-        id: s.id,
-        status: s.status,
-        aiScore: s.aiScore,
-        aiFeedback: s.aiFeedback,
-        aiPassed: s.aiPassed,
-        githubPassed: s.githubPassed,
-        createdAt: s.createdAt.toISOString(),
-      }))}
+      completedBlockIds={completedBlockIds}
     />
   );
 }

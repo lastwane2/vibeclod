@@ -1,4 +1,5 @@
 import type { Level, World } from "@/types";
+import { getBlocksForLevel } from "@/lib/blocks";
 
 export const WORLDS: World[] = [
   {
@@ -800,7 +801,11 @@ export function getWorld(worldId: number): World | undefined {
 }
 
 export function getLevel(levelId: number): Level | undefined {
-  return LEVELS.find((l) => l.id === levelId);
+  const level = LEVELS.find((l) => l.id === levelId);
+  if (level) {
+    return { ...level, blocks: getBlocksForLevel(levelId) };
+  }
+  return undefined;
 }
 
 /**

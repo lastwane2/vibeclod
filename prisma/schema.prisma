@@ -28,9 +28,11 @@ model User {
   paidAt        DateTime?
 
   // Relations
-  completions   LevelCompletion[]
-  submissions   Submission[]
-  connectedRepo String?
+  completions      LevelCompletion[]
+  submissions      Submission[]
+  blockCompletions BlockCompletion[]
+  toolkitEntries   PromptToolkitEntry[]
+  connectedRepo    String?
 
   // NextAuth
   accounts      Account[]
@@ -125,4 +127,28 @@ enum SubmissionStatus {
   PASSED
   FAILED
   ERROR
+}
+
+model BlockCompletion {
+  id        String   @id @default(cuid())
+  userId    String
+  levelId   Int
+  blockId   String
+  score     Int?
+  data      Json?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, blockId])
+  @@index([userId, levelId])
+}
+
+model PromptToolkitEntry {
+  id         String   @id @default(cuid())
+  userId     String
+  patternId  String
+  unlockedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, patternId])
 }
