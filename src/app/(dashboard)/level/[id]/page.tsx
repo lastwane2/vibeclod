@@ -1,8 +1,9 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getLevel, getWorld } from "@/lib/levels";
+import { getLevel, getWorld, WORLDS } from "@/lib/levels";
 import { LevelDetailClient } from "./LevelDetailClient";
+import { LevelPaywallWrapper } from "./LevelPaywallWrapper";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -36,19 +37,35 @@ export default async function LevelPage({ params }: Props) {
 
   if (!user) redirect("/login");
 
-  // Check if world is locked
-  if (world?.requiredPlan === "PRO" && user.plan === "FREE") {
-    redirect("/dashboard");
+  // Check if world is locked — show paywall instead of redirecting
+  const isWorldLocked = world?.requiredPlan === "PRO" && user.plan === "FREE";
+
+  if (isWorldLocked) {
+    return (
+      <LevelPaywallWrapper
+        level={level}
+        worldColor={world?.color ?? "#E8A445"}
+        worldAccentColor={world?.accentColor ?? "#D4932E"}
+      />
+    );
   }
 
   const completion = user.completions[0] ?? null;
   const submissions = user.submissions;
+
+  // Determine next world title for boss level celebration
+  const isBoss = level.type === "boss";
+  const nextWorld = isBoss
+    ? WORLDS.find((w) => w.id === level.worldId + 1)
+    : undefined;
 
   return (
     <LevelDetailClient
       level={level}
       worldColor={world?.color ?? "#E8A445"}
       worldAccentColor={world?.accentColor ?? "#D4932E"}
+      worldTitle={world?.title ?? "Unknown World"}
+      nextWorldTitle={nextWorld?.title}
       isCompleted={!!completion}
       connectedRepo={user.connectedRepo}
       submissions={submissions.map((s) => ({

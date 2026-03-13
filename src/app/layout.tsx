@@ -16,7 +16,27 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   title: "vibeclod — Duolingo, but for vibe coding",
   description:
-    "Learn to build real products with AI. 25 levels. Real repos. Ship or don't level up.",
+    "Learn to build real software products with AI. 25 hands-on levels. Real repos. Ship or don't level up.",
+  keywords: [
+    "vibe coding",
+    "learn to code with AI",
+    "coding bootcamp",
+    "build with AI",
+    "duolingo for coding",
+  ],
+  openGraph: {
+    title: "vibeclod — Duolingo, but for vibe coding",
+    description: "25 hands-on levels. Real repos. Ship or don't level up.",
+    url: "https://vibeclod.com",
+    siteName: "vibeclod",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "vibeclod — Duolingo, but for vibe coding",
+    description: "25 hands-on levels. Real repos. Ship or don't level up.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({

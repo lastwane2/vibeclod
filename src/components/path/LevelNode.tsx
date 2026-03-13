@@ -17,11 +17,12 @@ export function LevelNode({ level, position, onClick }: LevelNodeProps) {
   const isCurrent = level.status === "current" || level.status === "available";
   const isLocked = level.status === "locked";
 
+  // Smaller zigzag offset on mobile (translate-x-8 = 2rem) vs desktop (translate-x-12 = 3rem)
   const positionOffset =
     position === "left"
-      ? "-translate-x-12"
+      ? "-translate-x-8 sm:-translate-x-12"
       : position === "right"
-        ? "translate-x-12"
+        ? "translate-x-8 sm:translate-x-12"
         : "";
 
   return (
@@ -33,6 +34,7 @@ export function LevelNode({ level, position, onClick }: LevelNodeProps) {
         ${positionOffset}
         transition-all duration-300
         ${isLocked ? "cursor-not-allowed" : "cursor-pointer"}
+        touch-manipulation
       `}
     >
       {/* Glow ring for current level */}
@@ -49,8 +51,8 @@ export function LevelNode({ level, position, onClick }: LevelNodeProps) {
           relative flex items-center justify-center
           transition-all duration-300
           ${isBoss
-            ? "h-[72px] w-[72px] rounded-2xl"
-            : "h-[58px] w-[58px] rounded-full"
+            ? "h-[64px] w-[64px] sm:h-[72px] sm:w-[72px] rounded-2xl"
+            : "h-[52px] w-[52px] sm:h-[58px] sm:w-[58px] rounded-full"
           }
           ${isLocked
             ? "bg-[#E0D5C7] shadow-sm"

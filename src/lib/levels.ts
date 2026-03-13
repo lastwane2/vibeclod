@@ -802,3 +802,22 @@ export function getWorld(worldId: number): World | undefined {
 export function getLevel(levelId: number): Level | undefined {
   return LEVELS.find((l) => l.id === levelId);
 }
+
+/**
+ * Check whether a world is unlocked for a user.
+ * - World 1 is always unlocked.
+ * - Worlds 2+ require PRO plan.
+ * - Previous world must be fully completed (all 5 levels).
+ */
+export function isWorldUnlocked(
+  worldId: number,
+  completions: { levelId: number }[],
+  plan: string
+): boolean {
+  if (worldId === 1) return true; // World 1 always unlocked
+  if (plan !== "PRO") return false; // Worlds 2+ need PRO
+  // Previous world must be fully completed (all 5 levels)
+  const prevWorldLevels = getLevelsForWorld(worldId - 1);
+  const completedIds = new Set(completions.map((c) => c.levelId));
+  return prevWorldLevels.every((l) => completedIds.has(l.id));
+}

@@ -56,7 +56,7 @@ export function PathView({
   }, []);
 
   return (
-    <div className="relative pb-20">
+    <div className="relative pb-16 sm:pb-20 px-2 sm:px-0">
       {WORLDS.map((world) => {
         const worldLevels = getLevelsForWorld(world.id);
         const isWorldLocked =
@@ -86,7 +86,7 @@ export function PathView({
               totalLevels={worldLevels.length}
             />
 
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center gap-0 sm:gap-0">
               {levelsWithStatus.map((level, i) => {
                 const pos = positions[i % positions.length];
                 const nextPos =

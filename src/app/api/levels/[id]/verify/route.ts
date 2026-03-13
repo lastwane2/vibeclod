@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getLevel } from "@/lib/levels";
+import { getLevel, LEVELS } from "@/lib/levels";
 import {
   createOctokit,
   runGitHubChecks,
@@ -9,6 +9,8 @@ import {
   getRepoTree,
 } from "@/lib/github";
 import { reviewCode } from "@/lib/ai-review";
+import { updateStreak } from "@/lib/streaks";
+import { sendEmail, levelCompleteEmail } from "@/lib/email";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -184,7 +186,7 @@ export async function POST(_req: Request, context: RouteContext) {
       },
     });
 
-    // If passed — create completion, award XP, advance level
+    // If passed — create completion, award XP, advance level, update streak
     if (aiResult.passed) {
       await prisma.$transaction([
         prisma.levelCompletion.create({
@@ -206,10 +208,28 @@ export async function POST(_req: Request, context: RouteContext) {
           data: {
             xp: { increment: level.xp },
             currentLevel: Math.max(user.currentLevel, levelId + 1),
-            lastActiveAt: new Date(),
           },
         }),
       ]);
+
+      // Update streak (handles lastActiveAt + streakDays logic)
+      await updateStreak(user.id);
+
+      // Send level complete email (fire-and-forget)
+      const userData = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { name: true, email: true },
+      });
+      if (userData?.email) {
+        const nextLevel = LEVELS.find((l) => l.id === levelId + 1);
+        const { subject, html } = levelCompleteEmail(
+          userData.name ?? "there",
+          level.title,
+          level.xp,
+          nextLevel?.title
+        );
+        sendEmail(userData.email, subject, html).catch(() => {});
+      }
     }
 
     return NextResponse.json({

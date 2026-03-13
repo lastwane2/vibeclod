@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Level } from "@/types";
 import { PixelCharacter } from "@/components/pixel-buddy/PixelCharacter";
+import { XPGain } from "@/components/ui/XPGain";
+import { LevelUpModal } from "@/components/ui/LevelUpModal";
 
 interface SubmissionData {
   id: string;
@@ -20,6 +22,8 @@ interface LevelDetailClientProps {
   level: Level;
   worldColor: string;
   worldAccentColor: string;
+  worldTitle: string;
+  nextWorldTitle?: string;
   isCompleted: boolean;
   connectedRepo: string | null;
   submissions: SubmissionData[];
@@ -31,6 +35,8 @@ export function LevelDetailClient({
   level,
   worldColor,
   worldAccentColor,
+  worldTitle,
+  nextWorldTitle,
   isCompleted: initialCompleted,
   connectedRepo,
   submissions: initialSubmissions,
@@ -41,6 +47,8 @@ export function LevelDetailClient({
   const [result, setResult] = useState<SubmissionData | null>(null);
   const [isCompleted, setIsCompleted] = useState(initialCompleted);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showXPGain, setShowXPGain] = useState(false);
+  const [showLevelUp, setShowLevelUp] = useState(false);
 
   const isBoss = level.type === "boss";
 
@@ -65,7 +73,13 @@ export function LevelDetailClient({
       if (data.status === "PASSED") {
         setIsCompleted(true);
         setShowConfetti(true);
+        setShowXPGain(true);
         setTimeout(() => setShowConfetti(false), 4000);
+
+        // Show boss level-up modal after XP animation finishes
+        if (isBoss) {
+          setTimeout(() => setShowLevelUp(true), 1600);
+        }
       }
     } catch {
       clearTimeout(aiTimer);
@@ -82,7 +96,7 @@ export function LevelDetailClient({
     } finally {
       setVerifying(false);
     }
-  }, [level.id]);
+  }, [level.id, isBoss]);
 
   const latestResult = result;
   const buddyMood = verifying
@@ -124,6 +138,20 @@ export function LevelDetailClient({
             </div>
           ))}
         </div>
+      )}
+
+      {/* XP gain animation */}
+      {showXPGain && (
+        <XPGain amount={level.xp} onComplete={() => setShowXPGain(false)} />
+      )}
+
+      {/* Boss level-up modal */}
+      {showLevelUp && (
+        <LevelUpModal
+          worldTitle={worldTitle}
+          nextWorldTitle={nextWorldTitle}
+          onClose={() => setShowLevelUp(false)}
+        />
       )}
 
       {/* Hero header */}

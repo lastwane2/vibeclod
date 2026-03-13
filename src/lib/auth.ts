@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "./prisma";
+import { sendEmail, welcomeEmail } from "./email";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma) as ReturnType<typeof PrismaAdapter>,
@@ -19,6 +20,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "github" && account.access_token) {
+        // Check if user already exists before upserting
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email! },
+          select: { id: true },
+        });
+
         await prisma.user.upsert({
           where: { email: user.email! },
           update: {
@@ -33,6 +40,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             githubToken: account.access_token,
           },
         });
+
+        // Send welcome email to new users (fire-and-forget)
+        if (!existingUser && user.email) {
+          const { subject, html } = welcomeEmail(user.name ?? "there");
+          sendEmail(user.email, subject, html).catch(() => {});
+        }
       }
       return true;
     },

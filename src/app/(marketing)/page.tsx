@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { WORLDS, LEVELS } from "@/lib/levels";
+import { EarlyBirdBadge } from "@/components/ui/EarlyBirdBadge";
 
 const FEATURES = [
   {
@@ -47,7 +48,7 @@ export default function LandingPage() {
     <div className="min-h-screen overflow-hidden">
       {/* Nav */}
       <nav className="sticky top-0 z-50 border-b border-[#E8E0D4]/50 bg-[#FAF6F0]/90 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-3 sm:px-4">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#E8A445] to-[#D4932E] shadow-sm">
               <span className="text-sm font-bold text-white">V</span>
@@ -60,7 +61,7 @@ export default function LandingPage() {
             </a>
             <Link
               href="/login"
-              className="rounded-xl bg-[#2D2016] px-4 py-2 text-sm font-medium text-white hover:bg-[#4A3728] transition-colors shadow-sm"
+              className="rounded-xl bg-[#2D2016] px-4 py-2 text-sm font-medium text-white hover:bg-[#4A3728] transition-colors shadow-sm min-h-[44px] flex items-center"
             >
               Start Free
             </Link>
@@ -76,7 +77,7 @@ export default function LandingPage() {
           <div className="absolute top-40 right-1/4 h-64 w-64 rounded-full bg-[#5B8DEF]/5 blur-3xl" />
         </div>
 
-        <div className="relative mx-auto max-w-4xl px-4 pt-20 pb-16 text-center">
+        <div className="relative mx-auto max-w-4xl px-4 pt-12 sm:pt-20 pb-12 sm:pb-16 text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full bg-[#E8A445]/10 border border-[#E8A445]/20 px-4 py-1.5 mb-6">
             <span className="h-1.5 w-1.5 rounded-full bg-[#4CAF50] animate-pulse" />
@@ -85,7 +86,7 @@ export default function LandingPage() {
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-bold leading-[1.1] text-[#2D2016] mb-5">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-[1.1] text-[#2D2016] mb-4 sm:mb-5">
             Duolingo, but for
             <br />
             <span className="bg-gradient-to-r from-[#E8A445] to-[#D4932E] bg-clip-text text-transparent">
@@ -93,42 +94,42 @@ export default function LandingPage() {
             </span>
           </h1>
 
-          <p className="mx-auto max-w-xl text-lg text-[#8B7355] leading-relaxed mb-8">
+          <p className="mx-auto max-w-xl text-base sm:text-lg text-[#8B7355] leading-relaxed mb-6 sm:mb-8 px-2 sm:px-0">
             25 levels. Real repos. Ship or don&apos;t level up.
             <br className="hidden sm:block" />
             Learn to build real products with AI — verified against your GitHub.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 px-2 sm:px-0">
             <Link
               href="/login"
-              className="w-full sm:w-auto rounded-xl bg-[#E8A445] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full sm:w-auto rounded-xl bg-[#E8A445] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] min-h-[48px] flex items-center justify-center"
             >
               Start Free — World 1
             </Link>
             <a
               href="#how-it-works"
-              className="w-full sm:w-auto rounded-xl border-2 border-[#E8E0D4] px-8 py-4 text-base font-semibold text-[#2D2016] hover:border-[#D4C4A8] hover:bg-white/50 transition-all"
+              className="w-full sm:w-auto rounded-xl border-2 border-[#E8E0D4] px-8 py-4 text-base font-semibold text-[#2D2016] hover:border-[#D4C4A8] hover:bg-white/50 transition-all min-h-[48px] flex items-center justify-center"
             >
               See how it works
             </a>
           </div>
 
           {/* Social proof */}
-          <div className="mt-10 flex items-center justify-center gap-6 text-sm text-[#8B7355]">
+          <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-[#8B7355]">
             <span className="flex items-center gap-1">
               <span className="text-[#E8A445]">★★★★★</span> 4.9/5
             </span>
             <span className="h-4 w-px bg-[#E8E0D4]" />
             <span>500+ builders</span>
-            <span className="h-4 w-px bg-[#E8E0D4]" />
-            <span>No credit card needed</span>
+            <span className="h-4 w-px bg-[#E8E0D4] hidden sm:block" />
+            <span className="hidden sm:block">No credit card needed</span>
           </div>
         </div>
       </section>
 
       {/* Path preview */}
-      <section className="mx-auto max-w-md px-4 py-12">
+      <section className="mx-auto max-w-md px-4 py-8 sm:py-12">
         <div className="rounded-3xl bg-white border border-[#E8E0D4] shadow-xl p-6 overflow-hidden">
           <div className="text-center mb-6">
             <p className="text-xs font-bold text-[#8B7355] uppercase tracking-wider">Your Journey</p>
@@ -189,15 +190,15 @@ export default function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section id="how-it-works" className="mx-auto max-w-4xl px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#2D2016] mb-3">
+      <section id="how-it-works" className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#2D2016] mb-2 sm:mb-3">
             Three steps. That&apos;s it.
           </h2>
-          <p className="text-[#8B7355]">No setup. No configuration. Just start building.</p>
+          <p className="text-sm sm:text-base text-[#8B7355]">No setup. No configuration. Just start building.</p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
           {[
             {
               step: "01",
@@ -251,18 +252,18 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="bg-white/50 border-y border-[#E8E0D4]/50 py-16">
+      <section className="bg-white/50 border-y border-[#E8E0D4]/50 py-10 sm:py-16">
         <div className="mx-auto max-w-4xl px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#2D2016] mb-3">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#2D2016] mb-2 sm:mb-3">
               Not another tutorial site
             </h2>
-            <p className="text-[#8B7355]">
+            <p className="text-sm sm:text-base text-[#8B7355]">
               You can&apos;t watch your way to shipping. You have to build.
             </p>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
             {FEATURES.map((feature) => (
               <div
                 key={feature.title}
@@ -282,14 +283,14 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="mx-auto max-w-4xl px-4 py-16">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-[#2D2016]">
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#2D2016]">
             Builders ship with vibeclod
           </h2>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-4 sm:gap-5 md:grid-cols-3">
           {TESTIMONIALS.map((t, i) => (
             <div
               key={i}
@@ -309,18 +310,18 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="bg-white/50 border-y border-[#E8E0D4]/50 py-16">
+      <section id="pricing" className="bg-white/50 border-y border-[#E8E0D4]/50 py-10 sm:py-16">
         <div className="mx-auto max-w-3xl px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-[#2D2016] mb-3">
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#2D2016] mb-2 sm:mb-3">
               Simple pricing
             </h2>
-            <p className="text-[#8B7355]">
+            <p className="text-sm sm:text-base text-[#8B7355]">
               World 1 is free forever. Unlock everything with one payment.
             </p>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 max-w-2xl mx-auto">
+          <div className="grid gap-5 sm:grid-cols-2 max-w-2xl mx-auto items-start">
             {/* Free */}
             <div className="rounded-2xl bg-[#FAF6F0] border border-[#E8E0D4] p-6">
               <h3 className="text-sm font-bold text-[#8B7355] uppercase tracking-wider mb-1">
@@ -343,80 +344,87 @@ export default function LandingPage() {
               </ul>
               <Link
                 href="/login"
-                className="block w-full rounded-xl border-2 border-[#E8E0D4] py-3 text-center text-sm font-semibold text-[#2D2016] hover:border-[#D4C4A8] hover:bg-white/80 transition-all"
+                className="block w-full rounded-xl border-2 border-[#E8E0D4] py-3 text-center text-sm font-semibold text-[#2D2016] hover:border-[#D4C4A8] hover:bg-white/80 transition-all min-h-[44px] flex items-center justify-center"
               >
-                Get started
+                Get Started Free
               </Link>
             </div>
 
             {/* Pro */}
-            <div className="rounded-2xl bg-[#2D2016] p-6 text-white relative overflow-hidden shadow-xl">
-              {/* Popular badge */}
-              <div className="absolute top-4 right-4">
-                <span className="rounded-full bg-[#E8A445] px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
-                  Popular
-                </span>
+            <div className="relative">
+              {/* Early bird badge above card */}
+              <div className="flex justify-center mb-3">
+                <EarlyBirdBadge />
               </div>
 
-              <h3 className="text-sm font-bold text-white/60 uppercase tracking-wider mb-1">
-                Pro — Lifetime
-              </h3>
-              <div className="flex items-baseline gap-1 mb-1">
-                <span className="text-3xl font-bold">$29</span>
-                <span className="text-white/40 text-sm line-through">$79</span>
-              </div>
-              <p className="text-xs text-white/40 mb-4">
-                One-time payment. Forever access.
-              </p>
+              <div className="rounded-2xl bg-[#2D2016] p-6 text-white relative overflow-hidden shadow-2xl ring-2 ring-[#E8A445]/40 scale-[1.02]">
+                {/* Popular badge */}
+                <div className="absolute top-4 right-4">
+                  <span className="rounded-full bg-[#E8A445] px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
+                    Popular
+                  </span>
+                </div>
 
-              <ul className="space-y-2.5 text-sm text-white/80 mb-6">
-                {[
-                  "All 25 levels (5 worlds)",
-                  "Unlimited AI reviews",
-                  "Boss fights",
-                  "All pixel buddy moods",
-                  "Discord community",
-                  "Future worlds & seasons",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <span className="text-[#E8A445] text-xs">✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/login"
-                className="block w-full rounded-xl bg-[#E8A445] py-3 text-center text-sm font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] transition-all"
-              >
-                Get Pro — $29
-              </Link>
+                <h3 className="text-sm font-bold text-white/60 uppercase tracking-wider mb-1">
+                  Pro — Lifetime
+                </h3>
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-3xl font-bold">$29</span>
+                  <span className="text-white/40 text-sm line-through">$79</span>
+                </div>
+                <p className="text-xs text-white/40 mb-4">
+                  One-time payment. Forever access.
+                </p>
+
+                <ul className="space-y-2.5 text-sm text-white/80 mb-6">
+                  {[
+                    "All 25 levels (5 worlds)",
+                    "Unlimited AI reviews",
+                    "Boss fights",
+                    "All pixel buddy moods",
+                    "Discord community",
+                    "Future worlds & seasons",
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="text-[#E8A445] text-xs">✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL || "/login"}
+                  className="block w-full rounded-xl bg-[#E8A445] py-3 text-center text-sm font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] transition-all min-h-[44px] flex items-center justify-center"
+                >
+                  Unlock Everything — $29
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="mx-auto max-w-4xl px-4 py-20 text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#2D2016] mb-4">
+      <section className="mx-auto max-w-4xl px-4 py-14 sm:py-20 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#2D2016] mb-3 sm:mb-4">
           Stop watching tutorials.
           <br />
           <span className="text-[#E8A445]">Start shipping.</span>
         </h2>
-        <p className="text-[#8B7355] mb-8 max-w-md mx-auto">
+        <p className="text-sm sm:text-base text-[#8B7355] mb-6 sm:mb-8 max-w-md mx-auto">
           Your first level takes 30 minutes. By level 25, you&apos;ll have a live,
           paying product.
         </p>
         <Link
           href="/login"
-          className="inline-block rounded-xl bg-[#E8A445] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="inline-flex items-center justify-center rounded-xl bg-[#E8A445] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] min-h-[48px]"
         >
           Start Free — No credit card
         </Link>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#E8E0D4] py-8">
-        <div className="mx-auto max-w-4xl px-4 flex items-center justify-between text-sm text-[#8B7355]">
+      <footer className="border-t border-[#E8E0D4] py-6 sm:py-8">
+        <div className="mx-auto max-w-4xl px-4 flex items-center justify-between text-xs sm:text-sm text-[#8B7355]">
           <div className="flex items-center gap-2">
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#E8A445] to-[#D4932E]">
               <span className="text-[10px] font-bold text-white">V</span>
