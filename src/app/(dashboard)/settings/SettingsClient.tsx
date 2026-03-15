@@ -1,6 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+interface GitHubRepo {
+  fullName: string;
+  name: string;
+  private: boolean;
+  description: string | null;
+  updatedAt: string | null;
+}
 
 interface SettingsClientProps {
   name: string | null;
@@ -29,14 +37,25 @@ export function SettingsClient({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [loadingRepos, setLoadingRepos] = useState(true);
+  const [reposError, setReposError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/user/repos")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.repos) {
+          setRepos(data.repos);
+        } else {
+          setReposError(data.error ?? "Failed to load repos");
+        }
+      })
+      .catch(() => setReposError("Failed to load repos"))
+      .finally(() => setLoadingRepos(false));
+  }, []);
 
   const handleSaveRepo = async () => {
-    // Validate format: owner/repo
-    if (repoInput && !/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(repoInput)) {
-      setError("Format: owner/repo (e.g. john/my-project)");
-      return;
-    }
-
     setSaving(true);
     setError(null);
     setSaved(false);
@@ -134,24 +153,49 @@ export function SettingsClient({
 
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B8A898] text-sm">
-                github.com/
-              </span>
-              <input
-                type="text"
-                value={repoInput}
-                onChange={(e) => {
-                  setRepoInput(e.target.value);
-                  setError(null);
-                  setSaved(false);
-                }}
-                placeholder="owner/repo"
-                className="w-full rounded-xl border border-[#E8E0D4] bg-[#FAF6F0] pl-[6.5rem] pr-3 py-2.5 text-sm text-[#2D2016] placeholder:text-[#C4B4A4] focus:outline-none focus:ring-2 focus:ring-[#E8A445]/30 focus:border-[#E8A445] transition-all"
-              />
+              {loadingRepos ? (
+                <div className="w-full rounded-xl border border-[#E8E0D4] bg-[#FAF6F0] px-3 py-2.5 text-sm text-[#B8A898] flex items-center gap-2">
+                  <svg className="h-4 w-4 animate-spin text-[#8B7355]" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Loading repos...
+                </div>
+              ) : reposError ? (
+                <input
+                  type="text"
+                  value={repoInput}
+                  onChange={(e) => {
+                    setRepoInput(e.target.value);
+                    setError(null);
+                    setSaved(false);
+                  }}
+                  placeholder="owner/repo"
+                  className="w-full rounded-xl border border-[#E8E0D4] bg-[#FAF6F0] px-3 py-2.5 text-sm text-[#2D2016] placeholder:text-[#C4B4A4] focus:outline-none focus:ring-2 focus:ring-[#E8A445]/30 focus:border-[#E8A445] transition-all"
+                />
+              ) : (
+                <select
+                  value={repoInput}
+                  onChange={(e) => {
+                    setRepoInput(e.target.value);
+                    setError(null);
+                    setSaved(false);
+                  }}
+                  className="w-full rounded-xl border border-[#E8E0D4] bg-[#FAF6F0] px-3 py-2.5 text-sm text-[#2D2016] focus:outline-none focus:ring-2 focus:ring-[#E8A445]/30 focus:border-[#E8A445] transition-all appearance-none cursor-pointer"
+                  style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238B7355' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 12px center" }}
+                >
+                  <option value="">Select a repository...</option>
+                  {repos.map((r) => (
+                    <option key={r.fullName} value={r.fullName}>
+                      {r.fullName}{r.private ? " 🔒" : ""}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
             <button
               onClick={handleSaveRepo}
-              disabled={saving}
+              disabled={saving || loadingRepos}
               className="shrink-0 rounded-xl bg-[#2D2016] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#4A3728] disabled:opacity-50 transition-colors"
             >
               {saving ? "..." : "Save"}
