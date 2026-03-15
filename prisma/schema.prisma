@@ -22,10 +22,11 @@ model User {
   lastActiveAt  DateTime?
 
   // Payment
-  plan          Plan      @default(FREE)
-  whopUserId    String?   @unique
-  whopMembershipId String?
-  paidAt        DateTime?
+  plan             Plan      @default(FREE)
+  whopUserId       String?   @unique
+  whopMembershipId String?   @unique
+  paidAt           DateTime?
+  planExpiresAt    DateTime?
 
   // Relations
   completions      LevelCompletion[]

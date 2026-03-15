@@ -1,95 +1,99 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import crypto from "crypto";
-
-function verifyWebhookSignature(
-  payload: string,
-  signature: string,
-  secret: string
-): boolean {
-  const hmac = crypto.createHmac("sha256", secret);
-  hmac.update(payload);
-  const expected = hmac.digest("hex");
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expected)
-  );
-}
+import {
+  verifyWhopWebhookSignature,
+  verifyWhopWebhookDirect,
+  verifyWhopWebhookSecret,
+  handleMembershipValid,
+  handleMembershipInvalid,
+  handlePaymentSucceeded,
+  handleRefund,
+  type WhopWebhookEvent,
+} from "@/lib/whop";
 
 export async function POST(req: Request) {
-  const body = await req.text();
-  const signature = req.headers.get("x-whop-signature") ?? "";
+  try {
+    const payload = await req.text();
 
-  // Verify webhook signature
-  const secret = process.env.WHOP_WEBHOOK_SECRET;
-  if (secret && signature) {
-    try {
-      if (!verifyWebhookSignature(body, signature, secret)) {
-        return NextResponse.json(
-          { error: "Invalid signature" },
-          { status: 401 }
-        );
-      }
-    } catch {
-      return NextResponse.json(
-        { error: "Signature verification failed" },
-        { status: 401 }
-      );
+    // Try multiple header names (Whop inconsistency across versions)
+    const signature =
+      req.headers.get("whop-signature") ||
+      req.headers.get("x-whop-signature") ||
+      req.headers.get("webhook-secret") ||
+      req.headers.get("signature") ||
+      "";
+
+    if (!signature) {
+      console.error("[WHOP WEBHOOK] No signature header found");
+      return new Response("No signature", { status: 401 });
     }
-  }
 
-  const event = JSON.parse(body);
-  const action = event.action as string;
+    // Verify — try all methods: t=,v1= format → raw HMAC → direct secret
+    let valid = verifyWhopWebhookSignature(payload, signature);
 
-  if (action === "membership.went_valid") {
-    const whopUserId = event.data?.user_id as string | undefined;
-    const membershipId = event.data?.id as string | undefined;
-
-    if (whopUserId) {
-      // Try to find user by whopUserId, or by email from the event
-      const user = await prisma.user.findFirst({
-        where: {
-          OR: [
-            { whopUserId },
-            ...(event.data?.user?.email
-              ? [{ email: event.data.user.email }]
-              : []),
-          ],
-        },
-      });
-
-      if (user) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            plan: "PRO",
-            whopUserId,
-            whopMembershipId: membershipId,
-            paidAt: new Date(),
-          },
-        });
-      }
+    if (!valid) {
+      valid = verifyWhopWebhookDirect(payload, signature);
     }
-  }
 
-  if (action === "membership.went_invalid") {
-    const whopUserId = event.data?.user_id as string | undefined;
-
-    if (whopUserId) {
-      const user = await prisma.user.findFirst({
-        where: { whopUserId },
-      });
-
-      if (user) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            plan: "FREE",
-          },
-        });
-      }
+    if (!valid && signature.startsWith("ws_")) {
+      valid = verifyWhopWebhookSecret(signature);
     }
-  }
 
-  return NextResponse.json({ received: true });
+    if (!valid) {
+      console.error("[WHOP WEBHOOK] Invalid signature — rejecting");
+      return new Response("Invalid signature", { status: 401 });
+    }
+
+    const event = JSON.parse(payload) as WhopWebhookEvent;
+
+    console.log("[WHOP WEBHOOK] Action:", event.action, "ID:", event.data?.id);
+
+    // Normalize action: support both dots and underscores
+    const action = event.action;
+
+    switch (action) {
+      case "membership.went_valid":
+      case "membership.experience.went_valid":
+      case "membership_went_valid":
+      case "membership_experience_went_valid":
+        await handleMembershipValid(event);
+        break;
+
+      case "membership.went_invalid":
+      case "membership.experience.went_invalid":
+      case "membership_went_invalid":
+      case "membership_experience_went_invalid":
+        await handleMembershipInvalid(event);
+        break;
+
+      case "payment.succeeded":
+      case "payment_succeeded":
+        await handlePaymentSucceeded(event);
+        break;
+
+      case "payment.created":
+      case "payment_created":
+        // No action needed for payment creation
+        break;
+
+      case "refund.created":
+      case "refund_created":
+        await handleRefund(event);
+        break;
+
+      default:
+        console.log(`[WHOP WEBHOOK] Unhandled event: "${event.action}"`);
+    }
+
+    // Always return 200 to prevent Whop retry storms
+    return new Response(JSON.stringify({ received: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    console.error("[WHOP WEBHOOK] Error:", e);
+    // Always 200 to prevent Whop retries even on processing errors
+    return new Response(JSON.stringify({ received: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 }

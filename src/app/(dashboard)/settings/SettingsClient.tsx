@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface GitHubRepo {
   fullName: string;
@@ -37,9 +38,36 @@ export function SettingsClient({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [upgrading, setUpgrading] = useState(false);
+  const [billingSuccess, setBillingSuccess] = useState(false);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loadingRepos, setLoadingRepos] = useState(true);
   const [reposError, setReposError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Handle ?billing=success redirect from Whop
+  useEffect(() => {
+    if (searchParams.get("billing") === "success") {
+      setBillingSuccess(true);
+      router.replace("/settings");
+    }
+  }, [searchParams, router]);
+
+  const handleUpgrade = useCallback(async () => {
+    setUpgrading(true);
+    try {
+      const res = await fetch("/api/whop/checkout-url");
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setUpgrading(false);
+      }
+    } catch {
+      setUpgrading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetch("/api/user/repos")
@@ -225,6 +253,12 @@ export function SettingsClient({
             Plan
           </h2>
 
+          {billingSuccess && (
+            <div className="mb-4 rounded-xl bg-[#E8F5E8] border border-[#C8E6C9] px-4 py-3 text-sm text-[#2D6A2D]">
+              Payment successful! Your plan will activate shortly.
+            </div>
+          )}
+
           {plan === "PRO" ? (
             <div className="flex items-center gap-3">
               <span className="rounded-full bg-gradient-to-r from-[#E8A445] to-[#D4932E] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
@@ -240,12 +274,13 @@ export function SettingsClient({
                 </span>
                 <span className="text-sm text-[#8B7355]">Worlds 1-2 (10 levels free)</span>
               </div>
-              <a
-                href={process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL || "/pricing"}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#E8A445] px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-[#D4932E] transition-colors"
+              <button
+                onClick={handleUpgrade}
+                disabled={upgrading}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#E8A445] px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-[#D4932E] transition-colors disabled:opacity-60"
               >
-                Upgrade to Pro — $29 lifetime
-              </a>
+                {upgrading ? "Redirecting..." : "Upgrade to Pro — $29 lifetime"}
+              </button>
             </div>
           )}
         </section>

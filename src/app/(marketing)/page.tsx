@@ -406,7 +406,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link
-                  href={process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL || "/login"}
+                  href="/login"
                   className="block w-full rounded-xl bg-[#E8A445] py-3 text-center text-sm font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] transition-all min-h-[44px] flex items-center justify-center"
                 >
                   Unlock Everything — $29
