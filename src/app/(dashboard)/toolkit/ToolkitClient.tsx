@@ -152,18 +152,24 @@ function PatternCard({ pattern, unlocked, expanded, copiedId, onToggle, onCopy }
       className={`rounded-xl border transition-colors ${
         unlocked
           ? "bg-white border-[#E8E0D4] hover:border-[#D4C8B8]"
-          : "bg-[#FAF6F0] border-[#E8E0D4] opacity-60"
+          : "bg-[#FAF6F0] border-[#E8E0D4]"
       }`}
     >
       <button
-        onClick={onToggle}
-        disabled={!unlocked}
-        className="w-full text-left px-4 py-3 flex items-center gap-3"
+        onClick={unlocked ? onToggle : undefined}
+        className={`w-full text-left px-4 py-3 flex items-center gap-3 ${!unlocked ? "cursor-default" : ""}`}
       >
         <span className="text-lg">{unlocked ? "📚" : "🔒"}</span>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-[#2D2016] truncate">{pattern.name}</p>
+          <p className={`text-sm font-medium truncate ${unlocked ? "text-[#2D2016]" : "text-[#8B7355]"}`}>
+            {pattern.name}
+          </p>
           <p className="text-xs text-[#8B7355] truncate">{pattern.description}</p>
+          {!unlocked && (
+            <p className="text-[10px] text-[#E8A445] font-medium mt-0.5">
+              Complete the pattern block in World {pattern.worldId} to unlock
+            </p>
+          )}
         </div>
         {unlocked && (
           <svg

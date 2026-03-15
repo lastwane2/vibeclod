@@ -6,7 +6,7 @@ const FEATURES = [
   {
     icon: "🎯",
     title: "Real Missions, Not Theory",
-    desc: "Every level gives you a clear task. You build it with AI and push to GitHub. No videos. No quizzes.",
+    desc: "Every level has blocks: learn concepts, practice prompts, push real code. No endless videos — you learn by building.",
   },
   {
     icon: "🤖",
@@ -20,26 +20,35 @@ const FEATURES = [
   },
   {
     icon: "🚀",
-    title: "Ship by Level 25",
+    title: "Ship by Level 40",
     desc: "Start with HTML. End with a live, paying SaaS product. Your final mission: earn your first $100.",
   },
 ];
 
-const TESTIMONIALS = [
+const WHAT_YOU_BUILD = [
   {
-    quote: "I went from zero to shipping a real SaaS in 3 weeks. Vibe coding is the future.",
-    name: "Alex K.",
-    role: "Indie Maker",
+    world: "World 1-2",
+    icon: "🌱",
+    title: "Personal Site + Dev Setup",
+    desc: "HTML page, CSS styling, terminal, git. You'll have a live site and know your tools.",
   },
   {
-    quote: "The verification system is genius — it actually forced me to ship, not just watch tutorials.",
-    name: "Sarah M.",
-    role: "Designer turned Builder",
+    world: "World 3-4",
+    icon: "🧩",
+    title: "Interactive React App",
+    desc: "Components, state, routing, API calls. A real app with multiple pages and dynamic data.",
   },
   {
-    quote: "World 3 blew my mind. I had a full-stack app with auth and payments in a weekend.",
-    name: "Marcus T.",
-    role: "Entrepreneur",
+    world: "World 5-6",
+    icon: "🗄️",
+    title: "Full Stack with Database",
+    desc: "Next.js, Prisma, auth, API routes. Users can sign up and store data.",
+  },
+  {
+    world: "World 7-8",
+    icon: "💰",
+    title: "Deployed Product with Payments",
+    desc: "Live on the internet, SEO, analytics, Stripe checkout. Your first paying customer.",
   },
 ];
 
@@ -105,7 +114,7 @@ export default function LandingPage() {
               href="/login"
               className="w-full sm:w-auto rounded-xl bg-[#E8A445] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] min-h-[48px] flex items-center justify-center"
             >
-              Start Free — World 1
+              Start Free — 10 Levels
             </Link>
             <a
               href="#how-it-works"
@@ -282,28 +291,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* What you'll build */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
         <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#2D2016]">
-            Builders ship with vibeclod
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#2D2016] mb-2">
+            What you&apos;ll build
           </h2>
+          <p className="text-sm sm:text-base text-[#8B7355]">
+            8 worlds. Each one builds on the last. By the end, you have a real product.
+          </p>
         </div>
 
-        <div className="grid gap-4 sm:gap-5 md:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
+        <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
+          {WHAT_YOU_BUILD.map((item) => (
             <div
-              key={i}
+              key={item.world}
               className="rounded-2xl bg-white border border-[#E8E0D4] p-5 shadow-sm"
             >
-              <div className="text-[#E8A445] text-sm mb-2">★★★★★</div>
-              <p className="text-sm text-[#2D2016] leading-relaxed mb-4 italic">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div>
-                <p className="text-sm font-semibold text-[#2D2016]">{t.name}</p>
-                <p className="text-xs text-[#8B7355]">{t.role}</p>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">{item.icon}</span>
+                <div>
+                  <p className="text-xs font-bold text-[#8B7355] uppercase tracking-wider">{item.world}</p>
+                  <p className="text-base font-bold text-[#2D2016]">{item.title}</p>
+                </div>
               </div>
+              <p className="text-sm text-[#8B7355] leading-relaxed">
+                {item.desc}
+              </p>
             </div>
           ))}
         </div>
@@ -317,7 +331,7 @@ export default function LandingPage() {
               Simple pricing
             </h2>
             <p className="text-sm sm:text-base text-[#8B7355]">
-              World 1 is free forever. Unlock everything with one payment.
+              Worlds 1-2 are free forever (10 levels). Unlock everything with one payment.
             </p>
           </div>
 
@@ -330,7 +344,7 @@ export default function LandingPage() {
               <p className="text-3xl font-bold text-[#2D2016] mb-4">$0</p>
               <ul className="space-y-2.5 text-sm text-[#4A3728] mb-6">
                 {[
-                  "World 1 — 5 levels free",
+                  "Worlds 1-2 — 10 levels free",
                   "GitHub verification",
                   "AI code review (3/day)",
                   "Streak tracking",

@@ -58,9 +58,9 @@ export function Paywall() {
         {/* Features */}
         <ul className="space-y-2.5 mb-6">
           {[
-            "20 more levels across 4 worlds",
+            "30 more levels across 6 worlds",
+            "Full stack, deployment & payments",
             "Unlimited AI code reviews",
-            "All pixel buddy moods",
             "Boss fights & advanced projects",
             "Future worlds & seasons included",
           ].map((feature) => (

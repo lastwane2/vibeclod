@@ -34,30 +34,32 @@ export function BuildBlock({ block, worldColor, completed, connectedRepo, onComp
     setResult(null);
     setPhase("github");
 
-    const aiTimer = setTimeout(() => setPhase("ai"), 2000);
-
     try {
       const res = await fetch(`/api/levels/${block.levelId}/verify`, {
         method: "POST",
       });
-      clearTimeout(aiTimer);
       const data = await res.json();
+
+      // Show AI phase briefly if GitHub passed
+      if (data.githubPassed) {
+        setPhase("ai");
+        await new Promise((r) => setTimeout(r, 300));
+      }
 
       setPhase("done");
       setResult(data);
 
       if (data.status === "PASSED") {
         setIsCompleted(true);
-        onComplete({ submission: data });
+        onComplete({ submission: data, levelCompleted: true });
       }
     } catch {
-      clearTimeout(aiTimer);
       setPhase("done");
       setResult({
         id: "",
         status: "ERROR",
         aiScore: null,
-        aiFeedback: "Something went wrong. Please try again.",
+        aiFeedback: "Something went wrong. Check your repo is accessible and try again.",
         aiPassed: false,
         githubPassed: false,
         createdAt: new Date().toISOString(),
@@ -126,6 +128,31 @@ export function BuildBlock({ block, worldColor, completed, connectedRepo, onComp
               </span>
             )}
           </div>
+
+          {/* Checklist for failures */}
+          {result.status === "FAILED" && (
+            <div className="space-y-1.5 mb-3">
+              <div className="flex items-center gap-2 text-xs">
+                <span className={result.githubPassed ? "text-[#4CAF50]" : "text-[#E06B6B]"}>
+                  {result.githubPassed ? "✓" : "✗"}
+                </span>
+                <span className={result.githubPassed ? "text-[#6B8B6B]" : "text-[#B8553A] font-medium"}>
+                  GitHub checks {result.githubPassed ? "passed" : "— files missing or incorrect"}
+                </span>
+              </div>
+              {result.githubPassed && (
+                <div className="flex items-center gap-2 text-xs">
+                  <span className={result.aiPassed ? "text-[#4CAF50]" : "text-[#E06B6B]"}>
+                    {result.aiPassed ? "✓" : "✗"}
+                  </span>
+                  <span className={result.aiPassed ? "text-[#6B8B6B]" : "text-[#B8553A] font-medium"}>
+                    AI code review {result.aiPassed ? "passed" : "— needs improvement"}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
           {result.aiFeedback && (
             <p className="text-sm text-[#4A3728] whitespace-pre-wrap">{result.aiFeedback}</p>
           )}
@@ -136,12 +163,21 @@ export function BuildBlock({ block, worldColor, completed, connectedRepo, onComp
       {!isCompleted && !verifying && (
         <>
           {!connectedRepo ? (
-            <a
-              href="/settings"
-              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[#F5EDE0] text-[#8B7355] text-sm font-semibold hover:bg-[#EDE5D8] transition-colors"
-            >
-              Connect a repo first →
-            </a>
+            <div className="rounded-xl border border-[#E8E0D4] bg-[#FAF6F0] p-4 space-y-2">
+              <p className="text-sm font-medium text-[#2D2016]">
+                You need a project to push code to
+              </p>
+              <p className="text-xs text-[#8B7355]">
+                A project (repository) is like a folder in the cloud where your code lives.
+              </p>
+              <a
+                href="/settings"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+                style={{ backgroundColor: worldColor }}
+              >
+                Set up your project →
+              </a>
+            </div>
           ) : (
             <button
               onClick={handleVerify}

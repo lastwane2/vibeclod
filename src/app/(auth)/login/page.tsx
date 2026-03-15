@@ -50,7 +50,7 @@ export default function LoginPage() {
         {/* Features */}
         <div className="mt-6 grid grid-cols-3 gap-3 text-center">
           {[
-            { icon: "🎯", label: "25 Levels" },
+            { icon: "🎯", label: "40 Levels" },
             { icon: "🤖", label: "AI Verified" },
             { icon: "🚀", label: "Ship Real Code" },
           ].map((f) => (

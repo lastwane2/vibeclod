@@ -176,7 +176,7 @@ export function LevelPopup({ level, onClose, onVerify, hasRepo }: LevelPopupProp
                   href="/settings"
                   className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#F5EDE0] text-[#8B7355] text-sm font-semibold hover:bg-[#EDE5D8] transition-colors"
                 >
-                  Connect a repo to start →
+                  Set up your project first →
                 </a>
               ) : (
                 <a

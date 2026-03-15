@@ -45,7 +45,7 @@ export async function POST(req: Request, context: RouteContext) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  if (level.worldId > 1 && user.plan === "FREE") {
+  if (level.worldId > 2 && user.plan === "FREE") {
     return NextResponse.json(
       { error: "This level requires Pro." },
       { status: 403 }

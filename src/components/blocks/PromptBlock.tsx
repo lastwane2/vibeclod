@@ -166,22 +166,30 @@ export function PromptBlock({ block, worldColor, completed, onComplete }: Props)
             </div>
           )}
 
-          {/* Show reference toggle */}
+          {/* Side-by-side comparison */}
           {!passed && (
             <button
               onClick={() => setShowReference(!showReference)}
               className="text-xs underline text-[#8B7355] hover:text-[#2D2016]"
             >
-              {showReference ? "Hide" : "Show"} reference prompt
+              {showReference ? "Hide comparison" : "Compare with better version"}
             </button>
           )}
 
           {showReference && (
-            <div className="rounded-lg bg-white border border-[#E8E0D4] p-3">
-              <p className="text-xs font-bold text-[#8B7355] mb-1">Reference:</p>
-              <p className="text-xs text-[#4A3728] whitespace-pre-wrap">
-                {block.referencePrompt}
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="rounded-lg border border-[#F5D5D5] bg-[#FFF5F5] p-3">
+                <p className="text-[10px] font-bold text-[#B8553A] uppercase tracking-wider mb-1.5">Your prompt</p>
+                <p className="text-xs text-[#4A3728] whitespace-pre-wrap">
+                  {prompt}
+                </p>
+              </div>
+              <div className="rounded-lg border border-[#C8E6C8] bg-[#E8F5E8] p-3">
+                <p className="text-[10px] font-bold text-[#2D6A2D] uppercase tracking-wider mb-1.5">Better version</p>
+                <p className="text-xs text-[#4A3728] whitespace-pre-wrap">
+                  {block.referencePrompt}
+                </p>
+              </div>
             </div>
           )}
         </div>

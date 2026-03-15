@@ -8,6 +8,7 @@ import { RepoStatus } from "@/components/layout/RepoStatus";
 import { PathView } from "@/components/path/PathView";
 import { PixelCharacter } from "@/components/pixel-buddy/PixelCharacter";
 import { EarlyBirdBadge } from "@/components/ui/EarlyBirdBadge";
+import { WelcomeModal } from "@/components/onboarding/WelcomeModal";
 
 interface DashboardClientProps {
   xp: number;
@@ -56,6 +57,17 @@ export function DashboardClient({
   completedLevelIds,
 }: DashboardClientProps) {
   const router = useRouter();
+  const [showWelcome, setShowWelcome] = useState(() => {
+    if (typeof window === "undefined") return false;
+    if (completedLevelIds.length > 0) return false;
+    return !localStorage.getItem("vibeclod_onboarded");
+  });
+
+  const handleWelcomeDone = () => {
+    setShowWelcome(false);
+    localStorage.setItem("vibeclod_onboarded", "1");
+    router.push("/level/1");
+  };
 
   // Re-fetch server data when the user navigates back (e.g. after level completion)
   const handleRefresh = useCallback(() => {
@@ -80,7 +92,7 @@ export function DashboardClient({
   const buddyMood =
     completedLevelIds.length === 0
       ? "idle"
-      : completedLevelIds.length >= 25
+      : completedLevelIds.length >= 40
         ? "celebrate"
         : streakDays >= 3
           ? "happy"
@@ -88,6 +100,8 @@ export function DashboardClient({
 
   return (
     <div className="min-h-screen pb-8">
+      {showWelcome && <WelcomeModal onStart={handleWelcomeDone} />}
+
       <StatsBar
         xp={xp}
         streakDays={streakDays}
@@ -133,7 +147,7 @@ export function DashboardClient({
               <EarlyBirdBadge />
             </div>
             <p className="text-base sm:text-lg font-bold text-white mb-1">
-              Unlock All 25 Levels
+              Unlock All 40 Levels
             </p>
             <p className="text-xs sm:text-sm text-white/60 mb-3 sm:mb-4">
               Lifetime Pro access — one-time payment

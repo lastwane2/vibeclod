@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Level } from "@/types";
 import type { Block } from "@/types/blocks";
-import { BLOCK_ICONS, BLOCK_LABELS } from "@/types/blocks";
+import { BLOCK_ICONS, BLOCK_LABELS, getBlockMinutes } from "@/types/blocks";
 import { PixelCharacter } from "@/components/pixel-buddy/PixelCharacter";
 import { XPGain } from "@/components/ui/XPGain";
 import { LevelUpModal } from "@/components/ui/LevelUpModal";
@@ -99,11 +99,23 @@ export function LevelDetailClient({
       ? "happy"
       : level.buddyMood;
 
-  const buddyMessage = isCompleted
-    ? "Level complete! Amazing work!"
-    : completedRequired > 0
-      ? `${completedRequired}/${totalRequired} blocks done!`
-      : level.teaches;
+  const getBuddyMessage = () => {
+    if (isCompleted) return "Level complete! Amazing work!";
+    if (completedRequired > 0) return `${completedRequired}/${totalRequired} blocks done!`;
+    if (!currentBlock) return level.teaches;
+    switch (currentBlock.type) {
+      case "theory": return "Read this carefully — there might be a quiz next!";
+      case "quiz": return "Take your time, you can retry if you get it wrong.";
+      case "prompt": return "Be as specific as possible in your prompt.";
+      case "build": return "Make sure to push your code before verifying!";
+      case "debug": return "Read the error carefully — the clue is in there.";
+      case "review": return "Look for bugs the AI might have missed.";
+      case "experiment": return "Try it and see what happens!";
+      case "pattern": return "This pattern will help with future prompts.";
+      default: return level.teaches;
+    }
+  };
+  const buddyMessage = getBuddyMessage();
 
   return (
     <div className="min-h-screen pb-12 relative">
@@ -184,6 +196,9 @@ export function LevelDetailClient({
               <span className="text-white/80 text-xs font-medium">
                 {completedIds.size}/{blocks.length}
               </span>
+              <span className="text-white/50 text-xs">
+                ~{blocks.reduce((sum, b) => sum + getBlockMinutes(b), 0)} min
+              </span>
             </div>
           )}
         </div>
@@ -247,7 +262,7 @@ export function LevelDetailClient({
                             {block.title}
                           </p>
                           <p className="text-[9px] text-[#B8A898]">
-                            {block.xp} XP{!block.required ? " · Optional" : ""}
+                            {block.xp} XP · ~{getBlockMinutes(block)}m{!block.required ? " · Bonus" : ""}
                           </p>
                         </div>
                       </button>

@@ -13,6 +13,8 @@ interface Props {
 export function QuizBlock({ block, worldColor, completed, onComplete }: Props) {
   const [answers, setAnswers] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [hintsShown, setHintsShown] = useState<Set<number>>(new Set());
+  const [attempts, setAttempts] = useState(0);
   const [result, setResult] = useState<{
     correct: number;
     total: number;
@@ -36,9 +38,10 @@ export function QuizBlock({ block, worldColor, completed, onComplete }: Props) {
     const passed = correct >= block.passingScore;
     setResult({ correct, total: block.questions.length, passed, results });
     setSubmitted(true);
+    setAttempts((a) => a + 1);
 
     if (passed) {
-      onComplete({ answers });
+      onComplete({ answers, attempts: attempts + 1 });
     }
   };
 
@@ -46,6 +49,15 @@ export function QuizBlock({ block, worldColor, completed, onComplete }: Props) {
     setAnswers([]);
     setSubmitted(false);
     setResult(null);
+  };
+
+  const toggleHint = (qi: number) => {
+    setHintsShown((prev) => {
+      const next = new Set(prev);
+      if (next.has(qi)) next.delete(qi);
+      else next.add(qi);
+      return next;
+    });
   };
 
   return (
@@ -99,10 +111,31 @@ export function QuizBlock({ block, worldColor, completed, onComplete }: Props) {
             ))}
           </div>
 
+          {/* Hint button — before submit only */}
+          {!submitted && q.hint && (
+            <button
+              onClick={() => toggleHint(qi)}
+              className="text-xs text-[#8B7355] hover:text-[#2D2016] underline underline-offset-2 transition-colors"
+            >
+              {hintsShown.has(qi) ? "Hide hint" : "Need a hint?"}
+            </button>
+          )}
+          {!submitted && hintsShown.has(qi) && q.hint && (
+            <p className="text-xs text-[#8B7355] bg-[#FAF6F0] rounded-lg px-3 py-2">
+              💡 {q.hint}
+            </p>
+          )}
+
           {/* Explanation after submit */}
-          {submitted && result?.results[qi].explanation && (
-            <p className="text-xs text-[#8B7355] mt-1 pl-1">
-              💡 {result.results[qi].explanation}
+          {submitted && result && !result.results[qi].correct && result.results[qi].explanation && (
+            <div className="text-xs text-[#4A3728] bg-[#FFF5F5] rounded-lg px-3 py-2 mt-1">
+              <span className="font-medium text-[#B8553A]">Why:</span>{" "}
+              {result.results[qi].explanation}
+            </div>
+          )}
+          {submitted && result && result.results[qi].correct && result.results[qi].explanation && (
+            <p className="text-xs text-[#2D6A2D] mt-1 pl-1">
+              {result.results[qi].explanation}
             </p>
           )}
         </div>
@@ -123,7 +156,7 @@ export function QuizBlock({ block, worldColor, completed, onComplete }: Props) {
           <p className="text-sm">
             {result.passed
               ? "Passed! Great job."
-              : `Need ${block.passingScore} correct. Try again!`}
+              : `Need ${block.passingScore} correct. Read the explanations above and try again!`}
           </p>
         </div>
       )}

@@ -126,10 +126,10 @@ export function SettingsClient({
         {/* Repository */}
         <section className="rounded-2xl bg-white border border-[#E8E0D4] p-5 shadow-sm">
           <h2 className="text-xs font-bold text-[#8B7355] uppercase tracking-wider mb-1">
-            Connected Repository
+            Your Project
           </h2>
           <p className="text-xs text-[#B8A898] mb-4">
-            This is the repo we&apos;ll check when you verify levels.
+            Your code lives here — like a folder in the cloud. We check it when you verify levels.
           </p>
 
           <div className="flex gap-2">
@@ -194,7 +194,7 @@ export function SettingsClient({
                 <span className="rounded-full bg-[#F5EDE0] px-3 py-1.5 text-xs font-bold text-[#8B7355]">
                   Free
                 </span>
-                <span className="text-sm text-[#8B7355]">World 1 only (5 levels)</span>
+                <span className="text-sm text-[#8B7355]">Worlds 1-2 (10 levels free)</span>
               </div>
               <a
                 href={process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL || "/pricing"}

@@ -23,7 +23,7 @@ export const WORLDS: World[] = [
     color: "#2AA198",
     accentColor: "#238E86",
     icon: "🔧",
-    requiredPlan: "PRO",
+    requiredPlan: "FREE",
   },
   {
     id: 3,
@@ -1278,9 +1278,9 @@ export function getLevel(levelId: number): Level | undefined {
 
 /**
  * Check whether a world is unlocked for a user.
- * - World 1 is always unlocked.
- * - Worlds 2+ require PRO plan.
- * - Previous world must be fully completed (all 5 levels).
+ * - Worlds 1-2 are free.
+ * - Worlds 3+ require PRO plan.
+ * - Previous world must be fully completed.
  */
 export function isWorldUnlocked(
   worldId: number,

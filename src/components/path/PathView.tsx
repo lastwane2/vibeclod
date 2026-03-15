@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import type { LevelWithStatus } from "@/types";
 import type { World } from "@/types";
 import { WORLDS, getLevelsForWorld } from "@/lib/levels";
@@ -41,6 +41,20 @@ export function PathView({
   hasRepo,
 }: PathViewProps) {
   const [selectedLevel, setSelectedLevel] = useState<LevelWithStatus | null>(null);
+  const currentRef = useRef<HTMLDivElement>(null);
+  const hasScrolled = useRef(false);
+
+  // Auto-scroll to current level on mount
+  useEffect(() => {
+    if (hasScrolled.current) return;
+    const el = currentRef.current;
+    if (el) {
+      hasScrolled.current = true;
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
+    }
+  }, []);
 
   const handleLevelClick = useCallback((level: LevelWithStatus) => {
     setSelectedLevel(level);
@@ -51,7 +65,6 @@ export function PathView({
   }, []);
 
   const handleVerify = useCallback((levelId: number) => {
-    // Will be connected to verification API in Phase 2
     window.location.href = `/level/${levelId}`;
   }, []);
 
@@ -96,7 +109,11 @@ export function PathView({
                 const isLastInWorld = i === levelsWithStatus.length - 1;
 
                 return (
-                  <div key={level.id} className="flex flex-col items-center">
+                  <div
+                    key={level.id}
+                    className="flex flex-col items-center"
+                    ref={level.status === "current" ? currentRef : undefined}
+                  >
                     <LevelNode
                       level={level}
                       position={pos}

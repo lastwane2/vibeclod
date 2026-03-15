@@ -46,6 +46,7 @@ export interface BaseBlock {
   xp: number;
   required: boolean; // must complete to finish level
   order: number; // display order within level
+  estimatedMinutes?: number; // approximate time in minutes
 }
 
 // ─── Theory Block ──────────────────────
@@ -67,6 +68,7 @@ export interface QuizQuestion {
   options: string[];
   correctIndex: number;
   explanation?: string;
+  hint?: string;
 }
 
 export interface QuizBlock extends BaseBlock {
@@ -196,6 +198,23 @@ export interface BlockCompletionData {
 export interface LevelBlocks {
   levelId: number;
   blocks: Block[];
+}
+
+// ─── Time estimate helpers ─────────────
+
+const DEFAULT_MINUTES: Record<BlockType, number> = {
+  theory: 3,
+  quiz: 4,
+  prompt: 8,
+  build: 15,
+  debug: 8,
+  review: 5,
+  experiment: 7,
+  pattern: 4,
+};
+
+export function getBlockMinutes(block: BaseBlock): number {
+  return block.estimatedMinutes ?? DEFAULT_MINUTES[block.type] ?? 5;
 }
 
 // ─── Scaffold helpers ──────────────────

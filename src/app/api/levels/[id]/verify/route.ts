@@ -72,8 +72,8 @@ export async function POST(_req: Request, context: RouteContext) {
     );
   }
 
-  // Check plan for PRO worlds
-  if (level.worldId > 1 && user.plan === "FREE") {
+  // Check plan for PRO worlds (World 1-2 are free)
+  if (level.worldId > 2 && user.plan === "FREE") {
     return NextResponse.json(
       { error: "This level requires Pro. Upgrade to unlock all worlds." },
       { status: 403 }
