@@ -161,7 +161,7 @@ export function LevelDetailClient({
           background: `linear-gradient(135deg, ${worldColor}, ${worldAccentColor})`,
         }}
       >
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto max-w-5xl">
           <Link
             href="/dashboard"
             className="inline-flex items-center gap-1 text-white/70 hover:text-white text-sm mb-4 transition-colors"
@@ -207,7 +207,7 @@ export function LevelDetailClient({
       </div>
 
       {/* Main content — two column on desktop */}
-      <div className="mx-auto max-w-2xl px-4 -mt-6">
+      <div className="mx-auto max-w-5xl px-4 -mt-6">
         {/* Buddy — compact */}
         <div className="flex justify-center mb-4">
           <PixelCharacter
