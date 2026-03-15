@@ -96,7 +96,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
           </ol>
 
           <p style="font-size: 14px; color: #4A3728; line-height: 1.6; margin: 0;">
-            World 1 is free — 5 levels to get you shipping. By Level 25, you'll have a live, paying product.
+            World 1 is free — 5 levels to get you shipping. By Level 40, you'll have a live, paying product.
           </p>
 
           <div style="text-align: center;">

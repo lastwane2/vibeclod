@@ -4,6 +4,9 @@ import { WORLD_2_BLOCKS } from "./world-2";
 import { WORLD_3_BLOCKS } from "./world-3";
 import { WORLD_4_BLOCKS } from "./world-4";
 import { WORLD_5_BLOCKS } from "./world-5";
+import { WORLD_6_BLOCKS } from "./world-6";
+import { WORLD_7_BLOCKS } from "./world-7";
+import { WORLD_8_BLOCKS } from "./world-8";
 
 export const ALL_BLOCKS: Block[] = [
   ...WORLD_1_BLOCKS,
@@ -11,6 +14,9 @@ export const ALL_BLOCKS: Block[] = [
   ...WORLD_3_BLOCKS,
   ...WORLD_4_BLOCKS,
   ...WORLD_5_BLOCKS,
+  ...WORLD_6_BLOCKS,
+  ...WORLD_7_BLOCKS,
+  ...WORLD_8_BLOCKS,
 ];
 
 export function getBlocksForLevel(levelId: number): Block[] {

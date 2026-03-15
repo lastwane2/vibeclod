@@ -1,58 +1,49 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 2 — Build Mode (Levels 6-10)
-// Patterns: Component Request, Layout, Breaking Down Complexity
+// World 2 — Real Tools (Levels 6-10)
+// Terminal, Node, npm, Git. Scaffold: "full"
+// Patterns: Project Setup
 // ═══════════════════════════════════════
 
 export const WORLD_2_BLOCKS: Block[] = [
-  // ─── Level 6: Package Manager (4 blocks) ───
+  // ─── Level 6: The Terminal (4 blocks) ───
   {
     id: "L6B1",
     levelId: 6,
     type: "theory",
-    title: "Modern Project Structure",
+    title: "Terminal = Text Chat",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Modern Project Structure
+    content: `# Terminal = Text Chat With Your Computer
 
-Real projects don't live in single HTML files. They use **package managers** to organize code and dependencies.
+The terminal is just **another way to talk to your computer**. Instead of clicking around with a mouse, you type short commands.
 
-## package.json
+Think of it as **texting your computer** instead of tapping on it.
 
-This file is your project's manifest. It lists:
-- **name** — your project name
-- **dependencies** — libraries your project needs
-- **scripts** — commands to run (build, start, test)
+| Instead of... | You type... |
+|---------------|-------------|
+| Clicking through folders | \`cd Desktop\` |
+| Right-click → New Folder | \`mkdir my-project\` |
+| Dragging files to trash | \`rm old-file.txt\` |
 
-## npm (Node Package Manager)
+Same computer. Same files. Different interface.
 
-\`\`\`bash
-npm init -y          # Create package.json
-npm install react    # Add a dependency
-npm run dev          # Run a script
-\`\`\`
+## Why Use It?
 
-## .gitignore
+- **Faster** for dev work — no hunting through menus
+- **AI gives you terminal commands** — you need to know where to paste them
+- **All professional tools use it** — npm, git, deployment
 
-The \`node_modules\` folder contains thousands of files from dependencies. **Never commit it to git.** Add it to \`.gitignore\`:
-
-\`\`\`
-node_modules/
-.env
-\`\`\`
-
-## For your prompts
-
-When asking AI to create a modern project, say: "Initialize with npm, include package.json with dependencies, and add a .gitignore that excludes node_modules."`,
+It looks intimidating at first. Black screen, blinking cursor. But it's just texting. You'll get used to it fast.`,
     miniQuiz: [
       {
-        question: "Why should node_modules be in .gitignore?",
+        question: "What is the terminal?",
         options: [
-          "It contains secret passwords",
-          "It has thousands of files that can be reinstalled with npm install",
-          "It makes JavaScript run slower",
+          "A special programming language",
+          "Another way to talk to your computer — by typing instead of clicking",
+          "A website for downloading code",
         ],
         correctIndex: 1,
       },
@@ -61,34 +52,222 @@ When asking AI to create a modern project, say: "Initialize with npm, include pa
   {
     id: "L6B2",
     levelId: 6,
-    type: "prompt",
-    title: "Write a Project Setup Prompt",
-    xp: 15,
+    type: "theory",
+    title: "5 Commands That Matter",
+    xp: 10,
     required: true,
     order: 2,
-    scaffold: "template",
-    goal: "Write a prompt to initialize a modern project with npm",
-    referencePrompt:
-      "Create a new project with npm. Initialize package.json, install React and React DOM as dependencies. Add a .gitignore file that excludes node_modules, .env, and dist folders. Create a basic src/index.js entry point that renders a 'Hello World' React component.",
-    template:
-      "Create a new project with ___. Initialize ___, install ___ as dependencies. Add a ___ file that excludes ___. Create a basic ___ entry point.",
-    hints: [
-      "Specify the package manager",
-      "List dependencies to install",
-      "Mention .gitignore entries",
-    ],
-    passingThreshold: 2.5,
+    content: `# 5 Commands That Matter
+
+You don't need 50 commands. You need **5**.
+
+| Command | Plain English | Example |
+|---------|--------------|---------|
+| \`cd\` | "Go to folder" | \`cd Desktop\` |
+| \`ls\` | "What's in here?" | \`ls\` (shows files) |
+| \`mkdir\` | "Make a folder" | \`mkdir my-project\` |
+| \`touch\` | "Create a file" | \`touch index.html\` |
+| \`npm\` | "Manage project stuff" | \`npm install\` |
+
+That's it. **Five commands.** AI will tell you the rest when you need them.
+
+## The Pattern
+
+Most terminal work follows a simple flow:
+
+1. Go somewhere: \`cd my-project\`
+2. Look around: \`ls\`
+3. Do something: \`mkdir\`, \`touch\`, \`npm install\`
+4. Repeat
+
+If you ever get lost, type \`ls\` to see where you are, or \`cd ..\` to go back up one folder.`,
   },
   {
     id: "L6B3",
     levelId: 6,
+    type: "experiment",
+    title: "Try the Terminal",
+    xp: 15,
+    required: true,
+    order: 3,
+    description:
+      "Let's use the terminal for real. It's just typing.",
+    steps: [
+      {
+        id: "L6B3S1",
+        instruction:
+          "Open your terminal. Type `ls` (or `dir` on Windows). What shows up?",
+        expectedOutcome:
+          "You'll see a list of files and folders in your current directory — the same stuff you'd see in your file explorer.",
+        question: "What files and folders did you see?",
+      },
+      {
+        id: "L6B3S2",
+        instruction:
+          "Navigate to your Desktop: `cd Desktop`. Create a folder: `mkdir my-project`. Go into it: `cd my-project`. Type `ls` — what do you see?",
+        expectedOutcome:
+          "The folder is empty because you just created it. `ls` shows nothing.",
+        question: "What did `ls` show inside your new empty folder?",
+      },
+    ],
+  },
+  {
+    id: "L6B4",
+    levelId: 6,
+    type: "quiz",
+    title: "Terminal Concepts",
+    xp: 15,
+    required: true,
+    order: 4,
+    questions: [
+      {
+        question: "What does `cd` do?",
+        options: [
+          "Creates a new file",
+          "Changes to a different folder (go to folder)",
+          "Copies a directory",
+          "Closes the terminal",
+        ],
+        correctIndex: 1,
+        explanation:
+          "`cd` stands for 'change directory' — it moves you into a folder.",
+      },
+      {
+        question: "What does `ls` show you?",
+        options: [
+          "Your computer's settings",
+          "The files and folders in your current location",
+          "A list of terminal commands",
+          "Your internet connection status",
+        ],
+        correctIndex: 1,
+        explanation:
+          "`ls` lists the contents of whatever folder you're currently in.",
+      },
+      {
+        question: "Why do developers use the terminal instead of clicking through folders?",
+        options: [
+          "It looks cooler",
+          "It's faster for development tasks and all professional tools use it",
+          "Mice are bad for your wrists",
+          "You can't use a mouse with code",
+        ],
+        correctIndex: 1,
+        explanation:
+          "Terminal is faster for repetitive dev tasks, and tools like npm and git are terminal-based.",
+      },
+      {
+        question: "Can AI help you with terminal commands you don't know?",
+        options: [
+          "No, you must memorize them all",
+          "Yes — just describe what you want to do and AI will give you the command",
+          "Only if you're on Mac",
+          "Only for basic commands",
+        ],
+        correctIndex: 1,
+        explanation:
+          "This is a core vibe coding skill — describe what you need, and AI tells you the command.",
+      },
+    ],
+    passingScore: 3,
+  },
+
+  // ─── Level 7: Projects Have Structure (4 blocks) ───
+  {
+    id: "L7B1",
+    levelId: 7,
+    type: "theory",
+    title: "Beyond Single Files",
+    xp: 10,
+    required: true,
+    order: 1,
+    content: `# Beyond Single Files
+
+So far you've been building with single HTML files. That's like living in a tent — it works, but you can't fit much in there.
+
+Real projects are like **houses**:
+- **Rooms** (folders) to organize things
+- **Plumbing** (dependencies) that make stuff work behind the scenes
+- **A blueprint** (package.json) that describes the whole setup
+
+Single file = tent. Structured project = house.
+
+You need a house to build anything serious. And the good news? Setting one up takes about 30 seconds with the right commands.`,
+  },
+  {
+    id: "L7B2",
+    levelId: 7,
+    type: "theory",
+    title: "npm & package.json",
+    xp: 10,
+    required: true,
+    order: 2,
+    content: `# npm & package.json
+
+## package.json = Your Project's Shopping List
+
+It says "this project needs React, Tailwind, etc." When someone gets your project, they run \`npm install\` and npm **goes shopping** for everything on the list. Automatic.
+
+## node_modules = The Shopping Bags
+
+When npm installs packages, they land in a folder called \`node_modules\`. It's **huge** — thousands of files, even for small projects.
+
+Key rule: **never upload node_modules to GitHub**.
+
+Why? Because anyone can re-create it by running \`npm install\`. It's like uploading your grocery bags to the cloud when the shopping list is right there.
+
+That's what \`.gitignore\` is for — you add \`node_modules\` to it, and git pretends the folder doesn't exist.`,
+    miniQuiz: [
+      {
+        question: "Why do we put node_modules in .gitignore?",
+        options: [
+          "It contains passwords and secrets",
+          "It's huge and can be re-created anytime with npm install",
+          "It makes the website load slower",
+        ],
+        correctIndex: 1,
+      },
+    ],
+  },
+  {
+    id: "L7B3",
+    levelId: 7,
+    type: "experiment",
+    title: "Create a Project",
+    xp: 15,
+    required: true,
+    order: 3,
+    description:
+      "Watch npm create your project's foundation.",
+    steps: [
+      {
+        id: "L7B3S1",
+        instruction:
+          "In your project folder, run `npm init -y`. Open the newly created package.json file. What's inside?",
+        expectedOutcome:
+          "You'll see a JSON file with your project's name, version, and other metadata. This is the blueprint.",
+        question: "What fields did you see in package.json?",
+      },
+      {
+        id: "L7B3S2",
+        instruction:
+          "Run `npm install confetti-js` (or any small package). Now check node_modules — how many folders are in there?",
+        expectedOutcome:
+          "Even one tiny package pulls in dozens of sub-packages. node_modules gets big fast — that's why we gitignore it.",
+        question: "How many folders appeared in node_modules from just one install?",
+      },
+    ],
+  },
+  {
+    id: "L7B4",
+    levelId: 7,
     type: "build",
     title: "Set Up Your Project",
     xp: 30,
     required: true,
-    order: 3,
+    order: 4,
     mission:
-      "Initialize a project with npm. Create package.json with at least one dependency and .gitignore excluding node_modules.",
+      "Create a project with npm. Must have package.json with at least one dependency and .gitignore excluding node_modules.",
     githubChecks: {
       hasPackageJson: true,
       fileExists: [".gitignore"],
@@ -99,436 +278,286 @@ When asking AI to create a modern project, say: "Initialize with npm, include pa
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for a valid package.json with at least one dependency, a .gitignore excluding node_modules. Project should be set up properly.",
+      "Check for a valid package.json with at least one dependency, a .gitignore that excludes node_modules. Project should be initialized properly.",
     passingScore: 50,
   },
-  {
-    id: "L6B4",
-    levelId: 6,
-    type: "experiment",
-    title: "What's Inside node_modules?",
-    xp: 10,
-    required: false,
-    order: 4,
-    description: "Peek inside node_modules to understand why we gitignore it.",
-    steps: [
-      {
-        id: "L6B4S1",
-        instruction:
-          "Run `npm install` in your project, then count the files in node_modules. On Mac/Linux: `find node_modules -type f | wc -l`. On Windows: `dir /s /b node_modules | find /c /v \"\"`",
-        expectedOutcome:
-          "You'll see hundreds or thousands of files — even for a small project.",
-        question: "How many files were in your node_modules?",
-      },
-      {
-        id: "L6B4S2",
-        instruction:
-          "Delete node_modules (`rm -rf node_modules`), then run `npm install` again.",
-        expectedOutcome:
-          "Everything comes back. That's why we don't commit it — npm install recreates it from package.json.",
-      },
-    ],
-  },
 
-  // ─── Level 7: Component Thinking (5 blocks) ───
-  {
-    id: "L7B1",
-    levelId: 7,
-    type: "theory",
-    title: "What Are Components?",
-    xp: 10,
-    required: true,
-    order: 1,
-    content: `# What Are Components?
-
-Components are **reusable building blocks** for UI. Instead of one giant HTML file, you split your UI into pieces:
-
-\`\`\`
-App
-├── Header
-├── MainContent
-│   ├── SearchBar
-│   ├── ProductCard (×many)
-│   └── Pagination
-└── Footer
-\`\`\`
-
-## Why components?
-
-- **Reuse** — Write once, use everywhere
-- **Organize** — Each file does one thing
-- **Maintain** — Change a button in one place, it updates everywhere
-
-## React components
-
-\`\`\`jsx
-function ProductCard({ title, price }) {
-  return (
-    <div className="card">
-      <h3>{title}</h3>
-      <p>\${price}</p>
-    </div>
-  );
-}
-\`\`\`
-
-- **Props** = inputs (data passed in)
-- **State** = internal data that changes (e.g., isOpen, count)
-
-## For your prompts
-
-Tell AI exactly which components you need, what props they take, and how they connect.`,
-  },
-  {
-    id: "L7B2",
-    levelId: 7,
-    type: "pattern",
-    title: "Component Request Pattern",
-    xp: 15,
-    required: true,
-    order: 2,
-    patternId: "component-request",
-    exercise: {
-      goal: "Use the Component Request Pattern to describe a UserCard component",
-      template: `Create a ___ React component that:
-- Props: ___
-- State: ___
-- Renders: ___
-- Handles: ___
-- Styles: ___`,
-      exampleFilled: `Create a UserCard React component that:
-- Props: name (string), email (string), avatar (string URL)
-- State: isFollowing (boolean)
-- Renders: card with avatar image, name, email, follow button
-- Handles: click follow button toggles isFollowing
-- Styles: Tailwind — rounded-xl, shadow-md, p-4, hover:shadow-lg`,
-    },
-  },
-  {
-    id: "L7B3",
-    levelId: 7,
-    type: "prompt",
-    title: "Write a Component Prompt",
-    xp: 20,
-    required: true,
-    order: 3,
-    scaffold: "template",
-    goal: "Write a prompt to create a React app with 3+ custom components",
-    referencePrompt:
-      "Create a React app with at least 3 custom components: 1) A Header component with the app name and navigation links. 2) A ProductCard component that takes props: name (string), price (number), imageUrl (string) — displays them in a styled card with a 'Add to Cart' button. 3) A ProductList component that renders multiple ProductCard components using an array of products stored in state. App.jsx should import and compose all three. Use functional components with hooks.",
-    template:
-      "Create a React app with at least 3 custom components: 1) A ___ component with ___. 2) A ___ component that takes props: ___ — displays them in ___. 3) A ___ component that renders multiple ___ using ___. App.jsx should import and compose all three.",
-    hints: [
-      "Name each component and its purpose",
-      "Specify props with types for data components",
-      "Describe how components connect",
-    ],
-    passingThreshold: 2.5,
-  },
-  {
-    id: "L7B4",
-    levelId: 7,
-    type: "build",
-    title: "Build With Components",
-    xp: 40,
-    required: true,
-    order: 4,
-    mission:
-      "Create a React app with at least 3 custom components. Use props and state. Push to repo.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: ["src/App.jsx"],
-      fileContains: [
-        { path: "package.json", contains: ["react"] },
-        { path: "src/App.jsx", contains: ["import", "export"] },
-      ],
-      minFiles: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for at least 3 custom React components, proper use of props and state. Components should be in separate files or clearly defined.",
-    passingScore: 55,
-  },
-  {
-    id: "L7B5",
-    levelId: 7,
-    type: "review",
-    title: "Spot the Component Issues",
-    xp: 15,
-    required: false,
-    order: 5,
-    code: "import React from 'react';\n\nfunction App() {\n  return (\n    <div>\n      <h1>My App</h1>\n      <div className=\"card\">\n        <h3>Product 1</h3>\n        <p>$10</p>\n        <button>Add to Cart</button>\n      </div>\n      <div className=\"card\">\n        <h3>Product 2</h3>\n        <p>$20</p>\n        <button>Add to Cart</button>\n      </div>\n      <div className=\"card\">\n        <h3>Product 3</h3>\n        <p>$15</p>\n        <button>Add to Cart</button>\n      </div>\n    </div>\n  );\n}\n\nexport default App;",
-    language: "jsx",
-    description:
-      "This React app was generated by AI. It works, but has structural problems. Can you spot them?",
-    knownIssues: [
-      {
-        id: "L7B5I1",
-        lineRange: [6, 20],
-        description:
-          "All three product cards are duplicated code — should be a reusable ProductCard component",
-        severity: "critical",
-      },
-      {
-        id: "L7B5I2",
-        lineRange: [6, 20],
-        description:
-          "Product data is hardcoded in JSX — should come from an array and be mapped",
-        severity: "warning",
-      },
-      {
-        id: "L7B5I3",
-        lineRange: [11, 11],
-        description:
-          "Button has no onClick handler — click does nothing",
-        severity: "warning",
-      },
-    ],
-    minIssuesFound: 2,
-  },
-
-  // ─── Level 8: Tailwind Power (4 blocks) ───
+  // ─── Level 8: Save Points (4 blocks) ───
   {
     id: "L8B1",
     levelId: 8,
     type: "theory",
-    title: "Utility-First CSS",
+    title: "Git = Game Saves",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Tailwind CSS: Utility-First Styling
+    content: `# Git = Game Saves
 
-Instead of writing CSS files, Tailwind gives you utility classes:
+Git is like **save points in a video game**.
 
-\`\`\`html
-<!-- Old way (custom CSS) -->
-<div class="my-card">...</div>
-<!-- .my-card { padding: 16px; border-radius: 8px; box-shadow: ... } -->
+Every commit = a save. You can always go back to any previous save. And each save has a description so you know what changed:
 
-<!-- Tailwind way -->
-<div class="p-4 rounded-lg shadow-md">...</div>
-\`\`\`
+- "Added navigation bar"
+- "Fixed broken contact link"
+- "Styled the hero section"
 
-## Why AI loves Tailwind
+## Why Use Git?
 
-Tailwind makes AI-generated code **more consistent** because:
-- No naming conflicts (no \`.card\` vs \`.card-wrapper\` confusion)
-- Responsive is built in (\`md:flex\`, \`lg:grid-cols-3\`)
-- Everything is in the HTML — no separate CSS files to manage
+1. **Undo mistakes** — restore an old save if something breaks
+2. **See what changed** — compare any two saves to see the differences
+3. **Required for deployment** — services like Vercel and Railway pull your code from GitHub
 
-## Key Tailwind groups
-
-| Category | Examples |
-|----------|---------|
-| Spacing | \`p-4\`, \`m-2\`, \`gap-3\`, \`space-y-4\` |
-| Layout | \`flex\`, \`grid\`, \`grid-cols-3\`, \`justify-center\` |
-| Size | \`w-full\`, \`h-screen\`, \`max-w-lg\` |
-| Colors | \`bg-blue-500\`, \`text-white\`, \`border-gray-200\` |
-| Responsive | \`sm:flex\`, \`md:grid-cols-2\`, \`lg:text-xl\` |
-| Effects | \`shadow-md\`, \`rounded-xl\`, \`hover:bg-blue-600\` |
-
-## For your prompts
-
-Say "Use Tailwind CSS" and specify responsive breakpoints you need.`,
+Without git, one bad edit could destroy hours of work with no way back. With git, you always have a safety net.`,
   },
   {
     id: "L8B2",
     levelId: 8,
-    type: "pattern",
-    title: "The Layout Pattern",
-    xp: 15,
+    type: "theory",
+    title: "GitHub = Cloud Saves",
+    xp: 10,
     required: true,
     order: 2,
-    patternId: "layout-pattern",
-    exercise: {
-      goal: "Use the Layout Pattern to describe a responsive page layout",
-      template: `Build a ___ layout:
-- Structure: ___
-- Responsive: mobile: ___, tablet: ___, desktop: ___
-- Navigation: ___
-- Content areas: ___`,
-      exampleFilled: `Build a portfolio layout:
-- Structure: sticky header, full-width hero, 2-column content below, footer
-- Responsive: mobile: single column stack, tablet: hero shrinks, desktop: sidebar appears
-- Navigation: logo left, nav links right, hamburger on mobile
-- Content areas: hero has title + CTA, left column is project grid, right is bio sidebar`,
-    },
+    content: `# GitHub = Cloud Saves
+
+**Git** is local — save points on your computer.
+**GitHub** is cloud — save points on the internet.
+
+Like the difference between saving to your hard drive vs saving to Google Drive.
+
+## What GitHub Gives You
+
+- **Backup** — your code survives even if your laptop dies
+- **Sharing** — other people can see and use your code
+- **Deployment** — services pull directly from your GitHub repo to go live
+- **Portfolio** — your repo history IS your resume for tech work
+
+Your repo = your portfolio. Every commit shows that you build things.`,
+    miniQuiz: [
+      {
+        question: "What's the difference between git and GitHub?",
+        options: [
+          "They're the same thing",
+          "Git = local saves on your computer, GitHub = cloud backup and sharing",
+          "Git is for code, GitHub is for design files",
+        ],
+        correctIndex: 1,
+      },
+    ],
   },
   {
     id: "L8B3",
     levelId: 8,
-    type: "build",
-    title: "Style With Tailwind",
-    xp: 40,
+    type: "experiment",
+    title: "Make Some Saves",
+    xp: 15,
     required: true,
     order: 3,
-    mission:
-      "Style your React app with Tailwind CSS. Build a responsive layout that works on mobile and desktop. No custom CSS files.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["tailwind"] },
-      ],
-      minCommits: 3,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for Tailwind CSS usage across components. Look for responsive utilities (sm:, md:, lg:), flexbox/grid layouts, and consistent spacing.",
-    passingScore: 55,
+    description:
+      "Practice the save-point workflow.",
+    steps: [
+      {
+        id: "L8B3S1",
+        instruction:
+          "Make a change to any file in your project. Run `git status` — what do you see?",
+        expectedOutcome:
+          "Changed files show up in red. Git knows something is different from the last save.",
+        question: "What color were the changed files? What does that mean?",
+      },
+      {
+        id: "L8B3S2",
+        instruction:
+          "Run `git add .` then `git commit -m \"your description here\"`. Now run `git log` — what do you see?",
+        expectedOutcome:
+          "Your commit appears in the log with your message, a timestamp, and a unique ID. That's your save point.",
+        question: "Can you see your commit message in the log?",
+      },
+      {
+        id: "L8B3S3",
+        instruction:
+          "Push to GitHub: `git push`. Go to your repo on github.com — is your latest code there?",
+        expectedOutcome:
+          "Your code is now in the cloud. Anyone with the link can see it, and deployment services can pull from it.",
+        question: "Can you see your files and commit message on GitHub?",
+      },
+    ],
   },
   {
     id: "L8B4",
     levelId: 8,
-    type: "debug",
-    title: "Fix Tailwind Issues",
+    type: "quiz",
+    title: "Version Control",
     xp: 15,
-    required: false,
+    required: true,
     order: 4,
-    scenarios: [
+    questions: [
       {
-        id: "L8B4D1",
-        title: "Missing responsive class",
-        description:
-          "This card grid shows 3 columns on all screen sizes, even on mobile where it looks cramped.",
-        brokenCode: `<div className="grid grid-cols-3 gap-4">
-  <div className="bg-white p-4 rounded-lg shadow">Card 1</div>
-  <div className="bg-white p-4 rounded-lg shadow">Card 2</div>
-  <div className="bg-white p-4 rounded-lg shadow">Card 3</div>
-</div>`,
-        language: "jsx",
-        hint: "On mobile, 3 columns is too many. Use responsive prefixes.",
-        expectedFix:
-          "Change grid-cols-3 to grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+        question: "What is a git commit?",
+        options: [
+          "A promise to finish your project",
+          "A save point — a snapshot of your project at a specific moment",
+          "A way to delete old code",
+          "A message to your team",
+        ],
+        correctIndex: 1,
+        explanation:
+          "Each commit saves the state of your entire project, with a message describing what changed.",
       },
       {
-        id: "L8B4D2",
-        title: "Flexbox centering issue",
-        description: "The content should be centered on the page but it's stuck at the top-left.",
-        brokenCode: `<div className="flex">
-  <div className="bg-blue-500 text-white p-8 rounded-xl">
-    Centered Content
-  </div>
-</div>`,
-        language: "jsx",
-        hint: "flex alone isn't enough for centering. What classes handle centering and full height?",
-        expectedFix:
-          "Add items-center justify-center min-h-screen to the parent flex div",
+        question: "Why is GitHub useful even for solo developers?",
+        options: [
+          "It's required by law",
+          "Cloud backup, deployment integration, and portfolio visibility",
+          "It makes code run faster",
+          "It replaces the need for a text editor",
+        ],
+        correctIndex: 1,
+        explanation:
+          "Even working alone, GitHub gives you backups, easy deployment, and a visible track record of what you build.",
+      },
+      {
+        question: "What does `git push` do?",
+        options: [
+          "Deletes your local code",
+          "Sends your local commits (saves) to GitHub (the cloud)",
+          "Downloads code from the internet",
+          "Creates a new branch",
+        ],
+        correctIndex: 1,
+        explanation:
+          "Push uploads your local save points to GitHub so they're backed up and accessible online.",
+      },
+      {
+        question: "Why should every commit have a descriptive message?",
+        options: [
+          "Git won't work without one",
+          "So you (and others) can understand what changed at each save point",
+          "It makes the code run faster",
+          "Messages are optional and don't matter",
+        ],
+        correctIndex: 1,
+        explanation:
+          "Good commit messages are like labels on your save files — 'Fixed nav bug' is way more useful than 'update'.",
       },
     ],
-    passingCount: 1,
+    passingScore: 3,
   },
 
-  // ─── Level 9: Router & Navigation (4 blocks) ───
+  // ─── Level 9: The Full Workflow (4 blocks) ───
   {
     id: "L9B1",
     levelId: 9,
     type: "theory",
-    title: "Client-Side Routing",
+    title: "Your Code Cockpit",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Client-Side Routing
+    content: `# Your Code Cockpit
 
-In old websites, clicking a link loads a whole new page from the server. In modern apps, **routing happens in the browser** — only the content changes, not the whole page.
+Professional developers have **3 windows** open at all times:
 
-## React Router
+1. **IDE** (VS Code / Cursor) — where you write and edit code
+2. **Terminal** — where you run commands (npm, git)
+3. **AI chat** (Claude / ChatGPT) — where you prompt
 
-React Router is the standard library for routing in React:
+That's your cockpit. IDE + Terminal + AI.
 
-\`\`\`jsx
-<Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/about" element={<About />} />
-  <Route path="/contact" element={<Contact />} />
-  <Route path="*" element={<NotFound />} />
-</Routes>
-\`\`\`
+## The Workflow
 
-## Key concepts
+1. **Ask AI** — describe what you want
+2. **Copy to IDE** — paste the generated code into your files
+3. **Test in browser** — does it work? Does it look right?
+4. **If good → commit** — save your progress with git
+5. **Push** — upload to GitHub
+6. **Repeat**
 
-- **Route** = URL path → component
-- **Link** = navigate without page reload
-- **404 page** = \`path="*"\` catches unknown URLs
-- **Active links** = highlight the current page in nav
-
-## For your prompts
-
-Specify: how many routes, what each route shows, how navigation looks, and what happens for unknown URLs.`,
+This is how real products get built. Not in one giant leap, but in small loops: prompt → generate → test → commit → push. Over and over.`,
   },
   {
     id: "L9B2",
     levelId: 9,
-    type: "prompt",
-    title: "Write a Routing Prompt",
-    xp: 20,
+    type: "pattern",
+    title: "The Project Setup Pattern",
+    xp: 15,
     required: true,
     order: 2,
-    scaffold: "template",
-    goal: "Write a prompt to add routing with at least 3 pages and navigation",
-    referencePrompt:
-      "Add React Router to my app. Create routes for: Home (/), About (/about), Projects (/projects), and a 404 Not Found page for any other URL. Add a Navigation component with links to all pages — the current page's link should have a different color (active state). Each page should have a unique heading and some placeholder content. Wrap everything in a BrowserRouter.",
-    template:
-      "Add React Router to my app. Create routes for: ___ (/), ___ (___), ___ (___), and a ___ page for ___. Add a ___ component with links to all pages — the current page should ___. Each page should have ___.",
-    hints: [
-      "List all routes with their paths",
-      "Mention the 404/catch-all route",
-      "Describe active link styling",
-    ],
-    passingThreshold: 2.5,
+    patternId: "project-setup",
+    exercise: {
+      goal: "Use the Project Setup Pattern to describe a new project",
+      template: `Set up a new project:
+- Name: ___
+- Tech: ___
+- Structure: ___
+- Features: ___
+- Styling: ___`,
+      exampleFilled: `Set up a new project:
+- Name: recipe-app
+- Tech: HTML, CSS, JavaScript
+- Structure: index.html, styles.css, app.js, /images folder
+- Features: recipe cards with image and ingredients, search bar that filters recipes, favorites button
+- Styling: warm earthy tones, card-based layout, Google Fonts (Poppins), responsive grid`,
+    },
   },
   {
     id: "L9B3",
     levelId: 9,
-    type: "build",
-    title: "Add Routing",
-    xp: 40,
+    type: "prompt",
+    title: "Write a Setup Prompt",
+    xp: 20,
     required: true,
     order: 3,
-    mission:
-      "Add routing to your React app. At least 3 pages with navigation, a 404 page, and active link styling.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["react-router"] },
-      ],
-      minFiles: 8,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for React Router setup with at least 3 routes, a navigation component, 404 handling, and active link indication.",
-    passingScore: 55,
+    scaffold: "full",
+    goal: "Write a prompt to scaffold a complete project from scratch",
+    referencePrompt:
+      "Set up a new recipe app project. Create these files: index.html (main page with recipe grid), styles.css (warm color scheme, card layout, responsive), app.js (search filtering, favorites toggle). Initialize with npm and create a package.json. Add a .gitignore that excludes node_modules. Organize with a clear folder structure: /css, /js, /images. Include a README.md with project name and short description.",
+    template:
+      "Set up a new ___ project. Create these files: ___ (___), ___ (___), ___ (___). Initialize with npm and create a ___. Add a ___ that excludes ___. Organize with a clear folder structure: ___. Include a ___ with ___.",
+    hints: [
+      "Name the project and list all files",
+      "Describe what each file does",
+      "Mention npm and .gitignore",
+      "Specify folder organization",
+    ],
+    passingThreshold: 2.5,
   },
   {
     id: "L9B4",
     levelId: 9,
-    type: "pattern",
-    title: "Breaking Down Complexity",
+    type: "experiment",
+    title: "The Complete Loop",
     xp: 15,
-    required: true,
+    required: false,
     order: 4,
-    patternId: "breaking-down-complexity",
-    exercise: {
-      goal: "Practice breaking a big task into step-by-step prompts",
-      template: `I'm building ___. Let's do it step by step.
-
-Step 1: ___
-Step 2: ___
-Step 3: ___
-
-Start with Step 1 only.`,
-      exampleFilled: `I'm building a task manager app. Let's do it step by step.
-
-Step 1: Create a basic TaskList component that renders 3 static tasks
-Step 2: Add an input + button to create new tasks with state
-Step 3: Add a checkbox to toggle task completion
-Step 4: Add a delete button for each task
-Step 5: Add routing — separate pages for All, Active, Completed tasks
-
-Start with Step 1 only.`,
-    },
+    description:
+      "Do the full workflow end-to-end.",
+    steps: [
+      {
+        id: "L9B4S1",
+        instruction:
+          "Open your AI chat and prompt it to create a simple one-page app (tip calculator, color picker, anything small).",
+        expectedOutcome:
+          "AI generates the code for your mini app.",
+        question: "What did you ask AI to build?",
+      },
+      {
+        id: "L9B4S2",
+        instruction:
+          "Copy the generated code into your IDE. Save the files in your project folder. Open in browser — does it work?",
+        expectedOutcome:
+          "Your app is running locally in the browser. You might need to fix small issues.",
+        question: "Did it work on the first try, or did you need to fix something?",
+      },
+      {
+        id: "L9B4S3",
+        instruction:
+          "Commit your changes: `git add .` then `git commit -m \"Add [your app name]\"`. Push: `git push`. Check GitHub — is everything there?",
+        expectedOutcome:
+          "Your code is on GitHub. Anyone can see it. That's the professional workflow, start to finish.",
+        question: "Can you see all your files on GitHub?",
+      },
+    ],
   },
 
-  // ─── Level 10: Dashboard Boss (3 blocks) ───
+  // ─── Level 10: Setup Boss (3 blocks) ───
   {
     id: "L10B1",
     levelId: 10,
@@ -539,54 +568,64 @@ Start with Step 1 only.`,
     order: 1,
     questions: [
       {
-        question: "What does package.json do in a project?",
+        question: "What does `mkdir my-project` do in the terminal?",
         options: [
-          "Stores the project's database",
-          "Lists project metadata, dependencies, and scripts",
-          "Compiles JavaScript to machine code",
-          "Manages user authentication",
+          "Deletes a folder called my-project",
+          "Creates a new folder called my-project",
+          "Opens a folder called my-project",
+          "Renames a folder to my-project",
         ],
         correctIndex: 1,
+        explanation:
+          "mkdir = 'make directory'. It creates a new folder with the name you specify.",
       },
       {
-        question: "What's the benefit of React components over a single HTML file?",
+        question: "What is package.json?",
         options: [
-          "They run faster",
-          "Reusable pieces that can be organized, maintained, and composed together",
-          "They don't need CSS",
-          "They automatically handle routing",
+          "A file that styles your website",
+          "Your project's blueprint — lists its name, dependencies, and scripts",
+          "A JavaScript file that runs your app",
+          "A git configuration file",
         ],
         correctIndex: 1,
+        explanation:
+          "package.json is the shopping list for your project. It tells npm what your project needs.",
       },
       {
-        question: "Why is Tailwind CSS good for AI-generated code?",
+        question: "What's the difference between git and GitHub?",
         options: [
-          "It's the fastest CSS framework",
-          "No naming conflicts, built-in responsive, everything in one file",
-          "It replaces JavaScript",
-          "It's the only CSS framework AI knows",
+          "They're the same tool",
+          "Git = local save points, GitHub = cloud storage and sharing",
+          "Git is free, GitHub is paid",
+          "Git is for JavaScript, GitHub is for all languages",
         ],
         correctIndex: 1,
+        explanation:
+          "Git saves locally on your computer. GitHub stores those saves in the cloud for backup and collaboration.",
       },
       {
-        question: 'What does the Breaking Down Complexity pattern prevent?',
+        question: "What are the 3 windows in the developer cockpit?",
         options: [
-          "Syntax errors",
-          "Overwhelming the AI with too much at once, leading to messy output",
-          "Using too many npm packages",
-          "Server crashes",
+          "Browser, email, Slack",
+          "IDE (code editor), Terminal (commands), AI chat (prompting)",
+          "GitHub, StackOverflow, Google",
+          "HTML file, CSS file, JS file",
         ],
         correctIndex: 1,
+        explanation:
+          "IDE + Terminal + AI = your cockpit. That's where all the work happens.",
       },
       {
-        question: 'What does path="*" do in React Router?',
+        question: "Why does .gitignore exist?",
         options: [
-          "Matches the home page",
-          "Catches all unmatched URLs (404 page)",
-          "Makes all routes public",
-          "Enables wildcard imports",
+          "To hide your code from hackers",
+          "To tell git which files to ignore — like node_modules that can be re-created",
+          "To speed up your website",
+          "To encrypt sensitive files",
         ],
         correctIndex: 1,
+        explanation:
+          ".gitignore prevents huge or regenerable folders (like node_modules) from cluttering your repo.",
       },
     ],
     passingScore: 3,
@@ -595,21 +634,21 @@ Start with Step 1 only.`,
     id: "L10B2",
     levelId: 10,
     type: "prompt",
-    title: "Design Your Dashboard Prompt",
+    title: "Design Your Project",
     xp: 30,
     required: true,
     order: 2,
-    scaffold: "template",
-    goal: "Write a comprehensive prompt for a dashboard application",
+    scaffold: "full",
+    goal: "Write a comprehensive project setup prompt with npm, git, and proper structure",
     referencePrompt:
-      "Build a complete dashboard app with React, React Router, and Tailwind CSS. Structure: fixed sidebar (240px) with navigation links (Dashboard, Users, Analytics, Settings), a top header bar with search and user avatar, and a scrollable main content area. Pages: 1) Dashboard — 4 stat cards (users, revenue, orders, growth) with icons and percentage changes, plus a recent activity list. 2) Users — data table with name, email, role, status columns, sortable headers. 3) Analytics — placeholder charts area with stat summaries. 4) Settings — form with profile settings. Responsive: sidebar collapses to hamburger on mobile. Polish: hover effects, smooth transitions, active nav highlighting.",
+      "Set up a complete project from scratch for a personal bookshelf app. Initialize with npm (package.json with name, description, and at least 2 dependencies). Create a clear folder structure: /src for source files (index.html, styles.css, app.js), /assets for images. Add a .gitignore excluding node_modules, .env, and dist. Create a README.md with project name, description, and setup instructions. Initialize git, make an initial commit. The app should display a grid of book cards with title, author, and cover image — styled with a warm color palette and responsive layout.",
     template:
-      "Build a complete dashboard app with React, React Router, and Tailwind. Structure: ___ sidebar with navigation (___), a top header with ___, and a scrollable main area. Pages: 1) Dashboard — ___ stat cards with ___. 2) ___ — data table with ___. 3) ___ — ___. 4) ___ — ___. Responsive: ___. Polish: ___.",
+      "Set up a complete project from scratch for a ___. Initialize with npm (package.json with ___). Create a folder structure: ___. Add a .gitignore excluding ___. Create a README.md with ___. Initialize git. The app should ___.",
     hints: [
-      "Describe the overall layout structure",
-      "List all pages with their content",
-      "Specify responsive behavior",
-      "Mention polish details (hover, transitions)",
+      "Name the app and its purpose",
+      "Specify the folder structure",
+      "List what .gitignore should exclude",
+      "Describe the app's main feature",
     ],
     passingThreshold: 3.0,
   },
@@ -617,24 +656,21 @@ Start with Step 1 only.`,
     id: "L10B3",
     levelId: 10,
     type: "build",
-    title: "Ship Your Dashboard",
+    title: "Ship Your Setup",
     xp: 200,
     required: true,
     order: 3,
     mission:
-      "Build a complete dashboard: sidebar nav, 4+ pages, stat cards, data table, responsive design. Think admin panel.",
+      "Set up a complete project from scratch: npm, git, organized folders, README, .gitignore, at least 5 meaningful commits.",
     githubChecks: {
       hasPackageJson: true,
-      fileExists: ["src/App.jsx"],
-      fileContains: [
-        { path: "package.json", contains: ["react", "tailwind"] },
-      ],
-      minFiles: 10,
+      fileExists: [".gitignore", "README.md"],
       minCommits: 5,
+      minFiles: 8,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Boss level — be thorough. Check for: sidebar nav, 4+ pages/views, stat cards, data table/list, responsive design, Tailwind styling, polished UI.",
+      "Boss level — be thorough. Check for: package.json with dependencies, .gitignore excluding node_modules, README with project description, organized folder structure, at least 5 meaningful commits with descriptive messages, actual app content (not just boilerplate).",
     passingScore: 60,
   },
 ];

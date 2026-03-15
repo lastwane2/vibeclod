@@ -1,636 +1,553 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 3 — Full Stack (Levels 11-15)
-// Patterns: Database Schema, API Route, Integration
+// World 3 — Components (Levels 11-15)
+// React as LEGO blocks
+// Patterns: Component Request, Layout, Iteration
 // ═══════════════════════════════════════
 
 export const WORLD_3_BLOCKS: Block[] = [
-  // ─── Level 11: Next.js Setup (4 blocks) ───
+  // ─── Level 11: Building Blocks (4 blocks) ───
   {
     id: "L11B1",
     levelId: 11,
     type: "theory",
-    title: "Why Next.js?",
+    title: "Components = LEGO",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Why Next.js?
+    content: `# Components = LEGO
 
-Next.js is the framework most startups use. It gives you everything in one package:
+Think of any website you use. It's not one giant blob — it's built from **pieces**.
 
-- **React** for UI
-- **Server-side rendering** for speed and SEO
-- **File-based routing** — create a file, get a URL
-- **API routes** — backend in the same project
-- **Built-in deployment** with Vercel
+A card. A button. A navigation bar. A footer. Each piece is a **component**.
 
-## App Router
+## The LEGO analogy
 
-Next.js uses folders for routing:
+LEGO gives you different bricks — flat ones, tall ones, wheels, windows. You snap them together to build anything: a house, a car, a spaceship.
 
-\`\`\`
-src/app/
-├── layout.tsx      → shared layout (nav, footer)
-├── page.tsx        → / (home page)
-├── about/
-│   └── page.tsx    → /about
-├── blog/
-│   ├── page.tsx    → /blog (list)
-│   └── [id]/
-│       └── page.tsx → /blog/123 (dynamic)
-\`\`\`
+Components work the same way. You have different UI pieces — headers, cards, lists, forms. You snap them together to build any app.
 
-## Server vs Client Components
+## React
 
-- **Server components** (default) — render on server, fast, can access DB
-- **Client components** (\`"use client"\`) — run in browser, handle clicks/state
+React is the most popular way to build with components. When you tell AI **"Create a React app"**, you're saying: "build me something from components."
 
-## For your prompts
+You don't need to write components yourself. You **describe what blocks you need**, and AI assembles them.
 
-Say "Next.js with App Router" and specify "server components" vs "client components" for each file.`,
+## What this means for you
+
+Your job isn't to code components. It's to **decide which pieces your app needs** and how they fit together — like being the architect, not the bricklayer.`,
   },
   {
     id: "L11B2",
     levelId: 11,
-    type: "prompt",
-    title: "Write a Next.js Setup Prompt",
-    xp: 15,
+    type: "theory",
+    title: "React: What to Tell AI",
+    xp: 10,
     required: true,
     order: 2,
-    scaffold: "hints",
-    goal: "Write a prompt to create a Next.js project with App Router",
-    referencePrompt:
-      "Create a Next.js project with the App Router. Set up: 1) Root layout.tsx with a Navigation component (server component) that has links to Home, About, and Dashboard. 2) Three pages: home (page.tsx), about (about/page.tsx), and dashboard (dashboard/page.tsx). 3) The dashboard page should be a client component with a counter button using useState. 4) Use Tailwind CSS for styling. 5) Shared layout should wrap all pages with the nav and a footer.",
-    hints: [
-      "Specify App Router (not Pages Router)",
-      "List which pages to create with their file paths",
-      "Mention server vs client components",
-      "Include styling approach",
+    content: `# React: What to Tell AI
+
+When prompting AI for a React app, you need to communicate three things:
+
+## 1. What components you need
+
+Name them like real objects: Header, ProductCard, SearchBar, ShoppingCart. The name should instantly explain what it does.
+
+## 2. What data each component shows
+
+A ProductCard shows: image, title, price, rating. A UserProfile shows: avatar, name, bio. Be specific about what information lives inside each piece.
+
+## 3. How they connect
+
+- A ProductList contains many ProductCards
+- A Header appears on every page
+- A SearchBar filters what the ProductList shows
+
+That's it. Don't worry about import/export, useState, or any syntax. **AI handles the code. YOU decide the architecture.**`,
+    miniQuiz: [
+      {
+        question:
+          "When prompting AI for a React app, what do you describe?",
+        options: [
+          "The exact JavaScript syntax to use",
+          "What components you need, what data they show, and how they connect",
+          "Which CSS framework is fastest",
+          "The server configuration",
+        ],
+        correctIndex: 1,
+      },
     ],
-    passingThreshold: 3.0,
   },
   {
     id: "L11B3",
     levelId: 11,
-    type: "build",
-    title: "Create Your Next.js App",
-    xp: 35,
+    type: "pattern",
+    title: "Component Request Pattern",
+    xp: 15,
     required: true,
     order: 3,
-    mission:
-      "Create a Next.js project with App Router. At least 3 pages with a shared layout and navigation.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["next"] },
-      ],
-      fileExists: ["src/app/layout.tsx"],
-      commitAfter: "level_start",
+    patternId: "component-request",
+    exercise: {
+      goal: "Use the Component Request Pattern to describe a React component to AI",
+      template: `Create a ___ React component that:
+- Props: ___
+- Shows: ___
+- Handles: ___
+- Style: ___`,
+      exampleFilled: `Create a UserCard React component that:
+- Props: name, email, avatarUrl
+- Shows: a card with the avatar image on the left, name and email on the right, and a "Follow" button
+- Handles: clicking "Follow" toggles between "Follow" and "Following"
+- Style: Tailwind — rounded card with shadow, hover effect, responsive`,
     },
-    aiReviewPrompt:
-      "Check for proper Next.js App Router structure: layout.tsx, at least 3 page.tsx files, shared navigation component.",
-    passingScore: 50,
   },
   {
     id: "L11B4",
     levelId: 11,
-    type: "experiment",
-    title: "Server vs Client Components",
-    xp: 15,
-    required: false,
+    type: "build",
+    title: "Your First React App",
+    xp: 30,
+    required: true,
     order: 4,
-    description: "See the difference between server and client components.",
-    steps: [
-      {
-        id: "L11B4S1",
-        instruction:
-          'Try adding useState to a server component (one without "use client" at the top). What happens?',
-        expectedOutcome:
-          "You'll get an error: useState only works in client components.",
-        question: "What error message did you get?",
-      },
-      {
-        id: "L11B4S2",
-        instruction:
-          'Add "use client" to the top of the file and try again.',
-        expectedOutcome: "useState works now because it's a client component.",
-        question: "Why can't server components use useState?",
-      },
-    ],
+    mission:
+      "Create a React app with at least 3 custom components. Each should do one thing well.",
+    githubChecks: {
+      hasPackageJson: true,
+      fileContains: [{ path: "package.json", contains: ["react"] }],
+      minFiles: 5,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for at least 3 custom React components. Each component should have a clear purpose. Look for proper structure and clean code.",
+    passingScore: 55,
   },
 
-  // ─── Level 12: Database Time (6 blocks) ───
+  // ─── Level 12: Things That Change (4 blocks) ───
   {
     id: "L12B1",
     levelId: 12,
     type: "theory",
-    title: "What is a Database?",
+    title: "State = Memory Inside Components",
     xp: 10,
     required: true,
     order: 1,
-    content: `# What is a Database?
+    content: `# State = Memory Inside Components
 
-A database stores your app's data permanently. Without one, all data disappears when the page refreshes.
+Some things in your app **change**: a counter goes up, a menu opens, a form fills in.
 
-## Types
+This is **state** — the component's short-term memory.
 
-- **SQL databases** (PostgreSQL, MySQL) — structured tables with rows and columns
-- **NoSQL databases** (MongoDB) — flexible document storage
+## Think of it like a whiteboard
 
-We use **PostgreSQL** + **Prisma ORM**.
+Each component has a small whiteboard. It can write things on it (update state) and read what's there (display state). When the whiteboard changes, the component automatically re-draws itself.
 
-## Prisma
+- Counter component's whiteboard: "count = 7"
+- Menu component's whiteboard: "isOpen = true"
+- Form component's whiteboard: "name = 'Sarah', email = 's@email.com'"
 
-Prisma lets you define your data in a schema file:
+## What this means for prompting
 
-\`\`\`prisma
-model User {
-  id    String @id @default(cuid())
-  email String @unique
-  name  String
-  posts Post[]
-}
+When you tell AI **"add a counter that goes up when clicked"**, AI uses state automatically behind the scenes. You just need to describe:
 
-model Post {
-  id      String @id @default(cuid())
-  title   String
-  content String
-  author  User   @relation(fields: [authorId], references: [id])
-  authorId String
-}
-\`\`\`
+1. **WHAT changes** — the counter value, the menu visibility, the form data
+2. **WHEN it changes** — on click, on type, on submit
 
-Then query it with TypeScript:
-
-\`\`\`typescript
-const users = await prisma.user.findMany();
-const post = await prisma.post.create({
-  data: { title: "Hello", content: "World", authorId: user.id }
-});
-\`\`\`
-
-## Key concepts
-
-- **Models** = tables (User, Post, Comment)
-- **Fields** = columns (name, email, createdAt)
-- **Relations** = connections between models (User has many Posts)
-- **Migrations** = database updates when you change the schema`,
-    miniQuiz: [
-      {
-        question: "What does @relation in Prisma define?",
-        options: [
-          "A CSS relationship",
-          "A connection between two models (e.g., User has Posts)",
-          "A database backup",
-          "An API endpoint",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question: "Why do you need a database?",
-        options: [
-          "To make the page load faster",
-          "To store data permanently so it survives page refreshes",
-          "To add styling to components",
-          "To handle routing",
-        ],
-        correctIndex: 1,
-      },
-    ],
+That's your whole job. AI wires up the state management.`,
   },
   {
     id: "L12B2",
     levelId: 12,
-    type: "quiz",
-    title: "Schema Concepts",
-    xp: 20,
+    type: "theory",
+    title: "Events = Triggers",
+    xp: 10,
     required: true,
     order: 2,
-    questions: [
+    content: `# Events = Triggers
+
+Events are the **triggers** that cause things to happen:
+
+- **Click** → counter goes up
+- **Type** → input updates
+- **Hover** → color changes
+- **Submit** → form sends data
+
+## The prompt formula
+
+Always describe the **trigger** AND the **result**:
+
+**Bad:** "add a form"
+
+**Good:** "add a form with name and email fields. When submitted, show a success message and clear the form."
+
+**Bad:** "add a button"
+
+**Good:** "add a 'Save' button. When clicked, save the data and change the button text to 'Saved!' for 2 seconds."
+
+## Common trigger → result pairs
+
+| Trigger | Result |
+|---------|--------|
+| Click button | Add item, toggle state, navigate |
+| Submit form | Validate, send data, show confirmation |
+| Type in input | Filter list, search, validate |
+| Hover element | Show tooltip, change color |
+| Scroll page | Load more items, show/hide header |
+
+Every interactive element needs both halves: **what triggers it** and **what happens**.`,
+    miniQuiz: [
       {
-        question: "What does @unique mean on a field?",
+        question: "What's missing from the prompt: \"add a button\"?",
         options: [
-          "The field is optional",
-          "No two records can have the same value for this field",
-          "The field is the primary key",
-          "The field is automatically generated",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question: 'In Prisma, what does @default(cuid()) do?',
-        options: [
-          "Creates a default color",
-          "Auto-generates a unique ID for new records",
-          "Sets the default language",
-          "Connects to the default database",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question: "What is a migration?",
-        options: [
-          "Moving your app to a new server",
-          "A script that updates the database structure to match your schema changes",
-          "Deleting all data",
-          "A type of API route",
+          "The button color",
+          "What happens when you click it",
+          "The button size",
+          "The CSS class name",
         ],
         correctIndex: 1,
       },
     ],
-    passingScore: 2,
   },
   {
     id: "L12B3",
     levelId: 12,
     type: "prompt",
-    title: "Write a Schema Prompt",
-    xp: 25,
+    title: "Write an Interactive Component Prompt",
+    xp: 20,
     required: true,
     order: 3,
-    scaffold: "hints",
-    goal: "Write a prompt for a Prisma schema with 2+ related models",
+    scaffold: "template",
+    goal: "Write a prompt for a React app with interactive components",
     referencePrompt:
-      "Create a Prisma schema for a task management app. Models: 1) User — id (cuid), email (unique string), name (string), createdAt (datetime). 2) Task — id (cuid), title (string), description (optional string), completed (boolean, default false), priority (enum: LOW, MEDIUM, HIGH), createdAt, updatedAt. 3) User has many Tasks relation. Add proper indexes on foreign keys.",
-    hints: [
-      "Name your models and list their fields with types",
-      "Specify which fields are unique, optional, or have defaults",
-      "Describe the relations between models",
-    ],
-    passingThreshold: 3.0,
+      "Create a React task manager with: 1) An input field and 'Add' button — when clicked, adds the task to a list below. 2) Each task shows the text and a 'Done' checkbox — clicking it crosses out the task. 3) A counter at the top showing 'X tasks remaining' (only counting unchecked tasks). 4) A 'Clear completed' button that removes all checked tasks.",
+    template:
+      "Create a React ___ with: 1) An input field and '___' button — when clicked, ___. 2) Each ___ shows ___ and a '___' ___ — clicking it ___. 3) A counter showing ___. 4) A '___' button that ___.",
+    passingThreshold: 2.5,
   },
   {
     id: "L12B4",
     levelId: 12,
     type: "build",
-    title: "Add Your Database",
+    title: "Build Something Interactive",
     xp: 40,
     required: true,
     order: 4,
     mission:
-      "Add Prisma to your Next.js project. Define at least 2 models with a relation between them.",
+      "Build a React app with interactive components — at least one counter/toggle and one form that does something.",
     githubChecks: {
-      fileExists: ["prisma/schema.prisma"],
-      fileContains: [
-        { path: "prisma/schema.prisma", contains: ["model", "@relation"] },
-        { path: "package.json", contains: ["prisma"] },
-      ],
+      hasPackageJson: true,
+      fileContains: [{ path: "package.json", contains: ["react"] }],
+      minFiles: 5,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check the Prisma schema for at least 2 models with proper fields, types, and a relation between them.",
+      "Check for interactive React components. Look for at least one counter or toggle and one form. State should update on user actions.",
     passingScore: 55,
   },
-  {
-    id: "L12B5",
-    levelId: 12,
-    type: "experiment",
-    title: "Change a Field Type",
-    xp: 15,
-    required: false,
-    order: 5,
-    description:
-      "See what Prisma does when you change a field type — this teaches you about migrations.",
-    steps: [
-      {
-        id: "L12B5S1",
-        instruction:
-          "In your schema, change a String field to an Int (e.g., change `name String` to `name Int`). Try to run `npx prisma migrate dev`.",
-        expectedOutcome:
-          "Prisma will warn you about data loss because changing a String to Int could break existing data.",
-        question: "What warning did Prisma give you?",
-      },
-      {
-        id: "L12B5S2",
-        instruction: "Change the field back to String and run the migration again.",
-        expectedOutcome: "Migration succeeds without warnings.",
-        question: "Why does Prisma warn about type changes?",
-      },
-    ],
-  },
-  {
-    id: "L12B6",
-    levelId: 12,
-    type: "pattern",
-    title: "Database Schema Pattern",
-    xp: 15,
-    required: true,
-    order: 6,
-    patternId: "database-schema",
-    exercise: {
-      goal: "Use the Database Schema Pattern to plan a schema",
-      template: `Create a Prisma schema for ___:
 
-Models needed:
-- ___: ___
-- ___: ___
-
-Relations:
-- ___
-
-Include: id, timestamps, proper types, indexes`,
-      exampleFilled: `Create a Prisma schema for a blog:
-
-Models needed:
-- User: email (unique), name, avatar URL
-- Post: title, content (long text), published (boolean), slug (unique)
-- Comment: body, approved (boolean)
-
-Relations:
-- User has many Posts
-- User has many Comments
-- Post has many Comments
-
-Include: id, createdAt, updatedAt, proper types, indexes on foreign keys`,
-    },
-  },
-
-  // ─── Level 13: API Routes (5 blocks) ───
+  // ─── Level 13: Modern Styling (4 blocks) ───
   {
     id: "L13B1",
     levelId: 13,
     type: "theory",
-    title: "What Are API Routes?",
+    title: "Tailwind = Words Instead of CSS Files",
     xp: 10,
     required: true,
     order: 1,
-    content: `# API Routes
+    content: `# Tailwind = Words Instead of CSS Files
 
-API routes let your frontend talk to your database. They're the "backend" of your app.
+Remember CSS files from World 1? Tailwind replaces them with a simpler idea.
 
-## In Next.js
+Instead of writing styles in a separate file, you add **descriptive words** directly to your HTML:
 
-\`\`\`
-src/app/api/
-├── users/
-│   └── route.ts     → GET/POST /api/users
-├── users/[id]/
-│   └── route.ts     → GET/PUT/DELETE /api/users/123
-└── posts/
-    └── route.ts     → GET/POST /api/posts
-\`\`\`
+\`bg-blue-500 text-white p-4 rounded-lg\`
 
-## HTTP Methods
+## It's like labeling boxes
 
-| Method | Purpose | Example |
-|--------|---------|---------|
-| GET | Read data | Get all users |
-| POST | Create data | Create new user |
-| PUT | Update data | Update user name |
-| DELETE | Remove data | Delete a user |
+Imagine labeling a moving box: "blue, white text, padded, rounded corners." That's exactly what Tailwind classes are — labels that describe how something looks.
 
-## Example route
+## Why AI loves Tailwind
 
-\`\`\`typescript
-// src/app/api/users/route.ts
-export async function GET() {
-  const users = await prisma.user.findMany();
-  return Response.json(users);
-}
-
-export async function POST(request: Request) {
-  const body = await request.json();
-  const user = await prisma.user.create({ data: body });
-  return Response.json(user, { status: 201 });
-}
-\`\`\`
+Tailwind is **predictable**. The same class always does the same thing. No naming conflicts, no wondering what \`.card-wrapper-inner\` does. AI generates cleaner, more consistent code with Tailwind.
 
 ## For your prompts
 
-Specify: the endpoint path, which HTTP methods, what the input/output looks like, and which database queries to use.`,
+Just say **"use Tailwind CSS"** and then describe what you want visually:
+
+"A blue card with white text, padding, rounded corners, and a shadow"
+
+AI translates your description into the right Tailwind classes. You never need to memorize them.`,
   },
   {
     id: "L13B2",
     levelId: 13,
-    type: "pattern",
-    title: "API Route Pattern",
-    xp: 15,
+    type: "theory",
+    title: "Responsive = Every Screen Size",
+    xp: 10,
     required: true,
     order: 2,
-    patternId: "api-route",
-    exercise: {
-      goal: "Use the API Route Pattern to describe a CRUD endpoint",
-      template: `Create a Next.js API route at ___:
+    content: `# Responsive = Every Screen Size
 
-- Method: ___
-- Auth: ___
-- Input: ___
-- Logic: ___
-- Response: ___
-- Database: ___`,
-      exampleFilled: `Create a Next.js API route at /api/tasks:
+Your app should work on phones, tablets, and desktops. "Responsive design" means the layout adapts to the screen.
 
-- Method: POST
-- Auth: required (check session)
-- Input: body { title: string, priority: "LOW" | "MEDIUM" | "HIGH" }
-- Logic: validate title is not empty → create task with userId from session
-- Response: 201 { task } on success, 400 if title empty, 401 if not logged in
-- Database: prisma.task.create with user connection`,
-    },
+## How Tailwind handles it
+
+Tailwind uses prefixes for screen sizes:
+- **No prefix** → applies to all screens (start here — mobile first)
+- **sm:** → small screens and up (phones in landscape)
+- **md:** → medium screens and up (tablets)
+- **lg:** → large screens and up (desktops)
+
+## You don't write this — AI does
+
+You just describe what you want at each size:
+
+**"Responsive design, single column on mobile, 2 columns on tablet, 3 columns on desktop."**
+
+That one sentence gives AI everything it needs. It translates your intent into the right responsive classes.
+
+## Common responsive patterns
+
+| Pattern | What to say |
+|---------|-------------|
+| Stack → Grid | "single column on mobile, grid on desktop" |
+| Hide/show | "hide sidebar on mobile, show on desktop" |
+| Font size | "larger headings on desktop" |
+| Navigation | "hamburger menu on mobile, full nav bar on desktop" |`,
+    miniQuiz: [
+      {
+        question:
+          "What do you tell AI to make your app work on all screen sizes?",
+        options: [
+          "Write separate CSS files for each device",
+          "Use responsive design — describe mobile and desktop layouts",
+          "Only build for desktop, phones will figure it out",
+          "Add a zoom setting",
+        ],
+        correctIndex: 1,
+      },
+    ],
   },
   {
     id: "L13B3",
     levelId: 13,
-    type: "prompt",
-    title: "Write an API Prompt",
-    xp: 25,
+    type: "pattern",
+    title: "The Layout Pattern",
+    xp: 15,
     required: true,
     order: 3,
-    scaffold: "hints",
-    goal: "Write a prompt for CRUD API routes",
-    referencePrompt:
-      "Create Next.js API routes for full CRUD on a Task model. 1) GET /api/tasks — return all tasks for the current user, sorted by createdAt desc. 2) POST /api/tasks — create a new task from body { title, description?, priority }. Validate title is not empty. 3) PUT /api/tasks/[id] — update task fields. Only allow the task owner to update. 4) DELETE /api/tasks/[id] — delete a task. Only owner can delete. All routes should return proper status codes (200, 201, 400, 401, 404) and JSON responses.",
-    hints: [
-      "List each endpoint with its HTTP method and path",
-      "Describe input validation for POST/PUT",
-      "Mention authorization (who can access what)",
-      "Specify response formats and status codes",
-    ],
-    passingThreshold: 3.0,
+    patternId: "layout-pattern",
+    exercise: {
+      goal: "Use the Layout Pattern to describe a responsive page layout",
+      template: `Build a ___ layout:
+- Structure: ___
+- Responsive: mobile: ___, desktop: ___
+- Navigation: ___
+- Content: ___`,
+      exampleFilled: `Build a portfolio layout:
+- Structure: sticky header, full-width hero section, grid content area, footer
+- Responsive: mobile: single column stack, hamburger menu. Desktop: sidebar appears, 3-column project grid
+- Navigation: logo on the left, links on the right, hamburger menu on mobile
+- Content: hero with name and tagline, project cards in a grid, about section below`,
+    },
   },
   {
     id: "L13B4",
     levelId: 13,
     type: "build",
-    title: "Build Your API",
+    title: "Style with Tailwind",
     xp: 40,
     required: true,
     order: 4,
     mission:
-      "Create API routes for full CRUD on one of your models. GET, POST, PUT, DELETE with Prisma queries.",
+      "Style your React app with Tailwind CSS. Responsive layout for mobile and desktop. No custom CSS files.",
     githubChecks: {
-      fileContains: [
-        { path: "package.json", contains: ["next", "prisma"] },
-      ],
-      minFiles: 10,
+      hasPackageJson: true,
+      fileContains: [{ path: "package.json", contains: ["tailwind"] }],
+      minCommits: 3,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for Next.js API route handlers with CRUD operations. Look for proper HTTP method handling, Prisma queries, error handling.",
+      "Check for Tailwind CSS usage. Look for responsive utilities (sm:, md:, lg:), proper layout (flex/grid), and consistent styling. No custom CSS files.",
     passingScore: 55,
   },
-  {
-    id: "L13B5",
-    levelId: 13,
-    type: "pattern",
-    title: "Integration Pattern",
-    xp: 15,
-    required: true,
-    order: 5,
-    patternId: "integration-pattern",
-    exercise: {
-      goal: "Plan how your frontend connects to your API",
-      template: `Connect ___ to ___:
 
-- Fetch: ___
-- Loading: ___
-- Error: ___
-- Success: ___
-- Optimistic: ___`,
-      exampleFilled: `Connect TaskList component to GET /api/tasks:
-
-- Fetch: on mount using useEffect + fetch()
-- Loading: show 3 skeleton task cards
-- Error: show "Failed to load tasks" with a retry button
-- Success: map over tasks array, render TaskCard for each
-- Optimistic: no, wait for server confirmation`,
-    },
-  },
-
-  // ─── Level 14: Auth Flow (4 blocks) ───
+  // ─── Level 14: AI Makes Mistakes (4 blocks) ───
   {
     id: "L14B1",
     levelId: 14,
     type: "theory",
-    title: "How Auth Works",
+    title: "Common React Mistakes AI Makes",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Authentication
+    content: `# Common React Mistakes AI Makes
 
-Auth answers one question: **"Who is this user?"**
+AI is fast but careless. Here are the patterns to watch for:
 
-## OAuth (recommended)
+## 1. Duplicate code
 
-Instead of handling passwords yourself, let users sign in with GitHub, Google, etc:
+AI loves copying and pasting. Three identical product cards? Should be **one** ProductCard component used three times. If you see the same chunk of JSX repeated, that's a red flag.
 
-1. User clicks "Sign in with GitHub"
-2. GitHub asks "Allow this app?"
-3. User says yes → GitHub sends a token
-4. Your app uses the token to identify the user
+## 2. Missing states
 
-## NextAuth.js
+AI builds the "happy path" — everything works perfectly. But what about:
+- **Loading** — what shows while data loads?
+- **Error** — what if something fails?
+- **Empty** — what if there's no data yet?
 
-NextAuth makes this easy in Next.js:
+Always check: did AI handle all three?
 
-\`\`\`typescript
-// auth.ts
-export const { auth, signIn, signOut } = NextAuth({
-  providers: [
-    GitHub({ clientId: "...", clientSecret: "..." })
-  ],
-});
-\`\`\`
+## 3. Dead buttons
 
-## Key concepts
+Buttons that look clickable but **do nothing**. AI generates the visual button but forgets to wire up the behavior. Click every button and verify something actually happens.
 
-- **Session** = proof that a user is logged in
-- **Provider** = the service that verifies identity (GitHub, Google)
-- **Protected route** = a page that requires login
-- **Callback** = where the user returns after signing in
+## 4. Giant files
 
-## For your prompts
+One 500-line file instead of organized components. If a file is doing more than one thing, ask AI to split it up.
 
-Specify: which auth provider, what user data to store, which routes are protected, what happens to unauthenticated users.`,
+## Your job
+
+You're the **quality inspector**. Spot these patterns, then tell AI specifically what to fix.`,
   },
   {
     id: "L14B2",
     levelId: 14,
-    type: "prompt",
-    title: "Write an Auth Prompt",
-    xp: 25,
+    type: "review",
+    title: "Spot the Problems",
+    xp: 20,
     required: true,
     order: 2,
-    scaffold: "hints",
-    goal: "Write a prompt to add authentication to your app",
-    referencePrompt:
-      "Add NextAuth.js authentication to my Next.js app. Set up GitHub OAuth provider. Create: 1) Auth configuration in src/lib/auth.ts. 2) API route at /api/auth/[...nextauth]. 3) Sign-in page at /login with a 'Sign in with GitHub' button. 4) User session display in the header (show name + avatar when logged in, 'Sign in' button when not). 5) Protected dashboard route that redirects to /login if not authenticated. 6) Sign-out button in user dropdown. Store user data (id, email, name, image) in the session.",
-    hints: [
-      "Specify the auth provider (GitHub, Google, etc.)",
-      "List all auth-related files to create",
-      "Describe the sign-in flow",
-      "Mention which routes need protection",
+    code: `import React from 'react';
+
+function App() {
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-6">Product Store</h1>
+
+      <div className="grid grid-cols-3 gap-4">
+        <div className="border rounded-lg p-4">
+          <img src="/shoes.jpg" alt="Running Shoes" className="w-full h-48 object-cover rounded" />
+          <h3 className="font-bold mt-2">Running Shoes</h3>
+          <p className="text-gray-600">$89.99</p>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add to Cart</button>
+        </div>
+
+        <div className="border rounded-lg p-4">
+          <img src="/jacket.jpg" alt="Winter Jacket" className="w-full h-48 object-cover rounded" />
+          <h3 className="font-bold mt-2">Winter Jacket</h3>
+          <p className="text-gray-600">$149.99</p>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add to Cart</button>
+        </div>
+
+        <div className="border rounded-lg p-4">
+          <img src="/hat.jpg" alt="Baseball Hat" className="w-full h-48 object-cover rounded" />
+          <h3 className="font-bold mt-2">Baseball Hat</h3>
+          <p className="text-gray-600">$24.99</p>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;`,
+    language: "jsx",
+    description:
+      "This React app works but has structural problems. Can you spot them?",
+    knownIssues: [
+      {
+        id: "L14B2I1",
+        lineRange: [8, 28],
+        description:
+          "Three product cards are copy-pasted — should be a reusable ProductCard component",
+        severity: "critical",
+      },
+      {
+        id: "L14B2I2",
+        lineRange: [8, 28],
+        description:
+          "Product data is hardcoded in JSX — should come from an array and be mapped over",
+        severity: "warning",
+      },
+      {
+        id: "L14B2I3",
+        lineRange: [14, 14],
+        description:
+          "Button has no onClick handler — clicking 'Add to Cart' does nothing",
+        severity: "warning",
+      },
     ],
-    passingThreshold: 3.0,
+    minIssuesFound: 2,
   },
   {
     id: "L14B3",
     levelId: 14,
-    type: "build",
-    title: "Add Authentication",
-    xp: 50,
+    type: "debug",
+    title: "Fix React Issues",
+    xp: 20,
     required: true,
     order: 3,
-    mission:
-      "Add authentication. Users can sign in, see profile, sign out. Protected routes redirect unauthenticated users.",
-    githubChecks: {
-      fileContains: [
-        { path: "package.json", contains: ["next-auth"] },
-      ],
-      minFiles: 12,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for auth setup: sign-in page, sign-out, session handling, protected routes, profile display.",
-    passingScore: 55,
-  },
-  {
-    id: "L14B4",
-    levelId: 14,
-    type: "debug",
-    title: "Fix Auth Errors",
-    xp: 20,
-    required: false,
-    order: 4,
     scenarios: [
       {
-        id: "L14B4D1",
-        title: "Missing environment variable",
-        description: "The auth sign-in fails with 'OAuthCallback error' in the console.",
-        brokenCode: `// .env.local
-GITHUB_ID=your_github_client_id
-GITHUB_SECRET=
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=`,
-        language: "bash",
-        hint: "Look at the empty values. What's missing?",
+        id: "L14B3D1",
+        title: "Missing responsive class",
+        description:
+          "This card grid shows 3 columns on all screen sizes, even on mobile where it looks cramped and unreadable.",
+        brokenCode: `<div className="grid grid-cols-3 gap-4">
+  <div className="bg-white p-4 rounded-lg shadow">Card 1</div>
+  <div className="bg-white p-4 rounded-lg shadow">Card 2</div>
+  <div className="bg-white p-4 rounded-lg shadow">Card 3</div>
+</div>`,
+        language: "jsx",
+        hint: "On mobile, 3 columns is too many. Tailwind has responsive prefixes like sm: and lg: to change layout at different screen sizes.",
         expectedFix:
-          "GITHUB_SECRET and NEXTAUTH_SECRET are empty — they need actual values",
+          "Change grid-cols-3 to grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 so it stacks on mobile and expands on larger screens",
       },
       {
-        id: "L14B4D2",
-        title: "Protected route not redirecting",
-        description: "The dashboard page loads even when not signed in.",
-        brokenCode: `// src/app/dashboard/page.tsx
-export default function DashboardPage() {
+        id: "L14B3D2",
+        title: "Counter goes negative",
+        description:
+          "This counter lets you click minus below 0, showing negative numbers which doesn't make sense for a quantity selector.",
+        brokenCode: `function Counter() {
+  const [count, setCount] = useState(0);
   return (
     <div>
-      <h1>Dashboard</h1>
-      <p>Welcome to your dashboard!</p>
+      <button onClick={() => setCount(count - 1)}>-</button>
+      <span>{count}</span>
+      <button onClick={() => setCount(count + 1)}>+</button>
     </div>
   );
 }`,
-        language: "tsx",
-        hint: "There's no auth check. What's missing at the top?",
+        language: "jsx",
+        hint: "The minus button should check if count is already 0 before subtracting.",
         expectedFix:
-          "Need to add auth() check at the top and redirect to /login if no session",
+          "Add a check to prevent going below 0: onClick={() => setCount(Math.max(0, count - 1))} or disable the button when count is 0",
       },
     ],
     passingCount: 1,
   },
+  {
+    id: "L14B4",
+    levelId: 14,
+    type: "pattern",
+    title: "The Iteration Pattern",
+    xp: 15,
+    required: true,
+    order: 4,
+    patternId: "iteration-pattern",
+    exercise: {
+      goal: "Use the Iteration Pattern to ask AI to fix a specific problem in its output",
+      template: `The output has this issue: ___
+What I expected: ___
+Please fix by: ___`,
+      exampleFilled: `The output has this issue: the product cards are all copy-pasted HTML with hardcoded data.
+What I expected: a reusable ProductCard component that takes props, used in a loop over a products array.
+Please fix by: creating a ProductCard component that accepts title, price, and image as props, then mapping over a products array to render them.`,
+    },
+  },
 
-  // ─── Level 15: SaaS Boss (3 blocks) ───
+  // ─── Level 15: App Boss (3 blocks) ───
   {
     id: "L15B1",
     levelId: 15,
@@ -641,49 +558,65 @@ export default function DashboardPage() {
     order: 1,
     questions: [
       {
-        question: "What makes Next.js different from plain React?",
+        question: "What is a React component?",
         options: [
-          "It uses a different programming language",
-          "Built-in server rendering, file routing, and API routes",
-          "It's only for mobile apps",
-          "It doesn't use components",
+          "A type of database",
+          "A reusable piece of UI — like a LEGO brick you can snap together with others",
+          "A CSS animation",
+          "A server configuration file",
         ],
         correctIndex: 1,
+        explanation:
+          "Components are reusable UI pieces. You describe which ones you need and AI builds them.",
       },
       {
-        question: "What's the purpose of a Prisma migration?",
+        question: "What is 'state' in a component?",
         options: [
-          "Moving files between folders",
-          "Updating the database structure to match schema changes",
-          "Importing data from CSV",
-          "Backing up the server",
+          "The geographic location of the server",
+          "The component's short-term memory — data that changes over time",
+          "A CSS property",
+          "The file extension",
         ],
         correctIndex: 1,
+        explanation:
+          "State is data inside a component that can change — like a counter value or whether a menu is open.",
       },
       {
-        question: "Which HTTP method should you use to create a new resource?",
-        options: ["GET", "POST", "DELETE", "PATCH"],
-        correctIndex: 1,
-      },
-      {
-        question: "Why is OAuth better than handling passwords yourself?",
+        question:
+          "What should you always describe when prompting for interactive elements?",
         options: [
-          "It's faster",
-          "You don't store passwords — the provider handles security",
-          "It uses less bandwidth",
-          "It works offline",
+          "The file size",
+          "The trigger (what the user does) AND the result (what happens)",
+          "The server port number",
+          "The database schema",
         ],
         correctIndex: 1,
+        explanation:
+          "Every interactive element needs both: what triggers it and what happens as a result.",
       },
       {
-        question: "What happens if an API route returns status 401?",
+        question: "Why does AI produce better code with Tailwind CSS?",
         options: [
-          "The data was created successfully",
-          "The user is not authenticated — access denied",
-          "The server crashed",
-          "The page was not found",
+          "Tailwind is faster than CSS",
+          "Tailwind classes are predictable — same class always does the same thing, no naming conflicts",
+          "Tailwind is the only CSS AI understands",
+          "Tailwind files are smaller",
         ],
         correctIndex: 1,
+        explanation:
+          "Tailwind's predictable utility classes help AI generate consistent, conflict-free styling.",
+      },
+      {
+        question: "What's the most common mistake AI makes with React?",
+        options: [
+          "Using the wrong programming language",
+          "Duplicating code instead of making reusable components",
+          "Making the app too fast",
+          "Adding too many tests",
+        ],
+        correctIndex: 1,
+        explanation:
+          "AI often copy-pastes similar blocks instead of creating one reusable component. Always check for duplication.",
       },
     ],
     passingScore: 3,
@@ -692,44 +625,39 @@ export default function DashboardPage() {
     id: "L15B2",
     levelId: 15,
     type: "prompt",
-    title: "Design Your SaaS Prompt",
+    title: "Design Your React App",
     xp: 30,
     required: true,
     order: 2,
-    scaffold: "hints",
-    goal: "Write a comprehensive prompt for a full-stack SaaS app",
+    scaffold: "template",
+    goal: "Write a comprehensive prompt for a complete React + Tailwind app",
     referencePrompt:
-      "Build a complete task management SaaS with Next.js, Prisma, and NextAuth. Features: 1) GitHub OAuth login. 2) Prisma schema with User, Project, and Task models (User has many Projects, Project has many Tasks). 3) Dashboard showing user's projects with task counts. 4) Project detail page with task list — create, complete, delete tasks. 5) CRUD API routes for projects and tasks with auth protection. 6) Responsive UI with Tailwind — sidebar nav, clean cards, proper forms with validation. 7) Empty states for no projects and no tasks. 8) Error handling with try/catch in API routes and error boundaries in UI.",
-    hints: [
-      "Describe the full user journey",
-      "Specify database models and relations",
-      "List API endpoints needed",
-      "Mention error handling and edge cases",
-    ],
-    passingThreshold: 3.5,
+      "Create a recipe app with React and Tailwind CSS. Components: 1) Header with app name 'Tasty Recipes' and a search bar. 2) RecipeCard showing recipe image, title, cook time, and a heart icon to favorite. 3) RecipeList that displays RecipeCards in a responsive grid. 4) SearchBar that filters recipes by name as you type. State: search query filters the recipe list in real-time, clicking the heart toggles the recipe as a favorite. Styling: responsive — single column on mobile, 2 columns on tablet, 3 on desktop. Clean white cards with subtle shadows, rounded corners. Show a 'No recipes found' message when search matches nothing.",
+    template:
+      "Create a ___ app with React and Tailwind CSS. Components: 1) Header with ___. 2) ___ showing ___. 3) ___ that displays ___ in a responsive grid. 4) ___ that ___. State: ___. Styling: responsive — ___. Show a '___' message when ___.",
+    passingThreshold: 3.0,
   },
   {
     id: "L15B3",
     levelId: 15,
     type: "build",
-    title: "Ship Your SaaS",
+    title: "Ship Your App",
     xp: 250,
     required: true,
     order: 3,
     mission:
-      "Build a complete SaaS: auth, database, CRUD, 3+ pages, responsive UI. Think: todo app, notes, or expense tracker.",
+      "Build a polished React + Tailwind app: 3+ views/sections, interactive components, responsive design. Think: recipe app, task list, weather dashboard, movie browser.",
     githubChecks: {
       hasPackageJson: true,
-      fileExists: ["prisma/schema.prisma", "src/app/layout.tsx"],
       fileContains: [
-        { path: "package.json", contains: ["next", "prisma", "next-auth"] },
+        { path: "package.json", contains: ["react", "tailwind"] },
       ],
-      minFiles: 15,
-      minCommits: 8,
+      minFiles: 10,
+      minCommits: 5,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Boss level — be thorough. Check for: auth flow, Prisma schema with relations, CRUD API routes, 3+ pages, forms with validation, responsive Tailwind UI.",
+      "Boss level — be thorough. Check for: 3+ custom components, interactive features (state changes on user actions), responsive Tailwind styling, clean code structure. Should feel like a real app, not a demo.",
     passingScore: 60,
   },
 ];

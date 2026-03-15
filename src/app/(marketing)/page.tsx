@@ -95,7 +95,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="mx-auto max-w-xl text-base sm:text-lg text-[#8B7355] leading-relaxed mb-6 sm:mb-8 px-2 sm:px-0">
-            25 levels. Real repos. Ship or don&apos;t level up.
+            40 levels. 8 worlds. Ship or don&apos;t level up.
             <br className="hidden sm:block" />
             Learn to build real products with AI — verified against your GitHub.
           </p>
@@ -330,7 +330,7 @@ export default function LandingPage() {
               <p className="text-3xl font-bold text-[#2D2016] mb-4">$0</p>
               <ul className="space-y-2.5 text-sm text-[#4A3728] mb-6">
                 {[
-                  "World 1 — 5 levels",
+                  "World 1 — 5 levels free",
                   "GitHub verification",
                   "AI code review (3/day)",
                   "Streak tracking",
@@ -378,7 +378,7 @@ export default function LandingPage() {
 
                 <ul className="space-y-2.5 text-sm text-white/80 mb-6">
                   {[
-                    "All 25 levels (5 worlds)",
+                    "All 40 levels (8 worlds)",
                     "Unlimited AI reviews",
                     "Boss fights",
                     "All pixel buddy moods",
@@ -411,7 +411,7 @@ export default function LandingPage() {
           <span className="text-[#E8A445]">Start shipping.</span>
         </h2>
         <p className="text-sm sm:text-base text-[#8B7355] mb-6 sm:mb-8 max-w-md mx-auto">
-          Your first level takes 30 minutes. By level 25, you&apos;ll have a live,
+          Your first level takes 30 minutes. By level 40, you&apos;ll have a live,
           paying product.
         </p>
         <Link

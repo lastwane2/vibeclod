@@ -1,536 +1,584 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 4 — Ship It (Levels 16-20)
-// Patterns: Error Fix, Debug, Performance
+// World 4 — Level Up (Levels 16-20)
+// Deeper React + TypeScript
+// Patterns: Breaking Down Complexity
 // ═══════════════════════════════════════
 
 export const WORLD_4_BLOCKS: Block[] = [
-  // ─── Level 16: Domain & Deploy (4 blocks) ───
+  // ─── Level 16: Multiple Pages (4 blocks) ───
   {
     id: "L16B1",
     levelId: 16,
     type: "theory",
-    title: "Deployment Basics",
+    title: "Routing = TV Channels",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Putting Your App on the Internet
+    content: `# Routing = TV Channels
 
-Building locally is great, but nobody can see it. Deployment = making your app accessible via a URL.
+Think of URLs as TV channels:
 
-## Deployment platforms
+- \`/home\` = Channel 1
+- \`/about\` = Channel 2
+- \`/settings\` = Channel 3
 
-| Platform | Best for | Free tier |
-|----------|----------|-----------|
-| Vercel | Next.js apps | Yes |
-| Railway | Full-stack + DB | Limited |
-| Netlify | Static sites | Yes |
-| Fly.io | Docker apps | Limited |
+The URL decides what content shows on screen. **Routing** is just setting up these channels.
 
-## What you need
+## How it works
 
-1. **Deploy config** — tells the platform how to build your app
-2. **Environment variables** — secrets that shouldn't be in code (.env)
-3. **Database URL** — connection string to your hosted database
-4. **Build command** — usually \`npm run build\`
-
-## Environment Variables
-
-**NEVER commit secrets to Git.** Use environment variables:
-
-\`\`\`bash
-# .env (local — in .gitignore!)
-DATABASE_URL="postgresql://..."
-NEXTAUTH_SECRET="random-string"
-GITHUB_ID="your-client-id"
-\`\`\`
-
-Set these in your deployment platform's dashboard, not in code.
+When a user clicks a link, the URL changes. Your app sees the new URL and shows the matching page — without reloading the whole browser. It feels instant.
 
 ## For your prompts
 
-Specify: which platform, what env vars are needed, any special build configurations.`,
+Tell AI: **"Add routing with 4 pages"** and list what each page shows. AI creates the channel system for you. You just name the channels and describe what plays on each one.`,
   },
   {
     id: "L16B2",
     levelId: 16,
-    type: "prompt",
-    title: "Write a Deploy Prompt",
-    xp: 15,
+    type: "theory",
+    title: "Navigation Patterns",
+    xp: 10,
     required: true,
     order: 2,
-    scaffold: "none",
-    goal: "Write a prompt to prepare your app for deployment",
-    referencePrompt:
-      "Prepare my Next.js app for deployment to Vercel. Add: 1) vercel.json with proper build settings. 2) Make sure all secrets (database URL, auth secrets, API keys) are read from environment variables, not hardcoded. 3) Create a .env.example file listing all required env vars with placeholder values. 4) Add a production DATABASE_URL configuration for PostgreSQL. 5) Ensure the build passes with `npm run build` — fix any TypeScript or build errors.",
-    hints: [
-      "Name the deployment platform",
-      "Mention environment variables",
-      "Include build command verification",
+    content: `# Navigation Patterns
+
+Navigation is how users **switch between pages**. There are a few common patterns, and each fits different types of apps:
+
+## Top bar
+Links across the top of the page. Best for: blogs, landing pages, marketing sites. Simple and familiar.
+
+## Sidebar
+Links on the left side. Best for: dashboards, admin panels, tools. Gives room for many links and nested sections.
+
+## Tabs
+Switches within a single page. Best for: settings pages, profile sections. Keeps related content grouped together.
+
+## Bottom bar
+Icons at the bottom of the screen. Best for: mobile apps. Thumb-friendly and always visible.
+
+## For your prompts
+
+Name the pattern explicitly: **"Add a sidebar navigation with links to Dashboard, Users, and Settings."**
+
+Don't just say "add navigation" — tell AI which pattern fits your app. The right navigation makes or breaks the user experience.`,
+    miniQuiz: [
+      {
+        question: "Which navigation pattern is best for a dashboard?",
+        options: [
+          "Bottom bar",
+          "Sidebar — gives room for many links and nested sections",
+          "No navigation",
+          "A single back button",
+        ],
+        correctIndex: 1,
+      },
     ],
-    passingThreshold: 3.0,
   },
   {
     id: "L16B3",
     levelId: 16,
-    type: "build",
-    title: "Deploy Your App",
-    xp: 40,
+    type: "prompt",
+    title: "Write a Routing Prompt",
+    xp: 20,
     required: true,
     order: 3,
-    mission:
-      "Deploy your app to Vercel or Railway. Add deployment config to your repo.",
-    githubChecks: {
-      hasDeploy: true,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for deployment configuration (vercel.json, railway.toml, or similar). Look for proper env variable handling.",
-    passingScore: 50,
+    scaffold: "template",
+    goal: "Add routing and navigation to your React app",
+    referencePrompt:
+      "Add React Router to my app. Create 4 pages: Home (/), About (/about), Projects (/projects), Contact (/contact). Add a top navigation bar with links to all pages — highlight the current page with a different color. Add a 404 page for unknown URLs that says 'Page not found' with a link back to Home. Each page should have a unique heading and relevant placeholder content.",
+    template:
+      "Add React Router to my app. Create ___ pages: ___ (___), ___ (___), ___ (___), ___ (___). Add a ___ navigation bar with links to all pages — highlight the current page with ___. Add a ___ page for unknown URLs that ___. Each page should have ___.",
+    passingThreshold: 2.5,
   },
   {
     id: "L16B4",
     levelId: 16,
-    type: "experiment",
-    title: "What Happens Without Env Vars?",
-    xp: 10,
-    required: false,
+    type: "build",
+    title: "Add Navigation",
+    xp: 40,
+    required: true,
     order: 4,
-    description:
-      "Understand why environment variables matter for deployment.",
-    steps: [
-      {
-        id: "L16B4S1",
-        instruction:
-          "Look at your .env file. Imagine deploying without setting these variables on the platform. What would break?",
-        expectedOutcome:
-          "Database connections would fail, auth wouldn't work, any API integrations would be broken.",
-        question: "Which environment variables are critical for your app to work?",
-      },
-      {
-        id: "L16B4S2",
-        instruction:
-          "Check your code for any hardcoded URLs, API keys, or secrets. These should all be environment variables.",
-        expectedOutcome: "You might find some hardcoded values that need to be moved to .env.",
-        question: "Did you find any hardcoded secrets?",
-      },
-    ],
+    mission:
+      "Add routing with 4+ pages, navigation, active link styling, and a 404 page.",
+    githubChecks: {
+      hasPackageJson: true,
+      fileContains: [
+        { path: "package.json", contains: ["react-router"] },
+      ],
+      minFiles: 8,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for React Router with 4+ routes, a navigation component, active link highlighting, and a 404 catch-all page.",
+    passingScore: 55,
   },
 
-  // ─── Level 17: Error Handling (5 blocks) ───
+  // ─── Level 17: Talking to the Internet (4 blocks) ───
   {
     id: "L17B1",
     levelId: 17,
     type: "theory",
-    title: "Why Errors Happen",
+    title: "APIs = Asking Other Computers",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Why Errors Happen
+    content: `# APIs = Asking Other Computers
 
-Errors are normal. Every app has them. The question is: does your app **crash** or **handle it gracefully**?
+Your weather app doesn't measure temperature. It **asks** a weather service.
 
-## Common error sources
+An API is like a **phone number** your app calls:
 
-| Source | Example | Fix |
-|--------|---------|-----|
-| Network | API is down | Show error message + retry |
-| User input | Invalid email | Validate before sending |
-| Missing data | Null pointer | Check before accessing |
-| Auth | Token expired | Redirect to login |
-| Server | Database down | Error boundary + fallback |
+"Hey weather API, what's the temp in London?" → "It's 12°C."
 
-## Error handling in Next.js
+## APIs are everywhere
 
-1. **error.tsx** — catches React rendering errors
-2. **loading.tsx** — shows while data loads (prevents blank screens)
-3. **not-found.tsx** — custom 404 page
-4. **try/catch** — catches errors in API routes and server actions
+- Weather data, news headlines, movie databases
+- Crypto prices, stock market, exchange rates
+- Cat facts, random jokes, NASA photos
+- Thousands of free public APIs exist
 
-\`\`\`tsx
-// error.tsx
-"use client";
-export default function Error({ error, reset }) {
-  return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button onClick={() => reset()}>Try again</button>
-    </div>
-  );
-}
-\`\`\`
+## For your prompts
 
-## The golden rule
+Tell AI which API to use and what data you want. AI writes the code that makes the phone call and displays the answer.
 
-**Never show raw error messages to users.** Instead: log the real error server-side, show a friendly message to the user.`,
+You just say: **"Fetch movies from the OMDB API and display them in a grid."** AI handles the wiring.`,
   },
   {
     id: "L17B2",
     levelId: 17,
-    type: "debug",
-    title: "Fix Error Scenarios",
-    xp: 30,
+    type: "theory",
+    title: "The Three States",
+    xp: 10,
     required: true,
     order: 2,
-    scenarios: [
-      {
-        id: "L17B2D1",
-        title: "Unhandled API error",
-        description: "This API route crashes when the database query fails.",
-        brokenCode: `export async function GET() {
-  const users = await prisma.user.findMany();
-  return Response.json(users);
-}`,
-        language: "typescript",
-        hint: "What if prisma.user.findMany() throws an error?",
-        expectedFix:
-          "Wrap in try/catch, return a 500 response with a friendly error message on failure",
-      },
-      {
-        id: "L17B2D2",
-        title: "Null reference crash",
-        description: "This component crashes when user data hasn't loaded yet.",
-        brokenCode: `function Profile({ user }) {
-  return (
-    <div>
-      <h1>{user.name}</h1>
-      <p>{user.email}</p>
-      <p>Joined: {user.createdAt.toLocaleDateString()}</p>
-    </div>
-  );
-}`,
-        language: "tsx",
-        hint: "What if user is null or undefined?",
-        expectedFix:
-          "Add a null check: if (!user) return a loading/placeholder state",
-      },
-      {
-        id: "L17B2D3",
-        title: "Missing error boundary",
-        description: "The app shows a blank white screen when a component throws an error.",
-        brokenCode: `// src/app/dashboard/page.tsx
-export default async function Dashboard() {
-  const data = await fetchDashboardData();
-  return <DashboardView data={data} />;
-}
+    content: `# The Three States of Data Fetching
 
-// No error.tsx in the dashboard folder!`,
-        language: "tsx",
-        hint: "What file should catch rendering errors in Next.js App Router?",
-        expectedFix:
-          "Create an error.tsx file in the same folder to catch and display errors gracefully",
+Every time your app asks for data, **three things** can happen:
+
+## 1. Loading — "Hold on, asking..."
+
+The request is in flight. Show a spinner, skeleton, or "Loading..." text. Never leave the screen blank.
+
+## 2. Success — "Got it!"
+
+Data arrived. Show it — a list of movies, a weather card, user profiles, whatever was requested.
+
+## 3. Error — "Something went wrong"
+
+The API is down, the internet cut out, or the request was bad. Show a message and a **retry button**.
+
+## The golden rule
+
+**ALWAYS tell AI to handle all 3 states.** This is the single biggest quality difference between amateur and professional apps.
+
+**Bad prompt:** "Fetch and display users."
+
+**Good prompt:** "Fetch users from the API. Show a loading spinner while fetching, display them in a grid on success, show an error message with a retry button on failure."
+
+One extra sentence. Massively better result.`,
+    miniQuiz: [
+      {
+        question: "How many states does every data request have?",
+        options: [
+          "1 — just show the data",
+          "2 — loading and success",
+          "3 — loading, success, and error",
+          "5 — loading, success, error, timeout, retry",
+        ],
+        correctIndex: 2,
       },
     ],
-    passingCount: 2,
   },
   {
     id: "L17B3",
     levelId: 17,
     type: "prompt",
-    title: "Write Error Handling Prompt",
-    xp: 25,
+    title: "Write a Data Fetching Prompt",
+    xp: 20,
     required: true,
     order: 3,
-    scaffold: "none",
-    goal: "Write a prompt to add comprehensive error handling to your app",
+    scaffold: "template",
+    goal: "Build an app that fetches and displays data from an API",
     referencePrompt:
-      "Add comprehensive error handling to my Next.js app: 1) Create error.tsx in the app root and key route folders — show a friendly error message with a 'Try Again' button that calls reset(). 2) Add loading.tsx with skeleton UI to all pages that fetch data. 3) Create not-found.tsx with a custom 404 page and link back to home. 4) Wrap all API route handlers in try/catch — log errors server-side, return user-friendly JSON error responses with proper status codes. 5) Add form validation on all input forms — show inline error messages for required fields.",
-    hints: [
-      "List each type of error handling (boundary, loading, 404, API)",
-      "Describe what users should see for each error case",
-      "Mention form validation",
-    ],
-    passingThreshold: 3.0,
+      "Build a movie search app that fetches from the OMDB API. Features: 1) Search input — when the user types and hits enter, fetch movies matching the query. 2) Loading state — show 'Searching...' with a spinner while fetching. 3) Results — show movie posters in a responsive grid with title and year below each poster. 4) Error state — if the API fails, show 'Something went wrong' with a retry button. 5) Empty state — if no results, show 'No movies found for [query]'.",
+    template:
+      "Build a ___ app that fetches from the ___ API. Features: 1) ___ input — when the user ___, fetch ___ matching ___. 2) Loading state — show '___' with a ___. 3) Results — show ___ in a responsive grid with ___. 4) Error state — if ___ fails, show '___' with a ___ button. 5) Empty state — if no results, show '___'.",
+    passingThreshold: 2.5,
   },
   {
     id: "L17B4",
     levelId: 17,
     type: "build",
-    title: "Add Error Handling",
-    xp: 25,
+    title: "Fetch Real Data",
+    xp: 40,
     required: true,
     order: 4,
     mission:
-      "Add error.tsx, loading.tsx, not-found.tsx, try/catch in API routes, and user-friendly error messages.",
+      "Build an app that fetches data from a public API. Must handle all three states: loading, success, and error.",
     githubChecks: {
-      minFiles: 12,
+      hasPackageJson: true,
+      minFiles: 6,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for error handling: error.tsx boundary, loading.tsx skeletons, not-found.tsx, try/catch in API routes, user-friendly messages.",
+      "Check for API data fetching from a real public API. Must show: loading state (spinner/skeleton), success state (data displayed), and error state (message + retry). All three are required.",
     passingScore: 55,
   },
-  {
-    id: "L17B5",
-    levelId: 17,
-    type: "experiment",
-    title: "Remove try/catch, See What Breaks",
-    xp: 10,
-    required: false,
-    order: 5,
-    description: "Understand why try/catch matters by removing it temporarily.",
-    steps: [
-      {
-        id: "L17B5S1",
-        instruction:
-          "Find an API route with try/catch. Temporarily remove the try/catch wrapper. Then trigger an error (e.g., disconnect the database). What does the user see?",
-        expectedOutcome:
-          "The API returns a raw 500 error or the page shows an unhandled error.",
-        question: "What error did the user see without try/catch?",
-      },
-      {
-        id: "L17B5S2",
-        instruction: "Put the try/catch back. Trigger the same error again.",
-        expectedOutcome: "Now the user sees your friendly error message instead of a crash.",
-      },
-    ],
-  },
 
-  // ─── Level 18: SEO & Meta (4 blocks) ───
+  // ─── Level 18: TypeScript = Better Prompts (4 blocks) ───
   {
     id: "L18B1",
     levelId: 18,
     type: "theory",
-    title: "SEO Basics for Developers",
+    title: "Types = Labels for Data",
     xp: 10,
     required: true,
     order: 1,
-    content: `# SEO Basics
+    content: `# Types = Labels for Data
 
-SEO = Search Engine Optimization. It's how Google finds and ranks your site.
+Imagine a moving box labeled: **"Kitchen — Plates (fragile)"**
 
-## What Google looks at
+You know exactly what's inside and how to handle it.
 
-1. **Title tag** — the text in the browser tab
-2. **Meta description** — preview text in search results
-3. **Headings** — H1, H2, H3 structure
-4. **Content** — actual text on the page
-5. **Performance** — how fast the page loads
-6. **Mobile** — does it work on phones?
+TypeScript does this for code. Instead of mystery data floating around, everything gets a **label**:
 
-## Open Graph tags (social sharing)
+- This is a **User** with name (text) and age (number)
+- This is a **Product** with title (text), price (number), and inStock (true/false)
 
-When someone shares your URL on Twitter/LinkedIn, these tags control the preview:
+## Why you should care
 
-\`\`\`html
-<meta property="og:title" content="My App" />
-<meta property="og:description" content="The best app ever" />
-<meta property="og:image" content="https://myapp.com/og-image.png" />
-\`\`\`
+**YOU don't write TypeScript — AI does.** But saying **"use TypeScript"** in your prompts makes AI output dramatically better:
 
-## In Next.js
+- **Fewer bugs** — TypeScript catches mistakes before they happen
+- **Better autocomplete** — your editor knows what data is available
+- **Clearer code** — anyone can read the labels and understand the data
 
-\`\`\`typescript
-// In layout.tsx or page.tsx
-export const metadata = {
-  title: "My App",
-  description: "The best app for managing tasks",
-  openGraph: {
-    title: "My App",
-    description: "The best app for managing tasks",
-    images: ["/og-image.png"],
-  },
-};
-\`\`\`
+## The one change to your prompts
 
-## sitemap.xml and robots.txt
+Just add two words: **"Use TypeScript."**
 
-- **sitemap.xml** — tells Google which pages exist
-- **robots.txt** — tells crawlers which pages to index/ignore`,
+That's it. Same React app, same components, same logic. But AI writes cleaner, safer code because it has to label everything.`,
   },
   {
     id: "L18B2",
     levelId: 18,
-    type: "prompt",
-    title: "Write an SEO Prompt",
-    xp: 20,
+    type: "theory",
+    title: ".tsx = .jsx + Safety",
+    xp: 10,
     required: true,
     order: 2,
-    scaffold: "none",
-    goal: "Write a prompt to add SEO optimization to your app",
-    referencePrompt:
-      "Add SEO optimization to my Next.js app: 1) Add metadata exports to layout.tsx with title template, default description, and Open Graph tags. 2) Add unique metadata to each page.tsx with page-specific title and description. 3) Create a sitemap.ts that auto-generates sitemap.xml from all routes. 4) Add robots.txt in the public folder allowing all crawlers. 5) Ensure all pages have proper H1 headings and semantic HTML structure.",
-    hints: [
-      "Cover meta tags, Open Graph, sitemap, and robots.txt",
-      "Mention unique titles per page",
-      "Think about what Google needs to properly index your site",
+    content: `# .tsx = .jsx + Safety
+
+Two file extensions that do the same thing, with one key difference:
+
+- **.jsx** files = React components **without** labels
+- **.tsx** files = React components **with** labels (TypeScript)
+
+## Think of it like driving
+
+Same car. Same road. But **.tsx** is driving with a GPS that catches wrong turns early, while **.jsx** is driving without one — you might get there, but you'll miss errors until they crash your app.
+
+## For your prompts
+
+Just say **"Use TypeScript"** or **"use .tsx files"**. AI handles the rest.
+
+The only difference you'll notice: better error messages in your editor and fewer mysterious bugs in your app. TypeScript won't slow you down — it speeds you up by preventing problems before they happen.`,
+    miniQuiz: [
+      {
+        question: "What does TypeScript add to your code?",
+        options: [
+          "Faster performance",
+          "Labels (types) that describe data and catch errors early",
+          "Better colors in the editor",
+          "Automatic deployment",
+        ],
+        correctIndex: 1,
+      },
     ],
-    passingThreshold: 3.0,
   },
   {
     id: "L18B3",
     levelId: 18,
-    type: "build",
-    title: "Optimize for SEO",
-    xp: 35,
+    type: "experiment",
+    title: "See the Difference",
+    xp: 15,
     required: true,
     order: 3,
-    mission:
-      "Add meta tags, Open Graph tags, sitemap.xml, and robots.txt to your app.",
-    githubChecks: {
-      fileExists: ["public/robots.txt"],
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for: metadata exports, Open Graph tags, sitemap, robots.txt. Pages should have unique titles.",
-    passingScore: 55,
+    description:
+      "Compare JavaScript and TypeScript output from AI to see what TypeScript adds.",
+    steps: [
+      {
+        id: "L18B3S1",
+        instruction:
+          "Ask your AI: \"Create a UserCard component in React (.jsx) that shows name, email, and avatar.\" Save or screenshot the output.",
+        expectedOutcome:
+          "AI creates a component that works but has no type annotations — props are untyped.",
+        question:
+          "Looking at the code, can you tell what data types name, email, and avatar should be?",
+      },
+      {
+        id: "L18B3S2",
+        instruction:
+          "Now ask AI the exact same thing but \"in TypeScript (.tsx)\". Compare both outputs side by side.",
+        expectedOutcome:
+          "The TypeScript version has type definitions (like an interface or type alias) that explicitly describe what data the component expects — name: string, email: string, avatarUrl: string.",
+        question:
+          "What extra information does the TypeScript version include that the JavaScript version doesn't?",
+      },
+    ],
   },
   {
     id: "L18B4",
     levelId: 18,
-    type: "pattern",
-    title: "Error Fix Pattern",
+    type: "quiz",
+    title: "TypeScript Concepts",
     xp: 15,
     required: true,
     order: 4,
-    patternId: "error-fix",
-    exercise: {
-      goal: "Practice describing errors clearly to AI using the Error Fix Pattern",
-      template: `I'm getting this error:
-
-\`\`\`
-___
-\`\`\`
-
-Context:
-- File: ___
-- What I was doing: ___
-- What I expected: ___
-- What I already tried: ___`,
-      exampleFilled: `I'm getting this error:
-
-\`\`\`
-Error: Metadata export is not available in client components
-\`\`\`
-
-Context:
-- File: src/app/dashboard/page.tsx
-- What I was doing: adding metadata export for SEO
-- What I expected: page title to update in the browser tab
-- What I already tried: added "use client" because I have useState, but then metadata broke`,
-    },
+    questions: [
+      {
+        question: "What does TypeScript add to JavaScript?",
+        options: [
+          "A new programming language with different syntax",
+          "Type labels that describe data and catch errors before runtime",
+          "Faster execution speed",
+          "Built-in database support",
+        ],
+        correctIndex: 1,
+        explanation:
+          "TypeScript adds type annotations — labels that describe your data — helping catch bugs before you even run the code.",
+      },
+      {
+        question: "What's the difference between .tsx and .jsx?",
+        options: [
+          ".tsx is for mobile, .jsx is for web",
+          ".tsx includes TypeScript type checking, .jsx does not",
+          ".tsx is newer and faster",
+          "There is no difference",
+        ],
+        correctIndex: 1,
+        explanation:
+          ".tsx files are React components with TypeScript type safety. .jsx files are React components without it.",
+      },
+      {
+        question: "Do YOU need to write TypeScript yourself?",
+        options: [
+          "Yes, you must learn all TypeScript syntax",
+          "No — just say 'use TypeScript' in your prompts and AI handles it",
+          "Only for backend code",
+          "Only for CSS files",
+        ],
+        correctIndex: 1,
+        explanation:
+          "You direct AI with 'use TypeScript' and it writes the typed code. You benefit from the safety without memorizing syntax.",
+      },
+      {
+        question: "Why does AI write better code when you say 'use TypeScript'?",
+        options: [
+          "TypeScript makes the AI think faster",
+          "AI is forced to label all data, which reduces bugs and makes the code more predictable",
+          "TypeScript files are smaller",
+          "It doesn't — there's no difference",
+        ],
+        correctIndex: 1,
+        explanation:
+          "TypeScript forces AI to be explicit about data shapes, leading to fewer bugs and clearer component contracts.",
+      },
+    ],
+    passingScore: 3,
   },
 
-  // ─── Level 19: Analytics (4 blocks) ───
+  // ─── Level 19: Smart Prompting (4 blocks) ───
   {
     id: "L19B1",
     levelId: 19,
     type: "theory",
-    title: "Understanding Analytics",
+    title: "Don't Build Everything at Once",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Analytics: Know Your Users
+    content: `# Don't Build Everything at Once
 
-Building is half the battle. Knowing if anyone uses your app — and how — is the other half.
+Asking AI to build a whole app in one prompt is like telling a contractor **"build me a house"** with no plans.
 
-## What to track
+You'll get *something*. But probably not what you want.
 
-| Type | Example | Why |
-|------|---------|-----|
-| Page views | Which pages are visited most | Know what's popular |
-| Events | Button clicks, sign-ups, purchases | Know what users do |
-| Funnels | Landing → Sign-up → First use → Pay | Find where users drop off |
-| Sessions | How long users stay | Measure engagement |
+## The professional approach
 
-## Analytics tools
+Break it down into steps:
 
-- **PostHog** — open source, self-hostable, free tier
-- **Plausible** — privacy-focused, simple
-- **Google Analytics** — most popular, but privacy concerns
-- **Vercel Analytics** — built into Vercel
+1. **Step 1:** Create the header component
+2. **Step 2:** Add the product list below the header
+3. **Step 3:** Add search functionality
+4. **Step 4:** Style everything with Tailwind
+5. **Step 5:** Make it responsive
 
-## How to add
+Each step: **verify it works** → then move to the next.
 
-\`\`\`typescript
-// Track a custom event
-posthog.capture('task_created', {
-  projectId: project.id,
-  taskCount: project.tasks.length,
-});
-\`\`\`
+## Why this works
 
-## For your prompts
+- Each prompt is small and focused — AI handles it better
+- You catch mistakes early, not after 500 lines of broken code
+- You can change direction without throwing everything away
+- You build confidence as each piece clicks into place
 
-Specify: which analytics tool, what events to track, where to put the tracking code.`,
+## The mindset shift
+
+Don't think: "Build me a task manager."
+
+Think: "First, show me a list of 3 static tasks. Great, now let me add new tasks. Good, now add completion checkboxes..."
+
+**Small steps. Verify each one. Build up.**`,
   },
   {
     id: "L19B2",
     levelId: 19,
-    type: "prompt",
-    title: "Write an Analytics Prompt",
-    xp: 20,
+    type: "pattern",
+    title: "Breaking Down Complexity",
+    xp: 15,
     required: true,
     order: 2,
-    scaffold: "none",
-    goal: "Write a prompt to add analytics tracking to your app",
-    referencePrompt:
-      "Add PostHog analytics to my Next.js app: 1) Install posthog-js and create a PostHogProvider component. 2) Track page views automatically on route changes. 3) Add custom events: 'user_signed_up' on registration, 'task_created' when creating a task, 'project_completed' when all tasks are done. 4) Include user identification on login (posthog.identify). 5) Make sure the PostHog key comes from environment variables. 6) Respect Do Not Track browser setting.",
-    hints: [
-      "Name the analytics tool",
-      "List specific events to track",
-      "Mention environment variables for keys",
-    ],
-    passingThreshold: 3.0,
+    patternId: "breaking-down-complexity",
+    exercise: {
+      goal: "Practice breaking a big task into step-by-step prompts",
+      template: `I'm building ___. Let's do it step by step.
+
+Step 1: ___
+Step 2: ___
+Step 3: ___
+
+Start with Step 1 only.`,
+      exampleFilled: `I'm building a task manager. Let's do it step by step.
+
+Step 1: Create a TaskList component that shows 3 static tasks with titles
+Step 2: Add an input and "Add" button to create new tasks
+Step 3: Add a checkbox to toggle task completion (crosses out the text)
+Step 4: Add a delete button on each task
+Step 5: Add filter tabs: All, Active, Done
+
+Start with Step 1 only.`,
+    },
   },
   {
     id: "L19B3",
     levelId: 19,
-    type: "build",
-    title: "Add Analytics",
-    xp: 40,
+    type: "review",
+    title: "Evaluate AI's Approach",
+    xp: 20,
     required: true,
     order: 3,
-    mission:
-      "Add analytics to your app. Track page views and at least 3 custom events.",
-    githubChecks: {
-      minCommits: 3,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for analytics integration: setup, page view tracking, at least 3 custom events on user actions.",
-    passingScore: 55,
+    code: `Build me a complete admin dashboard with:
+- Sidebar navigation with Dashboard, Users, Products, Orders, Analytics, and Settings pages
+- User authentication with login, register, forgot password, and email verification
+- Dashboard page with 6 stat cards, 2 charts (line and bar), recent orders table, and activity feed
+- Users page with a searchable, sortable, paginated data table with inline editing
+- Products page with CRUD, image upload, categories, tags, and inventory tracking
+- Orders page with status management, filtering by date/status/customer, and export to CSV
+- Analytics page with date range picker, multiple chart types, and comparison view
+- Settings page with profile form, notification preferences, theme toggle, and API key management
+- Fully responsive with dark mode toggle
+- All data fetched from REST APIs with loading, error, and empty states
+- Form validation on every input
+- Keyboard shortcuts for power users
+- Toast notifications for all actions`,
+    language: "text",
+    description:
+      "Someone wrote this as a single prompt to AI. What's wrong with this approach?",
+    knownIssues: [
+      {
+        id: "L19B3I1",
+        lineRange: [1, 14],
+        description:
+          "Too many features in one prompt — AI will produce inconsistent, buggy output trying to do everything at once",
+        severity: "critical",
+      },
+      {
+        id: "L19B3I2",
+        lineRange: [1, 14],
+        description:
+          "No priority order — if any one feature breaks, the whole output is compromised with no way to isolate the problem",
+        severity: "warning",
+      },
+      {
+        id: "L19B3I3",
+        lineRange: [1, 14],
+        description:
+          "No way to verify each piece works before moving on — you can't test authentication separately from charts separately from data tables",
+        severity: "warning",
+      },
+    ],
+    minIssuesFound: 2,
   },
   {
     id: "L19B4",
     levelId: 19,
-    type: "pattern",
-    title: "Debug Pattern",
-    xp: 15,
+    type: "debug",
+    title: "Fix Complex Issues",
+    xp: 20,
     required: true,
     order: 4,
-    patternId: "debug-pattern",
-    exercise: {
-      goal: "Practice systematic debugging with the Debug Pattern",
-      template: `Something isn't working right:
+    scenarios: [
+      {
+        id: "L19B4D1",
+        title: "Data not displaying",
+        description:
+          "This component fetches data from an API but the screen stays blank. The data arrives but the component renders before it's ready.",
+        brokenCode: `function UserList() {
+  const [users, setUsers] = useState([]);
 
-Expected behavior: ___
-Actual behavior: ___
+  fetch("/api/users")
+    .then(res => res.json())
+    .then(data => setUsers(data));
 
-Here's the relevant code:
-\`\`\`
-___
-\`\`\`
+  return (
+    <div>
+      <h2>Users ({users.length})</h2>
+      {users.map(user => (
+        <p key={user.id}>{user.name}</p>
+      ))}
+    </div>
+  );
+}`,
+        language: "jsx",
+        hint: "The fetch runs on every render, causing an infinite loop. It also has no loading state. Data fetching should happen inside useEffect.",
+        expectedFix:
+          "Wrap the fetch call in useEffect with an empty dependency array so it only runs once, and add a loading state to show while data is being fetched",
+      },
+      {
+        id: "L19B4D2",
+        title: "State not updating",
+        description:
+          "Clicking 'Add' adds an item to the array, but the list on screen never changes. The data updates but React doesn't re-render.",
+        brokenCode: `function TodoList() {
+  const [todos, setTodos] = useState(["Buy milk", "Walk dog"]);
+  const [input, setInput] = useState("");
 
-Environment: ___
-Console output: ___`,
-      exampleFilled: `Something isn't working right:
+  function addTodo() {
+    todos.push(input);
+    setTodos(todos);
+    setInput("");
+  }
 
-Expected behavior: PostHog events should appear in the dashboard after clicking "Create Task"
-Actual behavior: page views show up but custom events don't
-
-Here's the relevant code:
-\`\`\`tsx
-<button onClick={() => { createTask(); }}>Create Task</button>
-\`\`\`
-
-Environment: Chrome 120, Next.js 14, PostHog cloud
-Console output: no errors, no PostHog warnings`,
-    },
+  return (
+    <div>
+      <input value={input} onChange={e => setInput(e.target.value)} />
+      <button onClick={addTodo}>Add</button>
+      {todos.map((todo, i) => <p key={i}>{todo}</p>)}
+    </div>
+  );
+}`,
+        language: "jsx",
+        hint: "React only re-renders when it detects a NEW array, not a mutated one. array.push changes the same array in place.",
+        expectedFix:
+          "Replace todos.push(input) + setTodos(todos) with setTodos([...todos, input]) — the spread operator creates a new array, which React detects as a change and re-renders",
+      },
+    ],
+    passingCount: 1,
   },
 
-  // ─── Level 20: Launch Boss (3 blocks) ───
+  // ─── Level 20: Dashboard Boss (3 blocks) ───
   {
     id: "L20B1",
     levelId: 20,
@@ -541,54 +589,67 @@ Console output: no errors, no PostHog warnings`,
     order: 1,
     questions: [
       {
-        question: "Why should you NEVER commit .env files to Git?",
+        question: "What is routing in a React app?",
         options: [
-          "They make the repo too large",
-          "They contain secrets (API keys, database URLs) that should stay private",
-          "Git can't handle .env format",
-          "They slow down deployment",
+          "A way to send emails",
+          "Mapping URLs to pages — like TV channels, each URL shows different content",
+          "A database optimization",
+          "A type of CSS animation",
         ],
         correctIndex: 1,
+        explanation:
+          "Routing maps URLs to components. /home shows the Home page, /about shows the About page — like switching TV channels.",
       },
       {
-        question: "What does error.tsx do in Next.js?",
+        question:
+          "What are the three states every data request should handle?",
         options: [
-          "Logs errors to a file",
-          "Catches rendering errors and shows a fallback UI instead of a blank screen",
-          "Prevents all errors from happening",
-          "Sends error reports to email",
+          "Open, closed, pending",
+          "Loading, success, and error",
+          "Start, middle, end",
+          "Read, write, delete",
         ],
         correctIndex: 1,
+        explanation:
+          "Every API request can be loading, successful, or failed. Your app should handle all three with appropriate UI.",
       },
       {
-        question: "What are Open Graph tags used for?",
+        question: "Why should you add 'use TypeScript' to your prompts?",
         options: [
-          "Database optimization",
-          "Controlling how your URL preview looks when shared on social media",
-          "Making JavaScript faster",
-          "User authentication",
+          "It makes the app load faster",
+          "AI writes cleaner code with fewer bugs because it has to label all data types",
+          "TypeScript is required for React",
+          "It reduces the file size",
         ],
         correctIndex: 1,
+        explanation:
+          "TypeScript forces AI to be explicit about data shapes, resulting in fewer bugs and more predictable code.",
       },
       {
-        question: "Why track custom analytics events (not just page views)?",
+        question:
+          "Why should you break a big app into small prompts instead of one giant prompt?",
         options: [
-          "Page views are inaccurate",
-          "Custom events show you what users actually DO — sign up, click buttons, complete tasks",
-          "Google requires them for SEO",
-          "They make the app faster",
+          "AI has a word limit",
+          "Small prompts are more focused — you can verify each step works before moving on",
+          "It makes the code run faster",
+          "Big prompts cost more money",
         ],
         correctIndex: 1,
+        explanation:
+          "Small, focused prompts give AI clearer instructions and let you catch errors early instead of debugging a massive broken output.",
       },
       {
-        question: "What's the Error Fix Pattern for getting AI help with bugs?",
+        question:
+          "What's wrong with using array.push() to update React state?",
         options: [
-          "Just paste the error and say 'fix this'",
-          "Provide: exact error, file/line, what you were doing, what you expected, what you tried",
-          "Delete the file and start over",
-          "Restart the computer",
+          "push() is too slow",
+          "push() mutates the same array — React needs a NEW array to detect the change and re-render",
+          "push() only works with numbers",
+          "push() deletes the old data",
         ],
         correctIndex: 1,
+        explanation:
+          "React compares old and new state references. push() modifies the same array (same reference), so React thinks nothing changed. Use spread: [...array, newItem].",
       },
     ],
     passingScore: 3,
@@ -597,38 +658,39 @@ Console output: no errors, no PostHog warnings`,
     id: "L20B2",
     levelId: 20,
     type: "prompt",
-    title: "Launch Readiness Prompt",
+    title: "Design Your Dashboard",
     xp: 30,
     required: true,
     order: 2,
-    scaffold: "none",
-    goal: "Write a prompt to audit your app for launch readiness",
+    scaffold: "template",
+    goal: "Write a step-by-step prompt for a dashboard application",
     referencePrompt:
-      "Audit my Next.js app for launch readiness and fix any issues: 1) Check all pages have proper error boundaries and loading states. 2) Verify SEO meta tags exist on every page with unique titles. 3) Ensure mobile responsiveness — test at 375px, 768px, 1024px widths. 4) Confirm analytics tracking is set up for key user actions. 5) Verify all environment variables are documented in .env.example. 6) Check for any hardcoded localhost URLs or test data. 7) Run `npm run build` and fix any TypeScript/build errors. 8) Review the landing page: does it clearly explain the product and have a clear CTA?",
-    hints: [
-      "Think about every aspect: errors, SEO, mobile, analytics, security",
-      "Mention specific checks for each area",
-    ],
-    passingThreshold: 3.5,
+      "Build a dashboard app with React, React Router, Tailwind, and TypeScript. Step-by-step: Step 1 — Sidebar navigation with links to Dashboard, Users, Analytics, and Settings pages. Highlight the active page. Step 2 — Dashboard page with 4 stat cards (total users, revenue, orders, growth rate) showing an icon, number, and percentage change. Step 3 — Users page with a data table showing name, email, role, and status columns. Add a search bar to filter rows. Step 4 — Analytics page with placeholder chart areas and summary stats. Step 5 — Settings page with a profile form (name, email, bio). Responsive: sidebar collapses to a hamburger on mobile. All data can be mock/static for now.",
+    template:
+      "Build a dashboard app with React, React Router, Tailwind, and TypeScript. Step-by-step: Step 1 — ___ navigation with links to ___. Step 2 — Dashboard page with ___ stat cards showing ___. Step 3 — ___ page with a data table showing ___. Add ___. Step 4 — ___ page with ___. Step 5 — ___ page with a ___ form. Responsive: ___.",
+    passingThreshold: 3.0,
   },
   {
     id: "L20B3",
     levelId: 20,
     type: "build",
-    title: "Launch Your App",
+    title: "Ship Your Dashboard",
     xp: 300,
     required: true,
     order: 3,
     mission:
-      "Make your app launch-ready: landing page, error handling, SEO, analytics, mobile responsive, deployed.",
+      "Build a polished dashboard: sidebar nav, 4+ pages, stat cards, data table, responsive design, TypeScript. Think admin panel or analytics dashboard.",
     githubChecks: {
-      hasDeploy: true,
-      minFiles: 20,
-      minCommits: 10,
+      hasPackageJson: true,
+      fileContains: [
+        { path: "package.json", contains: ["react", "tailwind", "typescript"] },
+      ],
+      minFiles: 12,
+      minCommits: 5,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Boss level — full audit. Check: landing page, error handling, loading states, SEO, mobile, analytics, deployed config.",
+      "Boss level — be thorough. Check for: sidebar navigation, 4+ pages with routing, stat cards, data table, responsive design (sidebar collapses on mobile), TypeScript usage (.tsx files). Should feel like a real dashboard, not a skeleton.",
     passingScore: 60,
   },
 ];

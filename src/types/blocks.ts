@@ -201,8 +201,8 @@ export interface LevelBlocks {
 // ─── Scaffold helpers ──────────────────
 
 export function getScaffoldLevel(levelId: number): ScaffoldLevel {
-  if (levelId <= 5) return "full";
-  if (levelId <= 10) return "template";
-  if (levelId <= 15) return "hints";
+  if (levelId <= 10) return "full";
+  if (levelId <= 20) return "template";
+  if (levelId <= 30) return "hints";
   return "none";
 }

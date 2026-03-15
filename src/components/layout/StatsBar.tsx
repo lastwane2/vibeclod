@@ -38,7 +38,7 @@ export function StatsBar({ xp, streakDays, currentLevel, plan }: StatsBarProps) 
           <span className="text-sm sm:text-base">🎯</span>
           <div>
             <p className="text-[9px] sm:text-[10px] font-medium text-[#8B7355] uppercase tracking-wider leading-none">Level</p>
-            <p className="text-xs sm:text-sm font-bold text-[#2D2016] font-mono">{currentLevel}/25</p>
+            <p className="text-xs sm:text-sm font-bold text-[#2D2016] font-mono">{currentLevel}/40</p>
           </div>
         </div>
 

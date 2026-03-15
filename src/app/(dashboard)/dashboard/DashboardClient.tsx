@@ -109,7 +109,7 @@ export function DashboardClient({
             <p className="text-[11px] sm:text-xs text-[#8B7355]">
               {completedLevelIds.length === 0
                 ? "Start your journey — complete Level 1"
-                : `${completedLevelIds.length}/25 levels completed`}
+                : `${completedLevelIds.length}/40 levels completed`}
             </p>
           </div>
         </div>
