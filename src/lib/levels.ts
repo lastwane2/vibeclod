@@ -93,7 +93,7 @@ export const LEVELS: Level[] = [
     subtitle: "Talk to AI, get a website",
     type: "setup",
     xp: 50,
-    duration: "30 min",
+    duration: "5 min",
     teaches: "The basic vibe coding loop: describe what you want, AI builds it.",
     concepts: [
       "Vibe coding = describing what you want to AI",
@@ -121,7 +121,7 @@ export const LEVELS: Level[] = [
     subtitle: "Styling vocabulary for AI",
     type: "practice",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "The right words to describe visual design to AI.",
     concepts: [
       "Specific styling words → better AI output",
@@ -151,7 +151,7 @@ export const LEVELS: Level[] = [
     subtitle: "Multi-page sites with interactivity",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "How to describe multi-page sites and interactive behavior to AI.",
     concepts: [
       "Multiple pages connected by navigation",
@@ -181,7 +181,7 @@ export const LEVELS: Level[] = [
     subtitle: "Catching AI mistakes",
     type: "practice",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "How to spot and fix common AI coding mistakes.",
     concepts: [
       "AI makes mistakes — broken links, wrong styles, dead buttons",
@@ -208,7 +208,7 @@ export const LEVELS: Level[] = [
     subtitle: "Ship your first real site",
     type: "boss",
     xp: 200,
-    duration: "2 hours",
+    duration: "15 min",
     teaches: "Combining everything into a polished portfolio.",
     concepts: [
       "Combine HTML, CSS, and JS into a real project",
@@ -244,7 +244,7 @@ export const LEVELS: Level[] = [
     subtitle: "Text chat with your computer",
     type: "setup",
     xp: 50,
-    duration: "30 min",
+    duration: "5 min",
     teaches: "The terminal is just texting commands to your computer.",
     concepts: [
       "Terminal = another way to talk to your computer",
@@ -270,7 +270,7 @@ export const LEVELS: Level[] = [
     subtitle: "npm, packages, and dependencies",
     type: "practice",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "How modern projects are organized with npm and package.json.",
     concepts: [
       "package.json = your project's ingredient list",
@@ -301,7 +301,7 @@ export const LEVELS: Level[] = [
     subtitle: "Git and version control",
     type: "practice",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "Git is save points for your code. GitHub is the cloud backup.",
     concepts: [
       "Git commit = saving your progress",
@@ -327,7 +327,7 @@ export const LEVELS: Level[] = [
     subtitle: "IDE → Terminal → Git → Ship",
     type: "practice",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "The complete development workflow professionals use.",
     concepts: [
       "IDE + Terminal + AI = your cockpit",
@@ -356,7 +356,7 @@ export const LEVELS: Level[] = [
     subtitle: "From zero to project",
     type: "boss",
     xp: 200,
-    duration: "1.5 hours",
+    duration: "12 min",
     teaches: "Setting up a complete, professional project from scratch.",
     concepts: [
       "Professional projects have: npm, git, structure, README",
@@ -390,7 +390,7 @@ export const LEVELS: Level[] = [
     subtitle: "Components are LEGO for UI",
     type: "setup",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "Components are reusable building blocks that make up your UI.",
     concepts: [
       "Components = LEGO blocks for your interface",
@@ -420,7 +420,7 @@ export const LEVELS: Level[] = [
     subtitle: "State and events in React",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "State tracks what changes, events trigger those changes.",
     concepts: [
       "State = things that change (counter, toggle, form input)",
@@ -450,7 +450,7 @@ export const LEVELS: Level[] = [
     subtitle: "Tailwind CSS — style with words",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "Tailwind lets you style by adding class names — no CSS files needed.",
     concepts: [
       "Tailwind = styling language in your HTML",
@@ -480,7 +480,7 @@ export const LEVELS: Level[] = [
     subtitle: "Spotting and fixing React bugs",
     type: "practice",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "How to spot common mistakes AI makes in React code.",
     concepts: [
       "AI duplicates code instead of making components",
@@ -506,7 +506,7 @@ export const LEVELS: Level[] = [
     subtitle: "Ship a polished React app",
     type: "boss",
     xp: 250,
-    duration: "2 hours",
+    duration: "15 min",
     teaches: "Building a complete, polished React application.",
     concepts: [
       "Components + state + Tailwind = real app",
@@ -542,7 +542,7 @@ export const LEVELS: Level[] = [
     subtitle: "Routing and navigation",
     type: "setup",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "How apps show different content based on the URL.",
     concepts: [
       "Routing = URL decides what user sees",
@@ -572,7 +572,7 @@ export const LEVELS: Level[] = [
     subtitle: "APIs and data fetching",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "How your app gets data from other services.",
     concepts: [
       "APIs = your app asking another computer for data",
@@ -599,7 +599,7 @@ export const LEVELS: Level[] = [
     subtitle: "Types help AI write better code",
     type: "practice",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "TypeScript adds labels to your code so AI makes fewer mistakes.",
     concepts: [
       "Types = labels that help AI understand your data",
@@ -628,7 +628,7 @@ export const LEVELS: Level[] = [
     subtitle: "Breaking down big tasks",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "How to break complex apps into step-by-step AI prompts.",
     concepts: [
       "Don't ask AI to build everything at once",
@@ -656,7 +656,7 @@ export const LEVELS: Level[] = [
     subtitle: "Ship a complex web app",
     type: "boss",
     xp: 300,
-    duration: "3 hours",
+    duration: "15 min",
     teaches: "Building a complex, multi-view application.",
     concepts: [
       "Dashboard = sidebar + cards + tables + charts",
@@ -692,7 +692,7 @@ export const LEVELS: Level[] = [
     subtitle: "React alone isn't enough",
     type: "setup",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "Why Next.js exists and what problems it solves.",
     concepts: [
       "React alone: slow first load, invisible to Google, no backend",
@@ -722,7 +722,7 @@ export const LEVELS: Level[] = [
     subtitle: "File-based routing and layouts",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "In Next.js, creating a file automatically creates a page.",
     concepts: [
       "File = page (app/about/page.tsx → /about)",
@@ -750,7 +750,7 @@ export const LEVELS: Level[] = [
     subtitle: "Two types of components",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "Server components are fast, client components are interactive.",
     concepts: [
       "Server components = pre-cooked, fast, can access database",
@@ -777,7 +777,7 @@ export const LEVELS: Level[] = [
     subtitle: "How real apps are organized",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "Organizing code by feature, not file type.",
     concepts: [
       "Organize by feature, not by type",
@@ -805,7 +805,7 @@ export const LEVELS: Level[] = [
     subtitle: "Ship a complete Next.js app",
     type: "boss",
     xp: 300,
-    duration: "3 hours",
+    duration: "15 min",
     teaches: "Building a complete, well-architected Next.js application.",
     concepts: [
       "Next.js + TypeScript + Tailwind = modern stack",
@@ -842,7 +842,7 @@ export const LEVELS: Level[] = [
     subtitle: "What databases do",
     type: "setup",
     xp: 75,
-    duration: "45 min",
+    duration: "8 min",
     teaches: "Databases give your app permanent memory.",
     concepts: [
       "Database = permanent memory (data survives refresh)",
@@ -872,7 +872,7 @@ export const LEVELS: Level[] = [
     subtitle: "Relations between models",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "How different types of data connect to each other.",
     concepts: [
       "Relations = how data connects (User HAS Posts)",
@@ -900,7 +900,7 @@ export const LEVELS: Level[] = [
     subtitle: "Frontend talks to database",
     type: "practice",
     xp: 125,
-    duration: "1.5 hours",
+    duration: "12 min",
     teaches: "API routes are the bridge between your UI and database.",
     concepts: [
       "API = waiter between app and database",
@@ -929,7 +929,7 @@ export const LEVELS: Level[] = [
     subtitle: "Authentication and login",
     type: "practice",
     xp: 150,
-    duration: "2 hours",
+    duration: "15 min",
     teaches: "Auth protects user data and personalizes the experience.",
     concepts: [
       "Auth = bouncer checking who you are",
@@ -958,7 +958,7 @@ export const LEVELS: Level[] = [
     subtitle: "Ship a complete SaaS",
     type: "boss",
     xp: 350,
-    duration: "4 hours",
+    duration: "20 min",
     teaches: "Building a complete full-stack application.",
     concepts: [
       "Full stack = frontend + backend + database + auth",
@@ -995,7 +995,7 @@ export const LEVELS: Level[] = [
     subtitle: "Deploy to the internet",
     type: "setup",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "Deployment makes your app accessible to everyone.",
     concepts: [
       "Deployment = putting your app on the internet",
@@ -1021,7 +1021,7 @@ export const LEVELS: Level[] = [
     subtitle: "Error handling and debugging",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "Good apps handle errors gracefully instead of crashing.",
     concepts: [
       "Errors are normal — handle them, don't fear them",
@@ -1047,7 +1047,7 @@ export const LEVELS: Level[] = [
     subtitle: "SEO and analytics",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "SEO helps Google find you. Analytics tells you if anyone came.",
     concepts: [
       "SEO = how Google finds and shows your site",
@@ -1073,7 +1073,7 @@ export const LEVELS: Level[] = [
     subtitle: "The details that matter",
     type: "practice",
     xp: 100,
-    duration: "1 hour",
+    duration: "10 min",
     teaches: "Small details make apps feel 50% more professional.",
     concepts: [
       "Loading skeletons, hover effects, smooth transitions",
@@ -1099,7 +1099,7 @@ export const LEVELS: Level[] = [
     subtitle: "Production-ready app",
     type: "boss",
     xp: 400,
-    duration: "4 hours",
+    duration: "20 min",
     teaches: "Preparing a product for real users.",
     concepts: [
       "Launch readiness: errors, SEO, mobile, performance",
@@ -1132,7 +1132,7 @@ export const LEVELS: Level[] = [
     subtitle: "Accept payments online",
     type: "setup",
     xp: 125,
-    duration: "1.5 hours",
+    duration: "12 min",
     teaches: "How online payments work — you never touch credit cards.",
     concepts: [
       "Payment providers (Stripe) handle the money",
@@ -1158,7 +1158,7 @@ export const LEVELS: Level[] = [
     subtitle: "Convert visitors to users",
     type: "practice",
     xp: 125,
-    duration: "2 hours",
+    duration: "15 min",
     teaches: "Landing pages have one job: convince visitors to act.",
     concepts: [
       "Hero → Problem → Solution → Features → Proof → Pricing → CTA",
@@ -1184,7 +1184,7 @@ export const LEVELS: Level[] = [
     subtitle: "Retention and engagement",
     type: "practice",
     xp: 125,
-    duration: "2 hours",
+    duration: "15 min",
     teaches: "Getting users to sign up is half the battle — keeping them is the other half.",
     concepts: [
       "Onboarding = guide new users to their 'aha moment'",
@@ -1211,7 +1211,7 @@ export const LEVELS: Level[] = [
     subtitle: "From project to product",
     type: "practice",
     xp: 150,
-    duration: "2 hours",
+    duration: "15 min",
     teaches: "The gap between 'it works on my laptop' and 'strangers can use it'.",
     concepts: [
       "Projects work for you, products work for strangers",
@@ -1237,7 +1237,7 @@ export const LEVELS: Level[] = [
     subtitle: "Your app is live and earning",
     type: "boss",
     xp: 500,
-    duration: "Ongoing",
+    duration: "15 min",
     teaches: "You built a real product. Ship it, share it, earn from it.",
     concepts: [
       "Ship > perfect — launch before you're ready",

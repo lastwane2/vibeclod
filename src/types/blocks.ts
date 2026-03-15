@@ -203,14 +203,14 @@ export interface LevelBlocks {
 // ─── Time estimate helpers ─────────────
 
 const DEFAULT_MINUTES: Record<BlockType, number> = {
-  theory: 3,
-  quiz: 4,
-  prompt: 8,
-  build: 15,
-  debug: 8,
-  review: 5,
-  experiment: 7,
-  pattern: 4,
+  theory: 1,
+  quiz: 2,
+  prompt: 2,
+  build: 3,
+  debug: 2,
+  review: 2,
+  experiment: 2,
+  pattern: 1,
 };
 
 export function getBlockMinutes(block: BaseBlock): number {
