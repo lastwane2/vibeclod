@@ -25,6 +25,7 @@ interface LevelDetailClientProps {
   isCompleted: boolean;
   connectedRepo: string | null;
   completedBlockIds: string[];
+  blockCompletionData: Record<string, Record<string, unknown>>;
 }
 
 export function LevelDetailClient({
@@ -37,6 +38,7 @@ export function LevelDetailClient({
   isCompleted: initialCompleted,
   connectedRepo,
   completedBlockIds: initialCompletedIds,
+  blockCompletionData,
 }: LevelDetailClientProps) {
   const router = useRouter();
   const [currentBlockIndex, setCurrentBlockIndex] = useState(() => {
@@ -305,6 +307,7 @@ export function LevelDetailClient({
                     block={currentBlock}
                     worldColor={worldColor}
                     completed={completedIds.has(currentBlock.id)}
+                    completionData={blockCompletionData[currentBlock.id]}
                     connectedRepo={connectedRepo}
                     onComplete={handleBlockComplete}
                   />

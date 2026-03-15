@@ -1,5 +1,6 @@
 import { SessionProvider } from "next-auth/react";
 import { TopBar } from "@/components/layout/TopBar";
+import { PixelBackground } from "@/components/ui/PixelBackground";
 
 export default function DashboardLayout({
   children,
@@ -8,8 +9,9 @@ export default function DashboardLayout({
 }) {
   return (
     <SessionProvider>
+      <PixelBackground />
       <TopBar />
-      <main>{children}</main>
+      <main className="relative">{children}</main>
     </SessionProvider>
   );
 }

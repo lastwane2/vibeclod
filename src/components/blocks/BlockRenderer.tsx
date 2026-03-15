@@ -14,11 +14,12 @@ interface Props {
   block: Block;
   worldColor: string;
   completed: boolean;
+  completionData?: Record<string, unknown>;
   connectedRepo: string | null;
   onComplete: (data: Record<string, unknown>) => void;
 }
 
-export function BlockRenderer({ block, worldColor, completed, connectedRepo, onComplete }: Props) {
+export function BlockRenderer({ block, worldColor, completed, completionData, connectedRepo, onComplete }: Props) {
   return (
     <>
       {block.type === "theory" && (
@@ -28,7 +29,7 @@ export function BlockRenderer({ block, worldColor, completed, connectedRepo, onC
         <QuizBlock block={block} worldColor={worldColor} completed={completed} onComplete={onComplete} />
       )}
       {block.type === "prompt" && (
-        <PromptBlock block={block} worldColor={worldColor} completed={completed} onComplete={onComplete} />
+        <PromptBlock block={block} worldColor={worldColor} completed={completed} completionData={completionData} onComplete={onComplete} />
       )}
       {block.type === "build" && (
         <BuildBlock block={block} worldColor={worldColor} completed={completed} connectedRepo={connectedRepo} onComplete={onComplete} />

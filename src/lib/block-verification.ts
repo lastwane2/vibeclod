@@ -94,11 +94,13 @@ export async function verifyPrompt(
     score: evaluation.average >= promptBlock.passingThreshold ? block.xp : 0,
     feedback: evaluation.feedback,
     data: {
+      prompt: userPrompt,
       specificity: evaluation.specificity,
       context: evaluation.context,
       format: evaluation.format,
       completeness: evaluation.completeness,
       average: evaluation.average,
+      feedback: evaluation.feedback,
       suggestions: evaluation.suggestions,
       referencePrompt: promptBlock.referencePrompt,
     },

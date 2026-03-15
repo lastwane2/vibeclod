@@ -30,7 +30,7 @@ export default async function LevelPage({ params }: Props) {
       },
       blockCompletions: {
         where: { levelId },
-        select: { blockId: true },
+        select: { blockId: true, data: true },
       },
     },
   });
@@ -52,6 +52,12 @@ export default async function LevelPage({ params }: Props) {
 
   const completion = user.completions[0] ?? null;
   const completedBlockIds = user.blockCompletions.map((bc) => bc.blockId);
+  const blockCompletionData: Record<string, Record<string, unknown>> = {};
+  for (const bc of user.blockCompletions) {
+    if (bc.data && typeof bc.data === "object") {
+      blockCompletionData[bc.blockId] = bc.data as Record<string, unknown>;
+    }
+  }
 
   // Get blocks for this level
   const blocks = getBlocksForLevel(levelId);
@@ -76,6 +82,7 @@ export default async function LevelPage({ params }: Props) {
       isCompleted={!!completion}
       connectedRepo={user.connectedRepo}
       completedBlockIds={completedBlockIds}
+      blockCompletionData={blockCompletionData}
     />
   );
 }

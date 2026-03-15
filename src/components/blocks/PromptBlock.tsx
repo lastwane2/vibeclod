@@ -7,6 +7,7 @@ interface Props {
   block: PromptBlockType;
   worldColor: string;
   completed: boolean;
+  completionData?: Record<string, unknown>;
   onComplete: (data: Record<string, unknown>) => void;
 }
 
@@ -17,12 +18,33 @@ const DIMENSION_LABELS = {
   completeness: "Completeness",
 };
 
-export function PromptBlock({ block, worldColor, completed, onComplete }: Props) {
-  const [prompt, setPrompt] = useState("");
+function restoreEvaluation(data?: Record<string, unknown>): PromptEvaluation | null {
+  if (!data) return null;
+  const s = Number(data.specificity) || 0;
+  const c = Number(data.context) || 0;
+  const f = Number(data.format) || 0;
+  const co = Number(data.completeness) || 0;
+  return {
+    specificity: s,
+    context: c,
+    format: f,
+    completeness: co,
+    average: Number(data.average) || (s + c + f + co) / 4,
+    feedback: String(data.feedback ?? ""),
+    suggestions: Array.isArray(data.suggestions) ? data.suggestions.map(String) : [],
+  };
+}
+
+export function PromptBlock({ block, worldColor, completed, completionData, onComplete }: Props) {
+  const [prompt, setPrompt] = useState(
+    completed && completionData?.prompt ? String(completionData.prompt) : ""
+  );
   const [evaluating, setEvaluating] = useState(false);
-  const [evaluation, setEvaluation] = useState<PromptEvaluation | null>(null);
+  const [evaluation, setEvaluation] = useState<PromptEvaluation | null>(
+    completed ? restoreEvaluation(completionData) : null
+  );
   const [showReference, setShowReference] = useState(false);
-  const [passed, setPassed] = useState(false);
+  const [passed, setPassed] = useState(completed);
 
   const handleSubmit = async () => {
     setEvaluating(true);
