@@ -245,30 +245,32 @@ export async function POST(_req: Request, context: RouteContext) {
       githubPassed: true,
       createdAt: submission.createdAt.toISOString(),
     });
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Verification error:", err);
+
+    const is404 =
+      err instanceof Error && "status" in err && (err as { status: number }).status === 404;
+    const message = is404
+      ? "Repository not found. Check that the repo name in Settings is correct (e.g. yourname/my-project) and that it's not private."
+      : "Something went wrong during verification. Please check your repo is accessible and try again.";
 
     await prisma.submission.update({
       where: { id: submission.id },
       data: {
-        status: "ERROR",
-        aiFeedback:
-          "Something went wrong during verification. Please check your repo is accessible and try again.",
+        status: "FAILED",
+        githubPassed: false,
+        aiFeedback: message,
       },
     });
 
-    return NextResponse.json(
-      {
-        id: submission.id,
-        status: "ERROR",
-        aiScore: null,
-        aiFeedback:
-          "Something went wrong during verification. Please check your repo is accessible and try again.",
-        aiPassed: null,
-        githubPassed: null,
-        createdAt: submission.createdAt.toISOString(),
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      id: submission.id,
+      status: "FAILED",
+      aiScore: null,
+      aiFeedback: message,
+      aiPassed: null,
+      githubPassed: false,
+      createdAt: submission.createdAt.toISOString(),
+    });
   }
 }
