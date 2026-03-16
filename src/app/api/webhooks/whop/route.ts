@@ -77,8 +77,8 @@ export async function POST(req: Request) {
 
       case "payment.created":
       case "payment_created":
-        // Also try to activate on payment.created for one-time purchases
-        await handlePaymentSucceeded(event);
+        // Payment only created, not confirmed yet — just log
+        console.log("[WHOP WEBHOOK] Payment created (not yet confirmed):", event.data?.id);
         break;
 
       case "refund.created":
@@ -87,11 +87,7 @@ export async function POST(req: Request) {
         break;
 
       default:
-        console.log(`[WHOP WEBHOOK] Unhandled event: "${event.action}" — attempting payment handler as fallback`);
-        // For any unknown event with valid data, try payment handler
-        if (event.data?.id) {
-          await handlePaymentSucceeded(event);
-        }
+        console.log(`[WHOP WEBHOOK] Unhandled event: "${event.action}"`)
     }
 
     return new Response(JSON.stringify({ received: true }), {
