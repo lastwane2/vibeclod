@@ -73,6 +73,11 @@ export function verifyWhopWebhookSignature(
 
     const timestamp = timestampPart.slice(2);
     const signature = signaturePart.slice(3);
+
+    // Reject events older than 5 minutes (replay protection)
+    const ts = parseInt(timestamp, 10);
+    if (isNaN(ts) || Math.abs(Date.now() / 1000 - ts) > 300) return false;
+
     const signedPayload = `${timestamp}.${payload}`;
 
     const expected = createHmac("sha256", WHOP_WEBHOOK_SECRET)
@@ -256,8 +261,7 @@ async function findUserFromEvent(event: WhopWebhookEvent) {
     data.metadata ||
     {}) as Record<string, string>;
 
-  console.log("[Whop] findUser — metadata:", JSON.stringify(metadata));
-  console.log("[Whop] findUser — user_id:", data.user_id, "| email:", data.email || data.user_email || (membership?.email as string) || data.user?.email);
+  // Debug: log lookup strategy (no PII)
 
   // 1) user_id from metadata (our custom field from checkout)
   if (metadata.user_id) {
@@ -265,7 +269,7 @@ async function findUserFromEvent(event: WhopWebhookEvent) {
       where: { id: metadata.user_id },
     });
     if (user) {
-      console.log("[Whop] Found user by metadata.user_id:", user.id);
+      console.log("[Whop] Found user by metadata");
       return user;
     }
   }
@@ -277,7 +281,7 @@ async function findUserFromEvent(event: WhopWebhookEvent) {
       where: { whopUserId },
     });
     if (user) {
-      console.log("[Whop] Found user by whopUserId:", user.id);
+      console.log("[Whop] Found user by whopUserId");
       return user;
     }
   }
@@ -289,7 +293,7 @@ async function findUserFromEvent(event: WhopWebhookEvent) {
       where: { whopMembershipId: membershipId },
     });
     if (user) {
-      console.log("[Whop] Found user by whopMembershipId:", user.id);
+      console.log("[Whop] Found user by membershipId");
       return user;
     }
   }
@@ -303,12 +307,12 @@ async function findUserFromEvent(event: WhopWebhookEvent) {
   if (email) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (user) {
-      console.log("[Whop] Found user by email:", user.id);
+      console.log("[Whop] Found user by email");
       return user;
     }
   }
 
-  console.error("[Whop] findUser — could NOT find user for event:", data.id);
+  console.error("[Whop] findUser — user not found for webhook event");
   return null;
 }
 
@@ -321,7 +325,7 @@ async function findUserFromEvent(event: WhopWebhookEvent) {
 export async function handleMembershipValid(event: WhopWebhookEvent) {
   const user = await findUserFromEvent(event);
   if (!user) {
-    console.error("[Whop] membership.valid — user not found:", event.data.id);
+    console.error("[Whop] membership.valid — user not found");
     return;
   }
 
@@ -345,7 +349,7 @@ export async function handleMembershipValid(event: WhopWebhookEvent) {
     },
   });
 
-  console.log(`[Whop] User ${user.id} (${user.email}) upgraded to PRO (membership.valid)`);
+  console.log("[Whop] User upgraded to PRO (membership.valid)");
 }
 
 /**
@@ -367,7 +371,7 @@ export async function handleMembershipInvalid(event: WhopWebhookEvent) {
   }
 
   if (!user) {
-    console.error("[Whop] membership.invalid — user not found:", data.id);
+    console.error("[Whop] membership.invalid — user not found");
     return;
   }
 
@@ -376,7 +380,7 @@ export async function handleMembershipInvalid(event: WhopWebhookEvent) {
     data: { plan: "FREE", planExpiresAt: null },
   });
 
-  console.log(`[Whop] User ${user.id} (${user.email}) downgraded to FREE (membership.invalid)`);
+  console.log("[Whop] User downgraded to FREE (membership.invalid)");
 }
 
 /**
@@ -387,13 +391,13 @@ export async function handlePaymentSucceeded(event: WhopWebhookEvent) {
   const user = await findUserFromEvent(event);
 
   if (!user) {
-    console.error("[Whop] payment — user not found:", event.data.id, "| Full data:", JSON.stringify(event.data).slice(0, 500));
+    console.error("[Whop] payment — user not found");
     return;
   }
 
   // Already PRO — skip
   if (user.plan === "PRO") {
-    console.log(`[Whop] User ${user.id} already PRO — skipping`);
+    console.log("[Whop] User already PRO — skipping");
     return;
   }
 
@@ -417,7 +421,7 @@ export async function handlePaymentSucceeded(event: WhopWebhookEvent) {
     },
   });
 
-  console.log(`[Whop] User ${user.id} (${user.email}) activated PRO via payment`);
+  console.log("[Whop] User activated PRO via payment");
 }
 
 /**
@@ -455,7 +459,7 @@ export async function handleRefund(event: WhopWebhookEvent) {
   }
 
   if (!userId) {
-    console.error("[Whop] refund — user not found:", data.id);
+    console.error("[Whop] refund — user not found");
     return;
   }
 
@@ -468,5 +472,5 @@ export async function handleRefund(event: WhopWebhookEvent) {
     },
   });
 
-  console.log(`[Whop] User ${userId} downgraded to FREE (refund)`);
+  console.log("[Whop] User downgraded to FREE (refund)");
 }

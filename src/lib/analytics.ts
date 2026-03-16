@@ -68,11 +68,10 @@ export function trackSignUp() {
 }
 
 /** User connected a repo */
-export function trackRepoConnect(repo: string) {
+export function trackRepoConnect() {
   trackEvent({
     action: "repo_connect",
     category: "onboarding",
-    label: repo,
   });
 }
 

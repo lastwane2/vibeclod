@@ -15,7 +15,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           scope: "repo read:user user:email",
         },
       },
-      allowDangerousEmailAccountLinking: true,
     }),
   ],
   callbacks: {

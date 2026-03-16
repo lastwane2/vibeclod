@@ -45,12 +45,7 @@ export async function POST(req: Request) {
 
     const event = JSON.parse(payload) as WhopWebhookEvent;
 
-    console.log(
-      "[WHOP WEBHOOK] Action:", event.action,
-      "| ID:", event.data?.id,
-      "| User:", event.data?.user_id,
-      "| Email:", event.data?.email || event.data?.user_email
-    );
+    console.log("[WHOP WEBHOOK] Action:", event.action, "| ID:", event.data?.id);
 
     switch (event.action) {
       // ── Plan activation (payment confirmed) ──
