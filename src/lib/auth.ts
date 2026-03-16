@@ -5,6 +5,7 @@ import { prisma } from "./prisma";
 import { sendEmail, welcomeEmail } from "./email";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   adapter: PrismaAdapter(prisma) as ReturnType<typeof PrismaAdapter>,
   providers: [
     GitHub({
