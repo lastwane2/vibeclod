@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { TheoryBlock as TheoryBlockType } from "@/types/blocks";
 
 interface Props {
@@ -44,6 +45,7 @@ export function TheoryBlock({ block, worldColor, completed, onComplete }: Props)
       {/* Markdown content with custom components */}
       <div className="theory-content">
         <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
           components={{
             h1: ({ children }) => (
               <h1 className="text-xl font-bold text-[#2D2016] mb-3 mt-1">{children}</h1>

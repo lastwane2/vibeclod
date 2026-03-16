@@ -139,6 +139,11 @@ html {
   50% { transform: translateY(-15px); opacity: 0.12; }
 }
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* Selection color */
 ::selection {
   background: #E8A445;
