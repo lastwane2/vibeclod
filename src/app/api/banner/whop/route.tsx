@@ -1,17 +1,13 @@
 import { ImageResponse } from "next/og";
-
-export const runtime = "edge";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 export async function GET() {
-  const fontData = await fetch(
-    new URL(
-      "https://fonts.gstatic.com/s/pressstart2p/v15/e3t4euO8T-267oIAQAu6jDQyK3nYivN04w.woff2"
-    )
-  ).then((res) => res.arrayBuffer());
+  const fontData = readFileSync(join(process.cwd(), "public", "PressStart2P.ttf"));
 
   // 16:9 ratio
-  const width = 1920;
-  const height = 1080;
+  const width = 1280;
+  const height = 720;
 
   return new ImageResponse(
     (

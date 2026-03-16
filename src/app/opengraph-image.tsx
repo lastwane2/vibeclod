@@ -1,16 +1,12 @@
 import { ImageResponse } from "next/og";
-
-export const runtime = "edge";
+import { readFileSync } from "fs";
+import { join } from "path";
 export const alt = "vibeclod — Duolingo, but for vibe coding";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  const fontData = await fetch(
-    new URL(
-      "https://fonts.gstatic.com/s/pressstart2p/v15/e3t4euO8T-267oIAQAu6jDQyK3nYivN04w.woff2"
-    )
-  ).then((res) => res.arrayBuffer());
+  const fontData = readFileSync(join(process.cwd(), "public", "PressStart2P.ttf"));
 
   return new ImageResponse(
     (
