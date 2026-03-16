@@ -48,25 +48,15 @@ export type WhopWebhookEvent = {
       membership_metadata?: Record<string, string>;
       user_email?: string;
     };
-    user?: { email?: string };
+    user?: { email?: string; id?: string };
   };
 };
-
-// ─── Plan Mapping ───────────────────────────────────────────
-
-export function planFromWhopId(whopPlanId: string): "FREE" | "PRO" {
-  if (whopPlanId && whopPlanId === WHOP_PRO_PLAN_ID) return "PRO";
-  // Any valid plan ID means they paid — default to PRO for vibeclod
-  if (whopPlanId) return "PRO";
-  return "FREE";
-}
 
 // ─── Signature Verification ─────────────────────────────────
 
 /**
  * Verify Whop webhook signature.
  * Whop sends: `t=<timestamp>,v1=<hmac>` in the signature header.
- * Signed payload: `{timestamp}.{rawBody}`
  */
 export function verifyWhopWebhookSignature(
   payload: string,
@@ -83,7 +73,6 @@ export function verifyWhopWebhookSignature(
 
     const timestamp = timestampPart.slice(2);
     const signature = signaturePart.slice(3);
-
     const signedPayload = `${timestamp}.${payload}`;
 
     const expected = createHmac("sha256", WHOP_WEBHOOK_SECRET)
@@ -102,7 +91,6 @@ export function verifyWhopWebhookSignature(
 
 /**
  * Fallback: verify direct HMAC (raw body signed with secret).
- * Some Whop versions send just the HMAC hex in the header.
  */
 export function verifyWhopWebhookDirect(
   payload: string,
@@ -142,19 +130,9 @@ export function verifyWhopWebhookSecret(secret: string): boolean {
 
 // ─── Checkout URL ───────────────────────────────────────────
 
-/**
- * Create a Whop checkout session via API.
- * Falls back to static checkout URL if API fails.
- */
 export async function createCheckoutUrl(userId: string): Promise<string> {
-  if (!WHOP_API_KEY) {
-    console.error("[Whop] WHOP_API_KEY is not configured");
-    return getFallbackCheckoutUrl(userId);
-  }
-
-  // Need at least a plan ID for API checkout
-  if (!WHOP_PRO_PLAN_ID) {
-    console.error("[Whop] WHOP_PRO_PLAN_ID is not configured");
+  if (!WHOP_API_KEY || !WHOP_PRO_PLAN_ID) {
+    console.error("[Whop] Missing WHOP_API_KEY or WHOP_PRO_PLAN_ID");
     return getFallbackCheckoutUrl(userId);
   }
 
@@ -167,7 +145,6 @@ export async function createCheckoutUrl(userId: string): Promise<string> {
       metadata: { user_id: userId },
     };
 
-    // Whop requires HTTPS for redirect URL
     if (FRONTEND_URL.startsWith("https://")) {
       body.redirect_url = `${FRONTEND_URL}/settings?billing=success`;
     }
@@ -203,39 +180,24 @@ export async function createCheckoutUrl(userId: string): Promise<string> {
   return getFallbackCheckoutUrl(userId);
 }
 
-/**
- * Fallback: static checkout URL with metadata param.
- */
 function getFallbackCheckoutUrl(userId: string): string {
-  // Try NEXT_PUBLIC_WHOP_CHECKOUT_URL first
-  const staticUrl = process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL;
-  if (staticUrl) {
-    const separator = staticUrl.includes("?") ? "&" : "?";
-    return `${staticUrl}${separator}metadata[userId]=${encodeURIComponent(userId)}`;
-  }
-
-  // Last resort: direct Whop checkout link
   if (WHOP_PRO_PLAN_ID) {
     const baseUrl = WHOP_SANDBOX
       ? "https://sandbox.whop.com"
       : "https://whop.com";
-    return `${baseUrl}/checkout/${WHOP_PRO_PLAN_ID}/?metadata[userId]=${encodeURIComponent(userId)}`;
+    return `${baseUrl}/checkout/${WHOP_PRO_PLAN_ID}/?metadata[user_id]=${encodeURIComponent(userId)}`;
   }
-
-  return "/pricing";
+  return "/settings";
 }
 
 // ─── Cancel Subscription ────────────────────────────────────
 
-export async function cancelSubscription(
-  userId: string
-): Promise<boolean> {
+export async function cancelSubscription(userId: string): Promise<boolean> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { whopMembershipId: true },
   });
-  if (!user?.whopMembershipId) return false;
-  if (!WHOP_API_KEY) throw new Error("WHOP_API_KEY is not configured");
+  if (!user?.whopMembershipId || !WHOP_API_KEY) return false;
 
   try {
     const res = await fetch(
@@ -255,7 +217,6 @@ export async function cancelSubscription(
       console.error("[Whop] Cancel error:", err);
       return false;
     }
-
     return true;
   } catch (e) {
     console.error("[Whop] Cancel exception:", e);
@@ -272,25 +233,8 @@ export async function getSubscriptionStatus(userId: string) {
   });
   if (!user) return null;
 
-  // Auto-downgrade if plan expired
-  if (
-    user.plan !== "FREE" &&
-    user.planExpiresAt &&
-    user.planExpiresAt < new Date()
-  ) {
-    await prisma.user.update({
-      where: { id: userId },
-      data: { plan: "FREE" },
-    });
-    console.log(`[Whop] Plan expired for ${userId}, downgraded to FREE`);
-
-    return {
-      plan: "FREE" as const,
-      isActive: false,
-      expiresAt: user.planExpiresAt.toISOString(),
-      membershipId: user.whopMembershipId,
-    };
-  }
+  // NOTE: vibeclod is one-time payment = lifetime. No auto-downgrade.
+  // planExpiresAt should always be null for vibeclod.
 
   return {
     plan: user.plan,
@@ -308,27 +252,49 @@ async function findUserFromEvent(event: WhopWebhookEvent) {
     | Record<string, unknown>
     | undefined;
   const metadata = (membership?.metadata ||
+    data.membership_metadata ||
     data.metadata ||
     {}) as Record<string, string>;
+
+  console.log("[Whop] findUser — metadata:", JSON.stringify(metadata));
+  console.log("[Whop] findUser — user_id:", data.user_id, "| email:", data.email || data.user_email || (membership?.email as string) || data.user?.email);
 
   // 1) user_id from metadata (our custom field from checkout)
   if (metadata.user_id) {
     const user = await prisma.user.findUnique({
       where: { id: metadata.user_id },
     });
-    if (user) return user;
+    if (user) {
+      console.log("[Whop] Found user by metadata.user_id:", user.id);
+      return user;
+    }
   }
 
   // 2) whopUserId from webhook data
-  const whopUserId = data.user_id;
+  const whopUserId = data.user_id || data.user?.id;
   if (whopUserId) {
     const user = await prisma.user.findFirst({
       where: { whopUserId },
     });
-    if (user) return user;
+    if (user) {
+      console.log("[Whop] Found user by whopUserId:", user.id);
+      return user;
+    }
   }
 
-  // 3) email fallback
+  // 3) whopMembershipId
+  const membershipId = (membership?.id as string) || data.membership_id || data.id;
+  if (membershipId) {
+    const user = await prisma.user.findFirst({
+      where: { whopMembershipId: membershipId },
+    });
+    if (user) {
+      console.log("[Whop] Found user by whopMembershipId:", user.id);
+      return user;
+    }
+  }
+
+  // 4) email fallback
   const email =
     (membership?.email as string) ||
     data.email ||
@@ -336,14 +302,22 @@ async function findUserFromEvent(event: WhopWebhookEvent) {
     data.user?.email;
   if (email) {
     const user = await prisma.user.findUnique({ where: { email } });
-    if (user) return user;
+    if (user) {
+      console.log("[Whop] Found user by email:", user.id);
+      return user;
+    }
   }
 
+  console.error("[Whop] findUser — could NOT find user for event:", data.id);
   return null;
 }
 
 // ─── Webhook Event Handlers ─────────────────────────────────
 
+/**
+ * membership.went_valid — upgrade to PRO.
+ * For vibeclod one-time payments: planExpiresAt = null (lifetime).
+ */
 export async function handleMembershipValid(event: WhopWebhookEvent) {
   const user = await findUserFromEvent(event);
   if (!user) {
@@ -356,53 +330,39 @@ export async function handleMembershipValid(event: WhopWebhookEvent) {
     | Record<string, unknown>
     | undefined;
 
-  const planId = (data.plan_id as string) || "";
   const membershipId = (membership?.id as string) || data.id;
-  const whopUserId = data.user_id || undefined;
+  const whopUserId = data.user_id || data.user?.id || undefined;
 
-  // Calculate expiration
-  let planExpiresAt: Date | null = null;
-  const renewalEnd =
-    (membership?.renewal_period_end as number) || data.renewal_period_end;
-  const expiresAt =
-    (membership?.expires_at as number) || data.expires_at;
-  if (renewalEnd) {
-    planExpiresAt = new Date(renewalEnd * 1000);
-  } else if (expiresAt) {
-    planExpiresAt = new Date(expiresAt * 1000);
-  }
-
+  // Vibeclod = one-time payment = lifetime. No expiration.
   await prisma.user.update({
     where: { id: user.id },
     data: {
-      plan: planFromWhopId(planId),
+      plan: "PRO",
       whopMembershipId: membershipId,
       ...(whopUserId ? { whopUserId } : {}),
-      planExpiresAt,
+      planExpiresAt: null, // lifetime — no expiration
       paidAt: new Date(),
     },
   });
 
-  console.log(`[Whop] User ${user.id} upgraded to PRO`);
+  console.log(`[Whop] User ${user.id} (${user.email}) upgraded to PRO (membership.valid)`);
 }
 
+/**
+ * membership.went_invalid — downgrade to FREE.
+ */
 export async function handleMembershipInvalid(event: WhopWebhookEvent) {
   const { data } = event;
 
-  // Primary lookup: by membership ID
   let user = data.id
     ? await prisma.user.findFirst({ where: { whopMembershipId: data.id } })
     : null;
 
-  if (!user) {
-    // Fallback: by whopUserId
-    if (data.user_id) {
-      user = await prisma.user.findFirst({ where: { whopUserId: data.user_id } });
-    }
+  if (!user && data.user_id) {
+    user = await prisma.user.findFirst({ where: { whopUserId: data.user_id } });
   }
 
   if (!user) {
-    // Fallback: metadata / email
     user = await findUserFromEvent(event);
   }
 
@@ -416,61 +376,53 @@ export async function handleMembershipInvalid(event: WhopWebhookEvent) {
     data: { plan: "FREE", planExpiresAt: null },
   });
 
-  console.log(`[Whop] User ${user.id} downgraded to FREE`);
+  console.log(`[Whop] User ${user.id} (${user.email}) downgraded to FREE (membership.invalid)`);
 }
 
+/**
+ * payment.succeeded / payment.created — activate PRO.
+ * This is the MAIN handler for one-time payments.
+ */
 export async function handlePaymentSucceeded(event: WhopWebhookEvent) {
+  const user = await findUserFromEvent(event);
+
+  if (!user) {
+    console.error("[Whop] payment — user not found:", event.data.id, "| Full data:", JSON.stringify(event.data).slice(0, 500));
+    return;
+  }
+
+  // Already PRO — skip
+  if (user.plan === "PRO") {
+    console.log(`[Whop] User ${user.id} already PRO — skipping`);
+    return;
+  }
+
   const { data } = event;
   const membership = (data as Record<string, unknown>).membership as
     | Record<string, unknown>
     | undefined;
-  const metadata = (membership?.metadata ||
-    data.membership_metadata ||
-    data.metadata ||
-    {}) as Record<string, string>;
-
-  let userId = metadata.user_id;
-
-  // Email fallback
-  const email =
-    (membership?.email as string) || data.user_email || data.email;
-  if (!userId && email) {
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (user) {
-      userId = user.id;
-    }
-  }
-
-  // whopUserId fallback
-  if (!userId && data.user_id) {
-    const user = await prisma.user.findFirst({
-      where: { whopUserId: data.user_id },
-    });
-    if (user) {
-      userId = user.id;
-    }
-  }
-
-  if (!userId) {
-    console.error("[Whop] payment.succeeded — user not found:", data.id);
-    return;
-  }
 
   const membershipId =
     (membership?.id as string) || data.membership_id || data.id;
+  const whopUserId = data.user_id || data.user?.id || undefined;
 
   await prisma.user.update({
-    where: { id: userId },
+    where: { id: user.id },
     data: {
       plan: "PRO",
       whopMembershipId: membershipId,
+      ...(whopUserId ? { whopUserId } : {}),
+      planExpiresAt: null, // lifetime — no expiration
       paidAt: new Date(),
     },
   });
 
-  console.log(`[Whop] User ${userId} activated via payment`);
+  console.log(`[Whop] User ${user.id} (${user.email}) activated PRO via payment`);
 }
 
+/**
+ * refund.created — downgrade to FREE.
+ */
 export async function handleRefund(event: WhopWebhookEvent) {
   const { data } = event;
   const payment = data.payment || ({} as Record<string, unknown>);
