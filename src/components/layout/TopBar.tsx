@@ -11,11 +11,9 @@ export function TopBar() {
   return (
     <header className="sticky top-0 z-40 border-b border-[#E8E0D4]/80 bg-[#FAF6F0]/90 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-3 sm:px-4">
-        <Link href="/dashboard" className="flex items-center gap-2 group min-h-[44px]">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#E8A445] to-[#D4932E] shadow-sm group-hover:shadow-md transition-shadow">
-            <span className="text-sm font-bold text-white">V</span>
-          </div>
-          <span className="text-lg font-bold text-[#2D2016] hidden sm:block">
+        <Link href="/dashboard" className="flex items-center gap-2.5 group min-h-[44px]">
+          <img src="/logo.svg" alt="vibeclod" className="h-8 w-8 group-hover:scale-105 transition-transform" />
+          <span className="text-sm font-pixel text-[#2D2016] hidden sm:block">
             vibeclod
           </span>
         </Link>

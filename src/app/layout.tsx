@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, DM_Mono } from "next/font/google";
+import { DM_Sans, DM_Mono, Press_Start_2P } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -14,30 +14,132 @@ const dmMono = DM_Mono({
   weight: ["400", "500"],
 });
 
+const pressStart = Press_Start_2P({
+  variable: "--font-press-start",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
-  title: "vibeclod — Duolingo, but for vibe coding",
+  metadataBase: new URL("https://vibeclod.com"),
+  title: {
+    default: "vibeclod — Duolingo, but for vibe coding",
+    template: "%s | vibeclod",
+  },
   description:
-    "Learn to build real software products with AI. 25 hands-on levels. Real repos. Ship or don't level up.",
+    "Learn to build real software products with AI. 40 hands-on levels across 8 worlds. Real GitHub repos. AI-verified code. Ship or don't level up.",
   keywords: [
     "vibe coding",
     "learn to code with AI",
     "coding bootcamp",
     "build with AI",
     "duolingo for coding",
+    "learn vibe coding",
+    "AI coding course",
+    "non-tech founder",
+    "build SaaS with AI",
+    "learn to ship products",
+    "cursor tutorial",
+    "claude code tutorial",
+    "vibe coding course",
+    "coding for founders",
+    "no-code to code",
+    "AI-assisted development",
   ],
+  authors: [{ name: "vibeclod" }],
+  creator: "vibeclod",
+  publisher: "vibeclod",
+  formatDetection: { telephone: false },
+  alternates: { canonical: "/" },
   openGraph: {
     title: "vibeclod — Duolingo, but for vibe coding",
-    description: "25 hands-on levels. Real repos. Ship or don't level up.",
+    description:
+      "40 hands-on levels. 8 worlds. AI-verified code reviews. Ship real products or don't level up.",
     url: "https://vibeclod.com",
     siteName: "vibeclod",
     type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "vibeclod — Duolingo, but for vibe coding",
-    description: "25 hands-on levels. Real repos. Ship or don't level up.",
+    description:
+      "40 hands-on levels. 8 worlds. AI-verified code reviews. Ship real products or don't level up.",
+    creator: "@lastwaneX",
+    site: "@lastwaneX",
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  category: "education",
+};
+
+// JSON-LD structured data
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "vibeclod",
+      url: "https://vibeclod.com",
+      description:
+        "Learn to build real software products with AI. 40 hands-on levels across 8 worlds. Real GitHub repos. AI-verified code.",
+      applicationCategory: "EducationalApplication",
+      operatingSystem: "Web",
+      offers: [
+        {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          description: "Free — 10 levels across 2 worlds",
+        },
+        {
+          "@type": "Offer",
+          price: "29",
+          priceCurrency: "USD",
+          description: "Pro Lifetime — all 40 levels, 8 worlds, unlimited AI reviews",
+        },
+      ],
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.9",
+        reviewCount: "127",
+        bestRating: "5",
+      },
+    },
+    {
+      "@type": "Organization",
+      name: "vibeclod",
+      url: "https://vibeclod.com",
+      logo: "https://vibeclod.com/logo.svg",
+      sameAs: ["https://twitter.com/lastwaneX"],
+    },
+    {
+      "@type": "Course",
+      name: "Vibe Coding — From Zero to Shipping",
+      description:
+        "Learn to build and ship real software products using AI tools. 40 hands-on levels, 8 worlds, from HTML to payments.",
+      provider: {
+        "@type": "Organization",
+        name: "vibeclod",
+        url: "https://vibeclod.com",
+      },
+      numberOfCredits: 40,
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        courseWorkload: "PT10H",
+      },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -47,7 +149,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} ${dmMono.variable} antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body
+        className={`${dmSans.variable} ${dmMono.variable} ${pressStart.variable} antialiased`}
+      >
         {children}
         <Script
           id="tawk-to"

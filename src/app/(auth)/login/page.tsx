@@ -21,10 +21,8 @@ export default function LoginPage() {
         {/* Card */}
         <div className="rounded-3xl bg-white border border-[#E8E0D4] p-8 shadow-xl">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center h-10 w-10 rounded-xl bg-gradient-to-br from-[#E8A445] to-[#D4932E] mb-3 shadow-md">
-              <span className="text-lg font-bold text-white">V</span>
-            </div>
-            <h1 className="text-2xl font-bold text-[#2D2016]">vibeclod</h1>
+            <img src="/logo.svg" alt="vibeclod" className="h-12 w-12 mb-3 shadow-md rounded-xl" />
+            <h1 className="text-xl font-pixel text-[#2D2016]">vibeclod</h1>
             <p className="text-sm text-[#8B7355] mt-1">
               Duolingo, but for vibe coding
             </p>

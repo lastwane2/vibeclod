@@ -58,11 +58,9 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="sticky top-0 z-50 border-b border-[#E8E0D4]/50 bg-[#FAF6F0]/90 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-3 sm:px-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#E8A445] to-[#D4932E] shadow-sm">
-              <span className="text-sm font-bold text-white">V</span>
-            </div>
-            <span className="text-lg font-bold text-[#2D2016]">vibeclod</span>
+          <div className="flex items-center gap-2.5">
+            <img src="/logo.svg" alt="vibeclod" className="h-8 w-8" />
+            <span className="text-sm font-pixel text-[#2D2016]">vibeclod</span>
           </div>
           <div className="flex items-center gap-3">
             <a href="#pricing" className="text-sm font-medium text-[#8B7355] hover:text-[#2D2016] transition-colors hidden sm:block">
@@ -440,10 +438,8 @@ export default function LandingPage() {
       <footer className="border-t border-[#E8E0D4] py-6 sm:py-8">
         <div className="mx-auto max-w-4xl px-4 flex items-center justify-between text-xs sm:text-sm text-[#8B7355]">
           <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#E8A445] to-[#D4932E]">
-              <span className="text-[10px] font-bold text-white">V</span>
-            </div>
-            <span className="font-medium">vibeclod</span>
+            <img src="/logo.svg" alt="vibeclod" className="h-6 w-6" />
+            <span className="font-pixel text-[10px]">vibeclod</span>
           </div>
           <p>&copy; {new Date().getFullYear()}</p>
         </div>
