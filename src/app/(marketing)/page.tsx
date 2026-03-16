@@ -436,10 +436,15 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-[#E8E0D4] py-6 sm:py-8">
-        <div className="mx-auto max-w-4xl px-4 flex items-center justify-between text-xs sm:text-sm text-[#8B7355]">
+        <div className="mx-auto max-w-4xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-[#8B7355]">
           <div className="flex items-center gap-2">
             <img src="/logo.svg" alt="vibeclod" className="h-6 w-6" />
             <span className="font-pixel text-[10px]">vibeclod</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="hover:text-[#2D2016] transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-[#2D2016] transition-colors">Terms</Link>
+            <a href="mailto:support@vibeclod.com" className="hover:text-[#2D2016] transition-colors">support@vibeclod.com</a>
           </div>
           <p>&copy; {new Date().getFullYear()}</p>
         </div>
