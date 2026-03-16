@@ -262,11 +262,27 @@ export function SettingsClient({
           )}
 
           {plan === "PRO" ? (
-            <div className="flex items-center gap-3">
-              <span className="rounded-full bg-gradient-to-r from-[#E8A445] to-[#D4932E] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
-                Pro — Lifetime
-              </span>
-              <span className="text-sm text-[#8B7355]">All 40 levels unlocked</span>
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="rounded-full bg-gradient-to-r from-[#E8A445] to-[#D4932E] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
+                  Pro — Lifetime
+                </span>
+                <span className="text-sm text-[#8B7355]">All 40 levels unlocked</span>
+              </div>
+              <button
+                onClick={() => {
+                  const isSandbox = process.env.NEXT_PUBLIC_WHOP_SANDBOX === "true";
+                  window.open(isSandbox ? "https://sandbox.whop.com/orders" : "https://whop.com/orders", "_blank");
+                }}
+                className="mt-3 inline-flex items-center gap-1.5 text-xs text-[#8B7355] hover:text-[#2D2016] transition-colors"
+              >
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+                Manage Billing
+              </button>
             </div>
           ) : (
             <div>
