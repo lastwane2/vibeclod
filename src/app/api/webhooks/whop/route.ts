@@ -14,11 +14,7 @@ export async function POST(req: Request) {
   try {
     payload = await req.text();
 
-    // Log full event for debugging
-    console.log("[WHOP WEBHOOK] Raw payload:", payload.slice(0, 2000));
-    console.log("[WHOP WEBHOOK] Headers:", JSON.stringify(Object.fromEntries(req.headers.entries())));
-
-    // Try multiple header names (Whop inconsistency across versions)
+    // Try multiple header names (Whop sends different ones across versions)
     const signature =
       req.headers.get("whop-signature") ||
       req.headers.get("x-whop-signature") ||
@@ -26,34 +22,38 @@ export async function POST(req: Request) {
       req.headers.get("signature") ||
       "";
 
-    // Verify signature — try all methods
-    let valid = false;
+    if (!signature) {
+      console.error("[WHOP WEBHOOK] No signature header found");
+      return new Response("Unauthorized", { status: 401 });
+    }
 
-    if (signature) {
-      valid = verifyWhopWebhookSignature(payload, signature);
+    // Verify signature — try all known formats
+    let valid = verifyWhopWebhookSignature(payload, signature);
 
-      if (!valid) {
-        valid = verifyWhopWebhookDirect(payload, signature);
-      }
+    if (!valid) {
+      valid = verifyWhopWebhookDirect(payload, signature);
+    }
 
-      if (!valid && signature.startsWith("ws_")) {
-        valid = verifyWhopWebhookSecret(signature);
-      }
+    if (!valid && signature.startsWith("ws_")) {
+      valid = verifyWhopWebhookSecret(signature);
     }
 
     if (!valid) {
-      console.warn("[WHOP WEBHOOK] Signature verification failed — processing anyway for one-time payments");
-      // Still process — Whop signature format can vary.
-      // Log but don't reject, so we don't miss payments.
+      console.error("[WHOP WEBHOOK] Invalid signature — rejecting");
+      return new Response("Invalid signature", { status: 401 });
     }
 
     const event = JSON.parse(payload) as WhopWebhookEvent;
 
-    console.log("[WHOP WEBHOOK] Action:", event.action, "| Data ID:", event.data?.id, "| User ID:", event.data?.user_id, "| Email:", event.data?.email || event.data?.user_email);
+    console.log(
+      "[WHOP WEBHOOK] Action:", event.action,
+      "| ID:", event.data?.id,
+      "| User:", event.data?.user_id,
+      "| Email:", event.data?.email || event.data?.user_email
+    );
 
-    const action = event.action;
-
-    switch (action) {
+    switch (event.action) {
+      // ── Plan activation (payment confirmed) ──
       case "membership.went_valid":
       case "membership.experience.went_valid":
       case "membership_went_valid":
@@ -61,6 +61,7 @@ export async function POST(req: Request) {
         await handleMembershipValid(event);
         break;
 
+      // ── Plan deactivation ──
       case "membership.went_invalid":
       case "membership.experience.went_invalid":
       case "membership_went_invalid":
@@ -68,6 +69,7 @@ export async function POST(req: Request) {
         await handleMembershipInvalid(event);
         break;
 
+      // ── Payment confirmed — backup activation ──
       case "payment.succeeded":
       case "payment_succeeded":
       case "payment.completed":
@@ -75,30 +77,28 @@ export async function POST(req: Request) {
         await handlePaymentSucceeded(event);
         break;
 
-      case "payment.created":
-      case "payment_created":
-        // Payment only created, not confirmed yet — just log
-        console.log("[WHOP WEBHOOK] Payment created (not yet confirmed):", event.data?.id);
-        break;
-
+      // ── Refund — downgrade ──
       case "refund.created":
       case "refund_created":
         await handleRefund(event);
         break;
 
+      // ── Informational only — no action ──
+      case "payment.created":
+      case "payment_created":
+      case "payment.failed":
+      case "payment_failed":
+        console.log(`[WHOP WEBHOOK] Info event: "${event.action}" — no action taken`);
+        break;
+
       default:
-        console.log(`[WHOP WEBHOOK] Unhandled event: "${event.action}"`)
+        console.log(`[WHOP WEBHOOK] Unknown event: "${event.action}" — ignored`);
     }
 
-    return new Response(JSON.stringify({ received: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    // Always 200 to prevent Whop retry storms
+    return new Response("OK", { status: 200 });
   } catch (e) {
-    console.error("[WHOP WEBHOOK] Error:", e, "| Payload:", payload.slice(0, 500));
-    return new Response(JSON.stringify({ received: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.error("[WHOP WEBHOOK] Error:", e);
+    return new Response("OK", { status: 200 });
   }
 }
