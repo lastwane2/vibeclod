@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import type { BuildBlock as BuildBlockType } from "@/types/blocks";
+import { trackVerifyAttempt } from "@/lib/analytics";
 
 interface SubmissionData {
   id: string;
@@ -48,6 +49,8 @@ export function BuildBlock({ block, worldColor, completed, connectedRepo, onComp
 
       setPhase("done");
       setResult(data);
+
+      trackVerifyAttempt(block.levelId, data.status === "PASSED");
 
       if (data.status === "PASSED") {
         setIsCompleted(true);

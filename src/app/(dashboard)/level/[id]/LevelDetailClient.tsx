@@ -8,6 +8,7 @@ import type { Block } from "@/types/blocks";
 import { BLOCK_ICONS, BLOCK_LABELS, getBlockMinutes } from "@/types/blocks";
 import { PixelCharacter } from "@/components/pixel-buddy/PixelCharacter";
 import { XPGain } from "@/components/ui/XPGain";
+import { trackBlockComplete, trackLevelComplete } from "@/lib/analytics";
 import { LevelUpModal } from "@/components/ui/LevelUpModal";
 import { BlockRenderer } from "@/components/blocks/BlockRenderer";
 
@@ -76,6 +77,9 @@ export function LevelDetailClient({
       setXpAmount(currentBlock.xp);
       setShowXPGain(true);
 
+      // Analytics
+      trackBlockComplete(currentBlock.id, currentBlock.type, level.id);
+
       if (data.levelCompleted) {
         setIsCompleted(true);
         setShowConfetti(true);
@@ -83,6 +87,7 @@ export function LevelDetailClient({
         if (isBoss) {
           setTimeout(() => setShowLevelUp(true), 1600);
         }
+        trackLevelComplete(level.id, level.worldId, level.xp);
       }
 
       const nextIncomplete = blocks.findIndex(

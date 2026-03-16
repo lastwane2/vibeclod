@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { trackUpgradeClick } from "@/lib/analytics";
 
 interface GitHubRepo {
   fullName: string;
@@ -56,6 +57,7 @@ export function SettingsClient({
 
   const handleUpgrade = useCallback(async () => {
     setUpgrading(true);
+    trackUpgradeClick();
     try {
       const res = await fetch("/api/whop/checkout-url");
       const data = await res.json();
