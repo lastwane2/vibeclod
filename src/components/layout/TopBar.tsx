@@ -18,6 +18,11 @@ export function TopBar() {
           </span>
         </Link>
 
+        <div className="hidden sm:flex items-center gap-1.5 rounded-full bg-[#FFF5EB] border border-[#E8A445]/25 px-2.5 py-1 text-xs font-semibold text-[#B8792A]">
+          <span aria-hidden="true">🔥</span>
+          49 spots left
+        </div>
+
         <div className="flex items-center gap-2 sm:gap-3">
           {session?.user ? (
             <div className="relative">
