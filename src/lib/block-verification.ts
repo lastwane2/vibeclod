@@ -1,4 +1,4 @@
-import type { Block, QuizBlock, PromptBlock, DebugBlock, ReviewBlock } from "@/types/blocks";
+import type { Block, QuizBlock, PromptBlock, DebugBlock, ReviewBlock, AuditBlock } from "@/types/blocks";
 import { evaluatePrompt } from "./prompt-evaluation";
 
 interface VerifyResult {
@@ -194,6 +194,38 @@ export function verifyPattern(
   };
 }
 
+// ─── Audit Block ──────────────────────
+export function verifyAudit(
+  block: Block,
+  data: { passedItems: string[] }
+): VerifyResult {
+  if (block.type !== "audit") return { passed: false, feedback: "Invalid block type" };
+
+  const auditBlock = block as AuditBlock;
+  const passed = data.passedItems || [];
+  const validPassed = auditBlock.checklist.filter((item) =>
+    passed.includes(item.id)
+  );
+
+  const criticalItems = auditBlock.checklist.filter((i) => i.severity === "critical");
+  const criticalPassed = criticalItems.filter((i) => passed.includes(i.id));
+
+  return {
+    passed: validPassed.length >= auditBlock.minPassed,
+    score: validPassed.length >= auditBlock.minPassed ? block.xp : 0,
+    feedback:
+      validPassed.length >= auditBlock.minPassed
+        ? `Audit passed! ${validPassed.length}/${auditBlock.checklist.length} items verified. ${criticalPassed.length}/${criticalItems.length} critical items addressed.`
+        : `${validPassed.length}/${auditBlock.checklist.length} items checked. Need at least ${auditBlock.minPassed} to pass.`,
+    data: {
+      passedCount: validPassed.length,
+      total: auditBlock.checklist.length,
+      criticalPassed: criticalPassed.length,
+      criticalTotal: criticalItems.length,
+    },
+  };
+}
+
 // ─── Main Dispatcher ───────────────────
 export async function verifyBlock(
   block: Block,
@@ -214,6 +246,8 @@ export async function verifyBlock(
       return verifyExperiment(block, data as { completedSteps: string[] });
     case "pattern":
       return verifyPattern(block, data as { exerciseCompleted: boolean; filledTemplate?: string });
+    case "audit":
+      return verifyAudit(block, data as { passedItems: string[] });
     case "build":
       // Build blocks use the existing verify API — handled separately
       return { passed: false, feedback: "Build blocks use /api/levels/[id]/verify" };

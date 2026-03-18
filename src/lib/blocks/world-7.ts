@@ -412,69 +412,96 @@ Console output: No errors, no warnings — it just silently doesn't track`,
   {
     id: "L34B3",
     levelId: 34,
-    type: "review",
+    type: "audit",
     title: "Launch Readiness Audit",
-    xp: 20,
+    xp: 25,
     required: true,
     order: 3,
-    code: `export default async function TasksPage() {
-  const tasks = await getTasks();
-
-  return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Your Tasks</h1>
-      <div className="grid grid-cols-3 gap-4">
-        {tasks.map((task) => (
-          <div key={task.id} className="border p-3 rounded">
-            <h3>{task.title}</h3>
-            <p>{task.description}</p>
-            <button className="bg-blue-500 text-white px-4 py-2 mt-2">
-              Complete
-            </button>
-          </div>
-        ))}
-      </div>
-      <button className="bg-green-500 text-white px-6 py-3 mt-6">
-        Add Task
-      </button>
-      <a href="http://localhost:3000/api/export">Export</a>
-    </div>
-  );
-}`,
-    language: "tsx",
     description:
-      "This app is about to launch. What's missing for a production-ready experience?",
-    knownIssues: [
+      "Run through this checklist against YOUR project. Check each item you've verified or fixed. Be honest — launching with critical issues will hurt your users.",
+    checklist: [
       {
-        id: "L34B3I1",
-        lineRange: [1, 3],
-        description:
-          "No loading state — user sees nothing while getTasks() fetches data. Needs a loading.tsx or Suspense boundary with a skeleton.",
+        id: "L34A1",
+        category: "ux",
+        title: "Loading states on all pages",
+        description: "Users see a spinner or skeleton while data loads, not a blank screen.",
         severity: "critical",
+        howToCheck: "Open each page on slow 3G (Chrome DevTools → Network → Slow 3G). Do you see loading feedback or a white screen?",
       },
       {
-        id: "L34B3I2",
-        lineRange: [18, 18],
-        description:
-          "Hardcoded http://localhost:3000 URL — will break in production. Should use a relative URL or environment variable.",
-        severity: "critical",
-      },
-      {
-        id: "L34B3I3",
-        lineRange: [5, 17],
-        description:
-          "No empty state — if tasks array is empty, the page shows nothing. Should display 'No tasks yet — create your first one!'",
+        id: "L34A2",
+        category: "ux",
+        title: "Empty states for lists",
+        description: "Empty lists show a helpful message like 'No items yet — create your first one!'",
         severity: "warning",
+        howToCheck: "Sign up as a new user (or clear your data). Are there blank areas, or does each empty section guide you?",
       },
       {
-        id: "L34B3I4",
-        lineRange: [13, 15],
-        description:
-          "No hover effects on buttons — feels unresponsive. Add hover:bg-blue-600 and cursor-pointer for better UX.",
+        id: "L34A3",
+        category: "ux",
+        title: "Mobile responsive at 375px",
+        description: "All pages work on phone screens. No horizontal scroll, no cut-off text, buttons are tappable.",
+        severity: "critical",
+        howToCheck: "Resize browser to 375px width (or use DevTools device toolbar). Check every page. Can you tap all buttons?",
+      },
+      {
+        id: "L34A4",
+        category: "ux",
+        title: "Hover & focus states on interactive elements",
+        description: "Buttons, links, and inputs visually respond to hover and keyboard focus.",
         severity: "suggestion",
+        howToCheck: "Mouse over every button and link. Do they change? Tab through the page with keyboard. Can you see where focus is?",
+      },
+      {
+        id: "L34A5",
+        category: "code-quality",
+        title: "No hardcoded localhost URLs",
+        description: "No http://localhost:3000 links anywhere in the code. All URLs are relative or from env vars.",
+        severity: "critical",
+        howToCheck: "Search your codebase for 'localhost'. If you find any outside of dev config — fix them.",
+      },
+      {
+        id: "L34A6",
+        category: "code-quality",
+        title: "Error boundary exists (error.tsx)",
+        description: "App crashes show a friendly 'Something went wrong' page instead of a white screen.",
+        severity: "critical",
+        howToCheck: "Check if src/app/error.tsx exists. Temporarily throw an error in a page component and see what the user sees.",
+      },
+      {
+        id: "L34A7",
+        category: "code-quality",
+        title: "Build passes clean",
+        description: "npm run build completes without errors or warnings.",
+        severity: "critical",
+        howToCheck: "Run `npm run build` in your terminal. Does it finish without errors? Fix any TypeScript or import issues.",
+      },
+      {
+        id: "L34A8",
+        category: "seo",
+        title: "Page titles and favicon set",
+        description: "Each page has a unique title in the browser tab. Favicon shows your logo, not the default Next.js icon.",
+        severity: "warning",
+        howToCheck: "Open each page and look at the browser tab. Does it say your app name + page? Is there a favicon?",
+      },
+      {
+        id: "L34A9",
+        category: "performance",
+        title: "Images are optimized",
+        description: "Using next/image or compressed images. No 5MB PNGs loading on the landing page.",
+        severity: "warning",
+        howToCheck: "Open DevTools → Network → filter by Img. Are any images over 500KB? Use next/image for automatic optimization.",
+      },
+      {
+        id: "L34A10",
+        category: "ux",
+        title: "404 page exists",
+        description: "Visiting a non-existent URL shows a custom 'Page not found' instead of a blank page.",
+        severity: "warning",
+        howToCheck: "Visit /some-random-page-that-doesnt-exist on your site. Do you see a helpful 404 page?",
       },
     ],
-    minIssuesFound: 2,
+    minPassed: 6,
   },
   {
     id: "L34B4",

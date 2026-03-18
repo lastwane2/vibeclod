@@ -397,57 +397,96 @@ Technical: new fields on User model (lastActiveDate, streakCount), middleware to
   {
     id: "L39B3",
     levelId: 39,
-    type: "review",
-    title: "Spot Security Issues",
-    xp: 20,
+    type: "audit",
+    title: "Security Audit",
+    xp: 25,
     required: true,
     order: 3,
-    code: `import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import Stripe from "stripe";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-export async function POST(req: Request) {
-  const event = await req.json();
-
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-    await prisma.user.update({
-      where: { email: session.customer_email },
-      data: { plan: "PRO" },
-    });
-  }
-
-  return NextResponse.json({ received: true });
-}`,
-    language: "typescript",
     description:
-      "This Stripe webhook handler has security issues. Find them before a bad actor does.",
-    knownIssues: [
+      "Audit YOUR project for security vulnerabilities. A single critical issue can get your app hacked, your users' data leaked, or your Stripe account drained. Check everything.",
+    checklist: [
       {
-        id: "L39B3I1",
-        lineRange: [7, 8],
-        description:
-          "No webhook signature verification — anyone can send a fake POST request to this endpoint and upgrade themselves to PRO. Must use stripe.webhooks.constructEvent() with the signing secret.",
+        id: "L39A1",
+        category: "security",
+        title: "No secrets in code or git history",
+        description: "API keys, database URLs, and tokens are in .env — never committed to git.",
         severity: "critical",
+        howToCheck: "Search your codebase for actual key values (sk_live_, pk_live_, password=). Run `git log -p | grep -i 'secret\\|password\\|api_key'` to check history.",
       },
       {
-        id: "L39B3I2",
-        lineRange: [8, 8],
-        description:
-          "Using req.json() instead of req.text() — Stripe signature verification requires the raw request body. Parsing as JSON first corrupts the signature check.",
+        id: "L39A2",
+        category: "security",
+        title: "API routes require authentication",
+        description: "Protected endpoints check for a valid session before doing anything. No auth = no access.",
         severity: "critical",
+        howToCheck: "Open each API route file. Does it call auth() or getServerSession() at the top? Try calling the endpoint without being logged in (use curl or Postman).",
       },
       {
-        id: "L39B3I3",
-        lineRange: [11, 15],
-        description:
-          "No error handling — if the database update fails, the endpoint still returns 200. Stripe thinks the webhook succeeded and won't retry, leaving the user stuck on the free plan.",
+        id: "L39A3",
+        category: "security",
+        title: "Users can't access each other's data",
+        description: "Every database query filters by the logged-in user's ID. User A can't see User B's items.",
+        severity: "critical",
+        howToCheck: "Check every Prisma query in API routes. Does it include `where: { userId: session.user.id }`? Log in as two different users and try to access each other's data.",
+      },
+      {
+        id: "L39A4",
+        category: "security",
+        title: "Webhook signatures are verified",
+        description: "Stripe webhooks use constructEvent() with the signing secret. No one can fake a payment.",
+        severity: "critical",
+        howToCheck: "Open your webhook handler. Is it using `stripe.webhooks.constructEvent(body, sig, secret)`? If it just does `req.json()` without verification — anyone can POST fake events.",
+      },
+      {
+        id: "L39A5",
+        category: "security",
+        title: "Input validation on forms and API",
+        description: "User input is validated server-side. No SQL injection, no XSS, no unlimited-length strings.",
         severity: "warning",
+        howToCheck: "Try submitting forms with empty fields, very long strings (10,000+ chars), and HTML like `<script>alert('xss')</script>`. Does the server reject bad input?",
+      },
+      {
+        id: "L39A6",
+        category: "security",
+        title: "Feature gating is server-side",
+        description: "Pro features are enforced on the server, not just hidden in the UI. Free users can't bypass the paywall.",
+        severity: "critical",
+        howToCheck: "Check API routes for paid features. Do they verify the user's plan before proceeding? Try calling a Pro API endpoint as a Free user directly.",
+      },
+      {
+        id: "L39A7",
+        category: "security",
+        title: ".env.example exists without real values",
+        description: "New developers can set up the project without seeing real secrets.",
+        severity: "warning",
+        howToCheck: "Check if .env.example exists. Does it list all required env vars with placeholder values like YOUR_API_KEY_HERE?",
+      },
+      {
+        id: "L39A8",
+        category: "security",
+        title: "Auth cookies are secure",
+        description: "Session cookies use httpOnly, secure, and sameSite flags in production.",
+        severity: "warning",
+        howToCheck: "Open DevTools → Application → Cookies. Check your session cookie. Is it httpOnly? Secure? If using NextAuth — it handles this, but verify.",
+      },
+      {
+        id: "L39A9",
+        category: "code-quality",
+        title: "Error messages don't leak internals",
+        description: "API errors return user-friendly messages, not stack traces or database schema details.",
+        severity: "warning",
+        howToCheck: "Trigger an error in your API (e.g., request a non-existent item). Does the response show internal error details or a clean error message?",
+      },
+      {
+        id: "L39A10",
+        category: "security",
+        title: "Rate limiting on auth endpoints",
+        description: "Login/signup endpoints limit attempts to prevent brute-force attacks.",
+        severity: "suggestion",
+        howToCheck: "Try sending 100 rapid requests to your login endpoint. Does it start rejecting them? If not, consider adding rate limiting middleware.",
       },
     ],
-    minIssuesFound: 2,
+    minPassed: 6,
   },
   {
     id: "L39B4",

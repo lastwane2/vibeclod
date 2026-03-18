@@ -1,7 +1,4 @@
 import type { PromptEvaluation } from "@/types/blocks";
-import Anthropic from "@anthropic-ai/sdk";
-
-const anthropic = new Anthropic();
 
 export async function evaluatePrompt(
   userPrompt: string,
@@ -32,22 +29,56 @@ Respond with ONLY a JSON object:
   "suggestions": ["suggestion 1", "suggestion 2"]
 }`;
 
-  try {
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 512,
-      temperature: 0.3,
-      system: systemPrompt,
-      messages: [
-        {
-          role: "user",
-          content: `Evaluate this prompt:\n\n"""${userPrompt}"""`,
-        },
-      ],
-    });
+  const useOpenAI = !!process.env.OPENAI_API_KEY;
 
-    const text =
-      response.content[0].type === "text" ? response.content[0].text : "";
+  let text = "";
+
+  try {
+    if (useOpenAI) {
+      const res = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [
+            { role: "system", content: systemPrompt },
+            {
+              role: "user",
+              content: `Evaluate this prompt:\n\n"""${userPrompt}"""`,
+            },
+          ],
+          max_tokens: 512,
+          temperature: 0.3,
+        }),
+      });
+      const data = await res.json();
+      text = data.choices?.[0]?.message?.content ?? "";
+    } else if (process.env.ANTHROPIC_API_KEY) {
+      const Anthropic = (await import("@anthropic-ai/sdk")).default;
+      const anthropic = new Anthropic({
+        apiKey: process.env.ANTHROPIC_API_KEY,
+      });
+      const response = await anthropic.messages.create({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 512,
+        temperature: 0.3,
+        system: systemPrompt,
+        messages: [
+          {
+            role: "user",
+            content: `Evaluate this prompt:\n\n"""${userPrompt}"""`,
+          },
+        ],
+      });
+      text =
+        response.content[0].type === "text" ? response.content[0].text : "";
+    } else {
+      throw new Error("No AI API key configured (OPENAI_API_KEY or ANTHROPIC_API_KEY)");
+    }
+
     const cleaned = text.replace(/```json?\n?/g, "").replace(/```/g, "").trim();
     const parsed = JSON.parse(cleaned);
 

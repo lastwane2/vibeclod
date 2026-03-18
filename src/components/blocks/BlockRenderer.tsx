@@ -9,6 +9,7 @@ import { DebugBlock } from "./DebugBlock";
 import { ReviewBlock } from "./ReviewBlock";
 import { ExperimentBlock } from "./ExperimentBlock";
 import { PatternBlock } from "./PatternBlock";
+import { AuditBlock } from "./AuditBlock";
 
 interface Props {
   block: Block;
@@ -45,6 +46,9 @@ export function BlockRenderer({ block, worldColor, completed, completionData, co
       )}
       {block.type === "pattern" && (
         <PatternBlock block={block} worldColor={worldColor} completed={completed} onComplete={onComplete} />
+      )}
+      {block.type === "audit" && (
+        <AuditBlock block={block} worldColor={worldColor} completed={completed} onComplete={onComplete} />
       )}
     </>
   );

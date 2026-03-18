@@ -10,7 +10,8 @@ export type BlockType =
   | "debug"
   | "review"
   | "experiment"
-  | "pattern";
+  | "pattern"
+  | "audit";
 
 export type ScaffoldLevel = "full" | "template" | "hints" | "none";
 
@@ -23,6 +24,7 @@ export const BLOCK_ICONS: Record<BlockType, string> = {
   review: "🔍",
   experiment: "🧪",
   pattern: "📚",
+  audit: "🛡️",
 };
 
 export const BLOCK_LABELS: Record<BlockType, string> = {
@@ -34,6 +36,7 @@ export const BLOCK_LABELS: Record<BlockType, string> = {
   review: "Review",
   experiment: "Experiment",
   pattern: "Pattern",
+  audit: "Audit",
 };
 
 // ─── Base Block ────────────────────────
@@ -172,6 +175,24 @@ export interface PatternBlock extends BaseBlock {
   };
 }
 
+// ─── Audit Block ─────────────────────
+
+export interface AuditCheckItem {
+  id: string;
+  category: "security" | "performance" | "ux" | "seo" | "code-quality";
+  title: string;
+  description: string;
+  severity: "critical" | "warning" | "suggestion";
+  howToCheck: string;
+}
+
+export interface AuditBlock extends BaseBlock {
+  type: "audit";
+  description: string;
+  checklist: AuditCheckItem[];
+  minPassed: number;
+}
+
 // ─── Union Type ────────────────────────
 
 export type Block =
@@ -182,7 +203,8 @@ export type Block =
   | DebugBlock
   | ReviewBlock
   | ExperimentBlock
-  | PatternBlock;
+  | PatternBlock
+  | AuditBlock;
 
 // ─── Block Completion Data ─────────────
 
@@ -211,6 +233,7 @@ const DEFAULT_MINUTES: Record<BlockType, number> = {
   review: 2,
   experiment: 2,
   pattern: 1,
+  audit: 5,
 };
 
 export function getBlockMinutes(block: BaseBlock): number {
