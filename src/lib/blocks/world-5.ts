@@ -625,7 +625,7 @@ export default function Counter() {
     required: true,
     order: 3,
     mission:
-      "Build a complete Next.js app: 5+ pages, shared layout, loading/error states, Tailwind, TypeScript, clean architecture.",
+      "Build a complete Next.js app: 5+ pages, shared layout, loading/error states, Tailwind, TypeScript, clean architecture.\n\nSuggested project: TaskFlow on Next.js (file routing, server components, loading states)",
     githubChecks: {
       hasPackageJson: true,
       fileExists: ["src/app/layout.tsx"],

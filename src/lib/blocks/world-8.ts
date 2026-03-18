@@ -36,7 +36,15 @@ You **NEVER** touch credit cards. Here's how it actually works:
 
 - Credit cards, security, fraud detection, receipts, refunds
 
-You never see a credit card number. Stripe does all the scary stuff.`,
+You never see a credit card number. Stripe does all the scary stuff.
+
+## Common Gotcha: Webhook URL
+
+The #1 reason payments "work locally but not in production" is a **wrong webhook URL** in Stripe's dashboard.
+
+Your webhook endpoint lives at \`/api/webhooks/stripe\` — but people often register it as \`/webhooks/stripe\` (missing \`/api/\`). Stripe sends the event, gets a 404, and your user's plan never updates.
+
+**Always double-check:** the webhook URL in Stripe's dashboard must match the **exact path** of your API route file. If your file is at \`src/app/api/webhooks/stripe/route.ts\`, the URL is \`https://yourapp.com/api/webhooks/stripe\`.`,
   },
   {
     id: "L36B2",
@@ -656,7 +664,7 @@ export const config = {
     required: true,
     order: 3,
     mission:
-      "Your app is live, accepting payments, has a complete user experience. Deploy, share, start getting users. This is graduation.",
+      "Your app is live, accepting payments, has a complete user experience. Deploy, share, start getting users. This is graduation.\n\nSuggested project: TaskFlow with payments, landing page, retention",
     githubChecks: {
       hasDeploy: true,
       minFiles: 25,

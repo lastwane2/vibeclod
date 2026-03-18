@@ -318,7 +318,7 @@ Trigger → Result. That's how AI understands what you want.`,
     type: "experiment",
     title: "Break Something, See What Happens",
     xp: 15,
-    required: false,
+    required: true,
     order: 4,
     description:
       "Understanding what happens when things go wrong helps you debug later.",
@@ -372,7 +372,28 @@ After AI generates code, you are the **quality inspector**:
 3. **Check on mobile** — resize the browser window. Does it still look good?
 4. **Compare pages** — is the nav identical? Same fonts and colors?
 
-The vibe coder who tests is the vibe coder who ships working products. The one who doesn't... ships broken ones.`,
+The vibe coder who tests is the vibe coder who ships working products. The one who doesn't... ships broken ones.
+
+## Your Browser Has Superpowers: DevTools
+
+Your browser has a built-in toolkit that makes verification 10x easier. Right-click anywhere on a page and click **Inspect** (or press F12).
+
+### Console tab
+Shows **errors** in red. If a button does nothing, the Console usually tells you why. This is the first place to look when something breaks.
+
+### Elements tab
+Shows the **HTML structure** of the page. You can see every element, its classes, and its styles. Great for checking if AI put the right CSS on things.
+
+### Network tab
+Shows every **request** your page makes — API calls, images, scripts. If data isn't loading, check here to see if the request failed (red = bad).
+
+### How to use it
+1. Right-click → **Inspect** (or press F12)
+2. **Console** for errors
+3. **Elements** for HTML/CSS inspection
+4. **Network** for API calls and loading issues
+
+DevTools is your verification superpower. Use it every time you test AI-generated code.`,
     miniQuiz: [
       {
         question: "What should you do AFTER AI generates code?",
@@ -597,7 +618,7 @@ The vibe coder who tests is the vibe coder who ships working products. The one w
     required: true,
     order: 2,
     mission:
-      "Build a complete portfolio: hero, about, 2+ projects, contact form, responsive. Your first real ship.",
+      "Build a complete portfolio: hero, about, 2+ projects, contact form, responsive. Your first real ship.\n\nSuggested project: TaskFlow landing page (hero, features, contact form)",
     githubChecks: {
       fileExists: ["index.html"],
       fileContains: [
@@ -620,7 +641,7 @@ The vibe coder who tests is the vibe coder who ships working products. The one w
     type: "theory",
     title: "What You Just Built",
     xp: 10,
-    required: false,
+    required: true,
     order: 3,
     content: `# What You Just Built
 

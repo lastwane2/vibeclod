@@ -177,7 +177,13 @@ The API is down, the internet cut out, or the request was bad. Show a message an
 
 **Good prompt:** "Fetch users from the API. Show a loading spinner while fetching, display them in a grid on success, show an error message with a retry button on failure."
 
-One extra sentence. Massively better result.`,
+One extra sentence. Massively better result.
+
+## How Data Fetching Works Under the Hood
+
+When you tell AI "fetch users when the page loads", it uses \`useEffect\` — the same automatic side effect concept from World 3. The component loads → useEffect fires → data arrives → component re-renders with the data.
+
+You don't need to write this, but knowing the pattern helps you debug: if data isn't showing, the issue is usually in the fetch (wrong URL), the state update (wrong variable), or the render (not handling loading/error).`,
     miniQuiz: [
       {
         question: "How many states does every data request have?",
@@ -679,7 +685,7 @@ Start with Step 1 only.`,
     required: true,
     order: 3,
     mission:
-      "Build a polished dashboard: sidebar nav, 4+ pages, stat cards, data table, responsive design, TypeScript. Think admin panel or analytics dashboard.",
+      "Build a polished dashboard: sidebar nav, 4+ pages, stat cards, data table, responsive design, TypeScript. Think admin panel or analytics dashboard.\n\nSuggested project: TaskFlow dashboard with routing, API data, TypeScript",
     githubChecks: {
       hasPackageJson: true,
       fileContains: [

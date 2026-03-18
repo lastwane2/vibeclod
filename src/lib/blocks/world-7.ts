@@ -58,7 +58,18 @@ Think of it like a **safe**. Your code is a public blueprint anyone can read. En
 
 ## In your prompts
 
-Tell AI: "Read all secrets from environment variables. Create a .env.example listing what's needed with placeholder values."`,
+Tell AI: "Read all secrets from environment variables. Create a .env.example listing what's needed with placeholder values."
+
+## Common Gotcha: Accidentally Pushing .env
+
+If you accidentally commit a \`.env\` file with real secrets:
+
+1. **Immediately rotate ALL exposed keys** — generate new ones from each service (GitHub, Stripe, database provider)
+2. Remove it from git: \`git rm --cached .env\`
+3. Add \`.env\` to \`.gitignore\`
+4. Commit the fix
+
+**Warning:** Even after removing the file, the old secrets are still in your git history. Anyone with repo access can find them. That's why step 1 (rotating keys) is the most critical step.`,
     miniQuiz: [
       {
         question: "Where should database passwords be stored?",
@@ -104,6 +115,42 @@ Tell AI: "Read all secrets from environment variables. Create a .env.example lis
     aiReviewPrompt:
       "Check for deployment config (vercel.json, railway.toml, or Dockerfile), .env.example file, no hardcoded secrets.",
     passingScore: 50,
+  },
+
+  {
+    id: "L31B5",
+    levelId: 31,
+    type: "theory",
+    title: "What Does It Actually Cost?",
+    xp: 10,
+    required: true,
+    order: 5,
+    content: `# What Does It Actually Cost?
+
+Before you launch, know what you're signing up for financially.
+
+## The Real Numbers
+
+| Service | Free Tier | Paid |
+|---------|-----------|------|
+| **Hosting** (Vercel) | Free for hobby | ~$20/mo Pro |
+| **Hosting** (Railway) | $5 free credit | $5-20/mo |
+| **Database** (Vercel Postgres) | Free 256MB | ~$20/mo |
+| **Database** (Supabase) | Free 500MB | $25/mo Pro |
+| **Domain** | — | $10-15/year |
+| **Stripe fees** | — | 2.9% + $0.30 per transaction |
+| **Email** (Resend) | 100/day free | $20/mo |
+| **Analytics** (PostHog) | 1M events free | $0 for most indie projects |
+
+## The Bottom Line
+
+- **To start:** $0-5/month (free tiers cover everything)
+- **At scale:** $20-50/month (when you outgrow free tiers)
+- **Domain:** $10-15/year (optional but professional)
+
+You can launch a real SaaS for essentially **free**. The cost only grows when your users do — and by then, they should be paying you.
+
+Don't let cost anxiety stop you from shipping. Start free, upgrade when revenue justifies it.`,
   },
 
   // ─── Level 32: When Things Break (4 blocks) ───
@@ -509,7 +556,7 @@ Console output: No errors, no warnings — it just silently doesn't track`,
     type: "experiment",
     title: "Test Like a User",
     xp: 15,
-    required: false,
+    required: true,
     order: 4,
     description: "Test your app the way a real user would.",
     steps: [
@@ -635,7 +682,7 @@ Console output: No errors, no warnings — it just silently doesn't track`,
     required: true,
     order: 3,
     mission:
-      "Production-ready app: deployed, error handling, SEO, analytics, mobile responsive, polished UI. Would you share this URL publicly?",
+      "Production-ready app: deployed, error handling, SEO, analytics, mobile responsive, polished UI. Would you share this URL publicly?\n\nSuggested project: TaskFlow deployed, polished, SEO, analytics",
     githubChecks: {
       hasDeploy: true,
       minFiles: 20,

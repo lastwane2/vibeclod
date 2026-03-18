@@ -307,7 +307,24 @@ Every commit = a save. You can always go back to any previous save. And each sav
 2. **See what changed** — compare any two saves to see the differences
 3. **Required for deployment** — services like Vercel and Railway pull your code from GitHub
 
-Without git, one bad edit could destroy hours of work with no way back. With git, you always have a safety net.`,
+Without git, one bad edit could destroy hours of work with no way back. With git, you always have a safety net.
+
+## Common Gotcha: .env Files
+
+Your \`.env\` file contains **secrets** — database passwords, API keys, auth tokens. If you commit it to git, anyone who can see your repo can steal your credentials.
+
+**Always** add \`.env\` to your \`.gitignore\` file. Create a \`.env.example\` with placeholder values so others know what variables are needed — but NEVER commit real secrets.`,
+    miniQuiz: [
+      {
+        question: "What should NEVER be committed to git?",
+        options: [
+          "package.json",
+          ".env files containing real API keys and passwords",
+          "README.md",
+        ],
+        correctIndex: 1,
+      },
+    ],
   },
   {
     id: "L8B2",
@@ -525,7 +542,7 @@ This is how real products get built. Not in one giant leap, but in small loops: 
     type: "experiment",
     title: "The Complete Loop",
     xp: 15,
-    required: false,
+    required: true,
     order: 4,
     description:
       "Do the full workflow end-to-end.",
@@ -661,7 +678,7 @@ This is how real products get built. Not in one giant leap, but in small loops: 
     required: true,
     order: 3,
     mission:
-      "Set up a complete project from scratch: npm, git, organized folders, README, .gitignore, at least 5 meaningful commits.",
+      "Set up a complete project from scratch: npm, git, organized folders, README, .gitignore, at least 5 meaningful commits.\n\nSuggested project: TaskFlow with npm, git, organized folders",
     githubChecks: {
       hasPackageJson: true,
       fileExists: [".gitignore", "README.md"],

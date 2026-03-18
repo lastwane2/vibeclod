@@ -55,6 +55,28 @@ export const PROMPT_PATTERNS: PromptPattern[] = [
     whenToUse: "When AI-generated styling looks generic or you want a specific look.",
   },
 
+  {
+    id: "project-setup",
+    name: "Project Setup Pattern",
+    description: "Scaffold a new project with clear structure",
+    worldId: 1,
+    chapter: 1,
+    template: `Set up a new project:
+- Name: [project name]
+- Tech: [languages, frameworks, tools]
+- Structure: [folders and key files]
+- Features: [core features for MVP]
+- Styling: [design approach, colors, fonts]`,
+    example: `Set up a new project:
+- Name: recipe-app
+- Tech: HTML, CSS, JavaScript
+- Structure: index.html, styles.css, app.js, /images folder
+- Features: recipe cards with image and ingredients, search bar that filters recipes, favorites button
+- Styling: warm earthy tones, card-based layout, Google Fonts (Poppins), responsive grid`,
+    whenToUse:
+      "When starting any new project from scratch. Plan the structure before writing code.",
+  },
+
   // ── Chapter 2: World 2 — Build Mode ──
   {
     id: "component-request",
@@ -120,6 +142,32 @@ Start with Step 1 only.`,
     whenToUse: "When a task is too big for one prompt. Always break it down.",
   },
 
+  {
+    id: "iteration-pattern",
+    name: "Iteration Pattern",
+    description: "Fix specific problems in AI output",
+    worldId: 2,
+    chapter: 2,
+    template: `The output has this problem:
+[describe what's wrong]
+
+Expected behavior:
+[what it should do instead]
+
+Please fix by:
+[specific fix approach]`,
+    example: `The output has this problem:
+The product cards are all copy-pasted HTML with hardcoded data instead of reusable components.
+
+Expected behavior:
+A single ProductCard component that takes props (title, price, image), rendered in a loop over a products array.
+
+Please fix by:
+Creating a ProductCard component that accepts title, price, and image as props, then mapping over a products array to render them.`,
+    whenToUse:
+      "When AI's output is close but has specific issues. Don't regenerate from scratch — iterate on what you have.",
+  },
+
   // ── Chapter 3: World 3 — Full Stack ──
   {
     id: "database-schema",
@@ -180,7 +228,7 @@ Include: id, createdAt, updatedAt, proper types, indexes on foreign keys`,
   {
     id: "integration-pattern",
     name: "Integration Pattern",
-    description: "Connect frontend to backend",
+    description: "Connect frontend to backend (reference pattern — available without unlock)",
     worldId: 3,
     chapter: 3,
     template: `Connect [component] to [API endpoint]:
@@ -270,7 +318,7 @@ Console output: no errors, no logs`,
   {
     id: "performance-pattern",
     name: "Performance Pattern",
-    description: "Optimize with specific constraints",
+    description: "Optimize with specific constraints (reference pattern — available without unlock)",
     worldId: 4,
     chapter: 4,
     template: `Optimize [component/page/route] for performance:

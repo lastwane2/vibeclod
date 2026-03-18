@@ -194,7 +194,24 @@ Always describe the **trigger** AND the **result**:
 | Hover element | Show tooltip, change color |
 | Scroll page | Load more items, show/hide header |
 
-Every interactive element needs both halves: **what triggers it** and **what happens**.`,
+Every interactive element needs both halves: **what triggers it** and **what happens**.
+
+## Side Effects — When Components Do Things Automatically
+
+Events are things users trigger. But some things happen **automatically** — like fetching data when a page loads or starting a timer.
+
+These are called **side effects**, and React uses \`useEffect\` for them.
+
+**Think of it this way:**
+- **Events** = you press a button (manual)
+- **Effects** = your alarm goes off at 7am (automatic)
+
+Common use cases:
+- **Fetch data** when a page loads
+- **Update the page title** when something changes
+- **Start a timer** and clean it up when the page closes
+
+You don't write useEffect yourself — just tell AI: **"When the page loads, fetch users from the API"** and AI uses useEffect behind the scenes.`,
     miniQuiz: [
       {
         question: "What's missing from the prompt: \"add a button\"?",
@@ -408,7 +425,23 @@ One 500-line file instead of organized components. If a file is doing more than 
 
 ## Your job
 
-You're the **quality inspector**. Spot these patterns, then tell AI specifically what to fix.`,
+You're the **quality inspector**. Spot these patterns, then tell AI specifically what to fix.
+
+## Reading AI's Code
+
+You don't need to write code, but you DO need to **scan** it. Here's how:
+
+### 1. Find the return statement
+Scroll to the \`return (\` line — that's where the UI lives. Everything inside is what the user sees.
+
+### 2. Spot the components
+Look for capitalized tags like \`<Header />\`, \`<TaskCard />\`. These are the building blocks. Each one should do ONE thing.
+
+### 3. Change simple things yourself
+Want to change a color? Find \`bg-blue-500\` and change \`blue\` to \`red\`. Want different text? Find the string in quotes and edit it. Small edits are faster than re-prompting.
+
+### 4. Understand imports
+The top of the file shows \`import ... from ...\` lines. These tell you what external pieces the component uses. If something is missing, the import is probably wrong.`,
   },
   {
     id: "L14B2",
@@ -646,7 +679,7 @@ Please fix by: creating a ProductCard component that accepts title, price, and i
     required: true,
     order: 3,
     mission:
-      "Build a polished React + Tailwind app: 3+ views/sections, interactive components, responsive design. Think: recipe app, task list, weather dashboard, movie browser.",
+      "Build a polished React + Tailwind app: 3+ views/sections, interactive components, responsive design. Think: recipe app, task list, weather dashboard, movie browser.\n\nSuggested project: TaskFlow React app (TaskCard, TaskList, AddTask components)",
     githubChecks: {
       hasPackageJson: true,
       fileContains: [

@@ -164,7 +164,34 @@ Like a **translator at a UN conference** — you speak your language, the databa
 
 ## In your prompts
 
-Tell AI: "Add Prisma with these models..." and describe your data in plain English. Prisma turns your description into a working database.`,
+Tell AI: "Add Prisma with these models..." and describe your data in plain English. Prisma turns your description into a working database.
+
+## When Your Schema Changes
+
+You WILL change your schema — adding fields, removing models, renaming things. When you do:
+
+1. Edit \`prisma/schema.prisma\`
+2. Run \`npx prisma migrate dev --name describe-what-changed\`
+3. Prisma updates your database to match the new schema
+
+**Common gotchas:**
+- **Adding a required field** to a table that already has data? Prisma will ask for a default value. Add \`@default(...)\` or make the field optional first.
+- **Deleting a model** that other models reference? Remove the references first, then delete.
+- **Stuck in a bad state?** During development, \`npx prisma migrate reset\` wipes everything and starts fresh. Only use this in dev — never in production.
+
+Think of migrations like version control for your database. Each migration is a save point, just like git commits.`,
+    miniQuiz: [
+      {
+        question:
+          "What command do you run after changing your Prisma schema?",
+        options: [
+          "npm run build",
+          "npx prisma migrate dev --name describe-change",
+          "git push",
+        ],
+        correctIndex: 1,
+      },
+    ],
   },
   {
     id: "L27B2",
@@ -386,7 +413,16 @@ Without auth, anyone could see everyone's data. With auth, each user sees only *
 1. **Authentication** = "Who are you?" (login/signup)
 2. **Authorization** = "What can you do?" (permissions)
 
-Most apps start with just authentication. Authorization comes later when you have different user roles (admin, member, viewer).`,
+Most apps start with just authentication. Authorization comes later when you have different user roles (admin, member, viewer).
+
+## Common Gotcha: Callback URL Mismatch
+
+OAuth providers (GitHub, Google) require you to register a **callback URL** — the exact address your app lives at. This is the #1 auth bug in production:
+
+- **Locally** it's \`http://localhost:3000/api/auth/callback/github\`
+- **In production** it's \`https://yourapp.vercel.app/api/auth/callback/github\`
+
+If these don't match what you registered on GitHub, auth **silently fails**. When you deploy, update the callback URL in your OAuth provider's settings.`,
   },
   {
     id: "L29B2",
@@ -473,6 +509,46 @@ Tell AI: "Add NextAuth with GitHub OAuth provider." That single sentence gets yo
     aiReviewPrompt:
       "Check for auth: sign-in page, sign-out functionality, session handling, protected routes that redirect unauthenticated users, user profile display.",
     passingScore: 55,
+  },
+
+  {
+    id: "L29B5",
+    levelId: 29,
+    type: "experiment",
+    title: "Set Up GitHub OAuth",
+    xp: 15,
+    required: true,
+    order: 5,
+    description:
+      "Walk through creating a real GitHub OAuth app — the step that blocks most beginners.",
+    steps: [
+      {
+        id: "L29B5S1",
+        instruction:
+          "Go to GitHub → Settings → Developer settings → OAuth Apps → New OAuth App. Fill in: Application name (your app name), Homepage URL (http://localhost:3000), Authorization callback URL (http://localhost:3000/api/auth/callback/github). Click Register.",
+        expectedOutcome:
+          "GitHub creates your OAuth app and shows you a Client ID.",
+        question: "Do you see a Client ID on the screen?",
+      },
+      {
+        id: "L29B5S2",
+        instruction:
+          "Click 'Generate a new client secret'. Copy both the Client ID and the Client Secret immediately — the secret is only shown once.",
+        expectedOutcome:
+          "You have both values copied. The secret will be hidden if you leave the page.",
+        question:
+          "Did you copy both values? The secret cannot be viewed again after you leave.",
+      },
+      {
+        id: "L29B5S3",
+        instruction:
+          "Create a `.env.local` file in your project root (if it doesn't exist). Add:\n\nGITHUB_ID=your_client_id_here\nGITHUB_SECRET=your_client_secret_here\nNEXTAUTH_SECRET=run-`openssl rand -base64 32`-to-generate\nNEXTAUTH_URL=http://localhost:3000\n\nMake sure `.env.local` is in your `.gitignore`.",
+        expectedOutcome:
+          "Your `.env.local` has all 4 variables. NextAuth can now use GitHub for sign-in.",
+        question:
+          "Is `.env.local` in your `.gitignore`? Never commit real secrets.",
+      },
+    ],
   },
 
   // ─── Level 30: Full Stack Boss (3 blocks) ───
@@ -568,7 +644,7 @@ Tell AI: "Add NextAuth with GitHub OAuth provider." That single sentence gets yo
     required: true,
     order: 3,
     mission:
-      "Build a complete SaaS: auth, database with relations, CRUD API, 3+ pages, responsive UI. Users sign in, create data, see their data.",
+      "Build a complete SaaS: auth, database with relations, CRUD API, 3+ pages, responsive UI. Users sign in, create data, see their data.\n\nSuggested project: TaskFlow SaaS (Prisma DB, auth, CRUD API)",
     githubChecks: {
       hasPackageJson: true,
       fileExists: ["prisma/schema.prisma", "src/app/layout.tsx"],
