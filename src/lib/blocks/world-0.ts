@@ -131,30 +131,24 @@ That's it. **GitHub + AI tool + browser.** Let's set them up.`,
     xp: 5,
     required: true,
     order: 4,
-    content: `# Set Up Claude Code
+    content: `# Set Up Your AI Coding Tool
 
-Claude Code is an AI that lives in your terminal. You describe what you want, it writes the code, edits your files, and pushes to GitHub — all automatically.
+You need a tool where AI writes code for you. We recommend **Claude Code** — it runs in your terminal, writes files directly, and pushes to GitHub automatically.
 
-## Install It
+## Claude Code
 
-Open your terminal and run:
+Follow the official setup guide: **[docs.anthropic.com/claude-code](https://docs.anthropic.com/en/docs/claude-code/overview)**
 
-\`\`\`
-npm install -g @anthropic-ai/claude-code
-\`\`\`
-
-Then start it inside your project folder:
+Once installed, start it inside your project folder:
 
 \`\`\`
 cd your-repo-folder
 claude
 \`\`\`
 
-That's it. You're in a conversation with an AI that can write and run code.
-
 ## Make It Push Automatically
 
-Create a file called **CLAUDE.md** in your project root. This file tells Claude Code how to behave. Add this:
+Create a file called **CLAUDE.md** in your project root. This tells Claude Code how to behave:
 
 \`\`\`
 # Project Rules
@@ -164,11 +158,11 @@ Create a file called **CLAUDE.md** in your project root. This file tells Claude 
 - Keep code clean and simple
 \`\`\`
 
-Now every time Claude Code makes changes, it will commit and push for you. No manual git commands needed.
+Now every time Claude Code makes changes, it will commit and push for you.
 
 ## Using a Different Tool?
 
-If you prefer **Cursor**, **Windsurf**, or another AI coding tool — that's totally fine. You'll just need to commit and push manually:
+**Cursor**, **Windsurf**, or any other AI coding tool works too. You'll just need to commit and push manually:
 
 \`\`\`
 git add .
