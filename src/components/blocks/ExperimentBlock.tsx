@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import type { ExperimentBlock as ExperimentBlockType } from "@/types/blocks";
 
 interface Props {
@@ -70,7 +71,9 @@ export function ExperimentBlock({ block, worldColor, completed, onComplete }: Pr
             </button>
             <div className="flex-1">
               <p className="text-xs font-bold text-[#8B7355] uppercase">Step {i + 1}</p>
-              <p className="text-sm text-[#2D2016] mt-1">{step.instruction}</p>
+              <div className="text-sm text-[#2D2016] mt-1 prose prose-sm max-w-none prose-img:rounded-lg prose-img:border prose-img:border-[#E8E0D4] prose-img:my-2 prose-code:bg-[#F5F0E8] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-[#2D2016] prose-pre:bg-[#2D2016] prose-pre:text-[#F5F0E8] prose-pre:rounded-lg prose-strong:text-[#2D2016]">
+                <ReactMarkdown>{step.instruction}</ReactMarkdown>
+              </div>
               <p className="text-xs text-[#8B7355] mt-1.5 italic">
                 Expected: {step.expectedOutcome}
               </p>
