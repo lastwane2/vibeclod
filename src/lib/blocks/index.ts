@@ -1,4 +1,5 @@
 import type { Block } from "@/types/blocks";
+import { WORLD_0_BLOCKS } from "./world-0";
 import { WORLD_1_BLOCKS } from "./world-1";
 import { WORLD_2_BLOCKS } from "./world-2";
 import { WORLD_3_BLOCKS } from "./world-3";
@@ -9,6 +10,7 @@ import { WORLD_7_BLOCKS } from "./world-7";
 import { WORLD_8_BLOCKS } from "./world-8";
 
 export const ALL_BLOCKS: Block[] = [
+  ...WORLD_0_BLOCKS,
   ...WORLD_1_BLOCKS,
   ...WORLD_2_BLOCKS,
   ...WORLD_3_BLOCKS,

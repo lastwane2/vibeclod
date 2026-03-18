@@ -20,7 +20,7 @@ const STEPS = [
   },
   {
     title: "Ready to start?",
-    desc: "World 1 teaches you vibe coding basics. By the end, you'll have a real webpage live on the internet. Let's go!",
+    desc: "First, we'll set up your tools — GitHub, AI coding tool, and connect your repo. Takes 5 minutes, then you're building!",
     buddy: "celebrate" as const,
   },
 ];
@@ -70,7 +70,7 @@ export function WelcomeModal({ onStart }: WelcomeModalProps) {
             onClick={onStart}
             className="w-full rounded-xl bg-[#E8A445] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#E8A445]/30 hover:bg-[#D4932E] transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            Start Level 1
+            Set Up My Tools
           </button>
         )}
 

@@ -66,7 +66,7 @@ export function DashboardClient({
   const handleWelcomeDone = () => {
     setShowWelcome(false);
     localStorage.setItem("vibeclod_onboarded", "1");
-    router.push("/level/1");
+    router.push("/level/0");
   };
 
   // Re-fetch server data when the user navigates back (e.g. after level completion)
@@ -122,7 +122,7 @@ export function DashboardClient({
             <h1 className="text-lg sm:text-xl font-bold text-[#2D2016]">Your Path</h1>
             <p className="text-[11px] sm:text-xs text-[#8B7355]">
               {completedLevelIds.length === 0
-                ? "Start your journey — complete Level 1"
+                ? "Start your journey — set up your tools"
                 : `${completedLevelIds.length}/40 levels completed`}
             </p>
           </div>

@@ -8,6 +8,15 @@ import { getBlocksForLevel } from "@/lib/blocks";
 
 export const WORLDS: World[] = [
   {
+    id: 0,
+    title: "Setup",
+    subtitle: "Get your tools ready",
+    color: "#71717A",
+    accentColor: "#52525B",
+    icon: "⚙️",
+    requiredPlan: "FREE",
+  },
+  {
     id: 1,
     title: "Hello, Vibe",
     subtitle: "Your first build with AI",
@@ -82,6 +91,36 @@ export const WORLDS: World[] = [
 ];
 
 export const LEVELS: Level[] = [
+  // ═══════════════════════════════════════
+  // WORLD 0 — Setup (L0) — FREE
+  // GitHub, Claude Code, repo connection
+  // ═══════════════════════════════════════
+  {
+    id: 0,
+    worldId: 0,
+    title: "Get Ready",
+    subtitle: "Set up GitHub, AI tools, and your repo",
+    type: "setup",
+    xp: 40,
+    duration: "10 min",
+    teaches:
+      "How to set up your GitHub account, connect a repo, and configure your AI coding tool.",
+    concepts: [
+      "GitHub stores your code online",
+      "Claude Code (or any AI tool) writes code for you",
+      "CLAUDE.md makes Claude Code auto-push to GitHub",
+    ],
+    mission:
+      "Create a GitHub repo, connect it to vibeclod, set up your AI coding tool, and verify the full loop works.",
+    githubChecks: {
+      minCommits: 1,
+    },
+    aiReviewPrompt:
+      "Check that the student has a connected GitHub repo with at least one commit. This is a setup level — any valid repo connection counts as passing.",
+    passingScore: 50,
+    buddyMood: "idle",
+    icon: "⚙️",
+  },
   // ═══════════════════════════════════════
   // WORLD 1 — Hello, Vibe (L1-5) — FREE
   // The basic loop: prompt → generate → push
