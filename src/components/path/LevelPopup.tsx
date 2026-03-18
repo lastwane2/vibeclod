@@ -171,7 +171,7 @@ export function LevelPopup({ level, onClose, onVerify, hasRepo }: LevelPopupProp
                     </span>
                   )}
                 </div>
-              ) : !hasRepo ? (
+              ) : !hasRepo && level.worldId !== 0 ? (
                 <a
                   href="/settings"
                   className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#F5EDE0] text-[#8B7355] text-sm font-semibold hover:bg-[#EDE5D8] transition-colors"
