@@ -75,6 +75,23 @@ export function trackRepoConnect() {
   });
 }
 
+/** User clicked a CTA on the landing page */
+export function trackLandingCTA(label: string) {
+  trackEvent({
+    action: "landing_cta_click",
+    category: "conversion",
+    label,
+  });
+}
+
+/** User clicked "Continue with GitHub" on the login page */
+export function trackGitHubLoginClick() {
+  trackEvent({
+    action: "github_login_click",
+    category: "auth",
+  });
+}
+
 /** Build verification attempt */
 export function trackVerifyAttempt(levelId: number, passed: boolean) {
   trackEvent({

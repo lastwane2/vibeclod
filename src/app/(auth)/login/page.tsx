@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { PixelCharacter } from "@/components/pixel-buddy/PixelCharacter";
+import { trackGitHubLoginClick } from "@/lib/analytics";
 
 export default function LoginPage() {
   return (
@@ -29,7 +30,10 @@ export default function LoginPage() {
           </div>
 
           <button
-            onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+            onClick={() => {
+              trackGitHubLoginClick();
+              signIn("github", { callbackUrl: "/dashboard" });
+            }}
             className="flex w-full items-center justify-center gap-3 rounded-xl bg-[#2D2016] px-4 py-3.5 text-sm font-semibold text-white hover:bg-[#4A3728] transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
           >
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, useRef, type ReactNode } from "react";
 import { WORLDS, LEVELS } from "@/lib/levels";
+import { trackLandingCTA } from "@/lib/analytics";
 
 // ─── Typewriter ─────────────────────────────────────────────
 
@@ -193,6 +194,7 @@ export default function LandingPage() {
             </a>
             <Link
               href="/login"
+              onClick={() => trackLandingCTA("nav_start_free")}
               className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#09090B] hover:bg-white/90 transition-colors min-h-[44px] flex items-center"
             >
               Start Free
@@ -252,6 +254,7 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href="/login"
+                onClick={() => trackLandingCTA("hero_start_building")}
                 className="group w-full sm:w-auto rounded-xl bg-[#E8A445] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#E8A445]/20 hover:shadow-[#E8A445]/40 hover:brightness-110 transition-all active:scale-[0.98] min-h-[48px] flex items-center justify-center gap-2"
               >
                 Start Building — Free
@@ -613,6 +616,7 @@ export default function LandingPage() {
               </ul>
               <Link
                 href="/login"
+                onClick={() => trackLandingCTA("pricing_free")}
                 className="block w-full rounded-xl border border-white/10 py-3 text-center text-sm font-semibold text-white/70 hover:text-white hover:border-white/20 hover:bg-white/[0.05] transition-all min-h-[44px]"
               >
                 Start Free
@@ -665,6 +669,7 @@ export default function LandingPage() {
                 </ul>
                 <Link
                   href="/login"
+                  onClick={() => trackLandingCTA("pricing_pro")}
                   className="block w-full rounded-xl bg-[#E8A445] py-3 text-center text-sm font-bold text-white shadow-lg shadow-[#E8A445]/25 hover:brightness-110 transition-all min-h-[44px]"
                 >
                   Unlock Everything — $29
@@ -745,6 +750,7 @@ export default function LandingPage() {
         <Reveal delay={200}>
           <Link
             href="/login"
+            onClick={() => trackLandingCTA("footer_start_free")}
             className="relative inline-flex items-center justify-center gap-2 rounded-xl bg-[#E8A445] px-10 py-4 text-base font-bold text-white shadow-lg shadow-[#E8A445]/20 hover:shadow-[#E8A445]/40 hover:brightness-110 transition-all active:scale-[0.98] min-h-[48px]"
           >
             Start Free — No credit card
