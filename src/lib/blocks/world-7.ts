@@ -1,696 +1,550 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 7 — Ship It (Levels 31-35)
-// Deploy, errors, SEO, analytics, polish
-// Scaffold: "none" for prompt blocks
+// World 7 — Don't Get Hacked (Levels 23-25)
+// Security, .env, legal
 // ═══════════════════════════════════════
 
 export const WORLD_7_BLOCKS: Block[] = [
-  // ─── Level 31: Going Live (4 blocks) ───
+  // ─── Level 23: Top 5 Vibe Code Fails (4 blocks) ───
   {
-    id: "L31B1",
-    levelId: 31,
+    id: "L23B1",
+    levelId: 23,
     type: "theory",
-    title: "Deployment = Your App on the Internet",
+    title: "The Top 5 Security Mistakes",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Deployment = Your App on the Internet
+    content: `# 45% of AI-Generated Code Has Security Flaws
 
-Right now your app lives on your laptop. Deployment puts it on the internet so **ANYONE** with the URL can use it.
+That's not a scare tactic — it's a real statistic. AI writes code that WORKS but doesn't think about security. Your job: catch these before someone exploits them.
 
-It's like the difference between a manuscript on your desk and a printed book in stores.
+## Mistake #1: Secrets in Code
 
-## Platforms
+AI sometimes hardcodes API keys directly in source files:
+\`\`\`javascript
+// NEVER do this — anyone can see it on GitHub
+const stripe = new Stripe('sk_live_abc123...');
+\`\`\`
 
-- **Vercel** — best for Next.js, free tier, made by the Next.js team
-- **Railway** — good for full-stack + database
-- **Netlify** — great for static sites
+**Fix:** Always use environment variables (\`.env.local\`).
 
-## The process
+## Mistake #2: No Auth on API Routes
 
-1. Connect your GitHub repo to the platform
-2. Platform builds your app
-3. You get a URL
+AI protects the UI (hides buttons) but forgets the API:
+\`\`\`javascript
+// Anyone can call this directly with curl
+export async function GET() {
+  return Response.json(await db.query('SELECT * FROM users'));
+}
+\`\`\`
 
-That's it. Push code → it's live.`,
-  },
-  {
-    id: "L31B2",
-    levelId: 31,
-    type: "theory",
-    title: "Secrets Stay Secret",
-    xp: 10,
-    required: true,
-    order: 2,
-    content: `# Secrets Stay Secret
+**Fix:** Check session/auth at the start of every API route.
 
-Your app has secrets: database password, API keys, auth tokens. These should **NEVER** be in your code.
+## Mistake #3: No Input Validation
 
-If they're in code → anyone on GitHub can see them → your database gets hacked. It happens every day.
+AI trusts all input:
+\`\`\`javascript
+// What if someone sends { title: "<script>alert('hacked')</script>" } ?
+const { title } = await request.json();
+await db.insert({ title });
+\`\`\`
 
-## The solution: Environment Variables
+**Fix:** Validate and sanitize all input. Use a library like Zod.
 
-Store secrets in the deployment platform's settings panel — not in your code.
+## Mistake #4: Leaking Error Details
 
-Think of it like a **safe**. Your code is a public blueprint anyone can read. Environment variables are a locked safe with the keys inside.
+\`\`\`javascript
+// Tells attackers your database structure
+catch (error) {
+  return Response.json({ error: error.message });
+}
+\`\`\`
 
-## In your prompts
+**Fix:** Log the real error server-side. Show users a generic message.
 
-Tell AI: "Read all secrets from environment variables. Create a .env.example listing what's needed with placeholder values."
+## Mistake #5: No Rate Limiting
 
-## Common Gotcha: Accidentally Pushing .env
+Without rate limiting, a bot can hit your API 1000 times per second — racking up database costs or brute-forcing passwords.
 
-If you accidentally commit a \`.env\` file with real secrets:
-
-1. **Immediately rotate ALL exposed keys** — generate new ones from each service (GitHub, Stripe, database provider)
-2. Remove it from git: \`git rm --cached .env\`
-3. Add \`.env\` to \`.gitignore\`
-4. Commit the fix
-
-**Warning:** Even after removing the file, the old secrets are still in your git history. Anyone with repo access can find them. That's why step 1 (rotating keys) is the most critical step.`,
+**Fix:** Add rate limiting to public API endpoints (Vercel has built-in options, or use upstash/ratelimit).`,
     miniQuiz: [
       {
-        question: "Where should database passwords be stored?",
+        question: "What's the #1 security mistake in vibe-coded apps?",
         options: [
-          "In environment variables on the deployment platform, never in code",
-          "In a passwords.txt file in the project",
-          "Hardcoded in the database config file",
+          "Using too many npm packages",
+          "Hardcoding secrets (API keys, passwords) in source code that gets pushed to GitHub",
+          "Not using TypeScript",
         ],
-        correctIndex: 0,
+        correctIndex: 1,
       },
     ],
   },
   {
-    id: "L31B3",
-    levelId: 31,
-    type: "prompt",
-    title: "Write a Deployment Prompt",
-    xp: 20,
-    required: true,
-    order: 3,
-    scaffold: "none",
-    goal: "Prepare your app for deployment — config, env vars, build verification",
-    referencePrompt:
-      "Prepare my Next.js app for deployment on Vercel. 1) Ensure all secrets are read from environment variables. 2) Create .env.example listing all required variables with placeholder values. 3) Verify the build passes with npm run build. 4) Add proper production database URL configuration. 5) Fix any TypeScript or build errors.",
-    hints: [
-      "Name the platform",
-      "Mention environment variables",
-      "Include build verification",
-    ],
-    passingThreshold: 3.0,
-  },
-  {
-    id: "L31B4",
-    levelId: 31,
-    type: "build",
-    title: "Deploy Your App",
-    xp: 40,
-    required: true,
-    order: 4,
-    mission:
-      "Deploy your app to Vercel or Railway. Must have deployment config and .env.example.",
-    githubChecks: { hasDeploy: true, commitAfter: "level_start" },
-    aiReviewPrompt:
-      "Check for deployment config (vercel.json, railway.toml, or Dockerfile), .env.example file, no hardcoded secrets.",
-    passingScore: 50,
-  },
-
-  {
-    id: "L31B5",
-    levelId: 31,
+    id: "L23B2",
+    levelId: 23,
     type: "theory",
-    title: "What Does It Actually Cost?",
+    title: "The .env Disaster",
     xp: 10,
-    required: true,
-    order: 5,
-    content: `# What Does It Actually Cost?
-
-Before you launch, know what you're signing up for financially.
-
-## The Real Numbers
-
-| Service | Free Tier | Paid |
-|---------|-----------|------|
-| **Hosting** (Vercel) | Free for hobby | ~$20/mo Pro |
-| **Hosting** (Railway) | $5 free credit | $5-20/mo |
-| **Database** (Vercel Postgres) | Free 256MB | ~$20/mo |
-| **Database** (Supabase) | Free 500MB | $25/mo Pro |
-| **Domain** | — | $10-15/year |
-| **Stripe fees** | — | 2.9% + $0.30 per transaction |
-| **Email** (Resend) | 100/day free | $20/mo |
-| **Analytics** (PostHog) | 1M events free | $0 for most indie projects |
-
-## The Bottom Line
-
-- **To start:** $0-5/month (free tiers cover everything)
-- **At scale:** $20-50/month (when you outgrow free tiers)
-- **Domain:** $10-15/year (optional but professional)
-
-You can launch a real SaaS for essentially **free**. The cost only grows when your users do — and by then, they should be paying you.
-
-Don't let cost anxiety stop you from shipping. Start free, upgrade when revenue justifies it.`,
-  },
-
-  // ─── Level 32: When Things Break (4 blocks) ───
-  {
-    id: "L32B1",
-    levelId: 32,
-    type: "theory",
-    title: "Errors Are Normal",
-    xp: 10,
-    required: true,
-    order: 1,
-    content: `# Errors Are Normal
-
-Every app breaks. The question isn't IF, but **HOW**.
-
-**Bad:** user sees a white screen with "Cannot read property of undefined".
-
-**Good:** user sees "Something went wrong. Click here to try again."
-
-The difference is **error handling**. Think of it like airbags in a car — the crash still happens, but the passenger is protected.
-
-## Next.js safety nets
-
-- **error.tsx** — airbag for crashes (shows friendly message + retry button)
-- **loading.tsx** — shows while waiting for data (skeleton, spinner)
-- **not-found.tsx** — friendly 404 page instead of a blank screen
-
-Create these files → your users never see ugly errors again.`,
-  },
-  {
-    id: "L32B2",
-    levelId: 32,
-    type: "pattern",
-    title: "Error Fix Pattern",
-    xp: 15,
     required: true,
     order: 2,
-    patternId: "error-fix",
-    exercise: {
-      goal: "Use the Error Fix Pattern to describe a bug clearly so AI can solve it",
-      template: `I'm getting this error:
-\`\`\`
-___
-\`\`\`
-Context:
-- File: ___
-- What I was doing: ___
-- What I expected: ___
-- What I tried: ___`,
-      exampleFilled: `I'm getting this error:
-\`\`\`
-Error: "metadata" is not allowed to be exported from a client component. It can only be exported from a Server Component.
-\`\`\`
-Context:
-- File: src/app/dashboard/page.tsx
-- What I was doing: Adding page title and description using the metadata export
-- What I expected: The page should show "Dashboard" as the browser tab title
-- What I tried: I exported a metadata object but the file has "use client" at the top because it has interactive charts`,
-    },
+    content: `# What Happens When .env Leaks
+
+Bots scan every new GitHub commit for secrets. Within **minutes** of pushing a .env file:
+
+1. Bots find your API keys
+2. They use your Stripe key to create test charges (or real ones)
+3. They use your Supabase key to read/delete your entire database
+4. They use your OpenAI key to run up thousands in API costs
+5. You get an email from Stripe/Supabase/OpenAI about suspicious activity
+
+This is not hypothetical. It happens every day.
+
+## Prevention Checklist
+
+1. **.gitignore includes .env** — before your first commit
+2. **.env.example in repo** — with empty values, so others know what's needed
+3. **Secrets in Vercel** — production env vars set in Vercel dashboard
+4. **Never put secrets in NEXT_PUBLIC_ vars** — those are visible in browser JS
+5. **Rotate keys after any exposure** — old keys are compromised forever
+
+## NEXT_PUBLIC_ Warning
+
+In Next.js, any env var starting with \`NEXT_PUBLIC_\` is embedded in the frontend JavaScript. Anyone can see it in browser DevTools.
+
+- \`NEXT_PUBLIC_SUPABASE_URL\` — OK, this is meant to be public
+- \`NEXT_PUBLIC_SUPABASE_ANON_KEY\` — OK, this is the public key
+- \`SUPABASE_SERVICE_ROLE_KEY\` — NEVER add NEXT_PUBLIC_ to this. It bypasses RLS!
+- \`STRIPE_SECRET_KEY\` — NEVER. This gives full access to your Stripe account.
+
+## If You Already Leaked
+
+1. **Rotate ALL keys immediately** — new keys from every service
+2. **Check for damage** — unauthorized charges, data access, API usage
+3. **Add .env to .gitignore** — prevent future leaks
+4. The old keys are compromised forever, even if you delete the file from GitHub (it's in git history)`,
+    miniQuiz: [
+      {
+        question: "What does NEXT_PUBLIC_ prefix mean for environment variables?",
+        options: [
+          "The variable is encrypted and extra secure",
+          "The variable is embedded in frontend JavaScript — anyone can see it in the browser",
+          "The variable is only available during build time",
+        ],
+        correctIndex: 1,
+      },
+    ],
   },
   {
-    id: "L32B3",
-    levelId: 32,
+    id: "L23B3",
+    levelId: 23,
     type: "debug",
-    title: "Fix Real Errors",
-    xp: 25,
+    title: "Close Security Holes",
+    xp: 20,
     required: true,
     order: 3,
     scenarios: [
       {
-        id: "L32B3D1",
-        title: "Unhandled API error",
+        id: "L23B3S1",
+        title: "Exposed API route",
         description:
-          "This API route has no error handling. When the database fails, the server crashes and the client gets a cryptic 500 error.",
-        brokenCode: `import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-
+          "The /api/admin/users route returns all users with their emails and plan status. It has no authentication check. Anyone can call it.",
+        brokenCode: `// api/admin/users/route.ts
 export async function GET() {
-  const tasks = await prisma.task.findMany();
-  return NextResponse.json(tasks);
+  const { data } = await supabase
+    .from('users')
+    .select('id, email, plan, created_at');
+
+  return Response.json(data);
 }`,
         language: "typescript",
-        hint: "What happens if prisma.task.findMany() throws an error? There's no safety net.",
+        hint: "Add auth check AND admin role check. Not every logged-in user should see all users — only admins.",
         expectedFix:
-          "Wrap the database call in a try/catch block. In the catch, return a NextResponse.json with a user-friendly error message and a 500 status code.",
+          "Should check session authentication AND verify the user has admin role before returning data. Return 401 for unauthenticated, 403 for non-admin.",
       },
       {
-        id: "L32B3D2",
-        title: "Null reference crash",
+        id: "L23B3S2",
+        title: "Error message leaks info",
         description:
-          "This component renders user data, but the user object might be null (still loading, or not logged in). The app crashes with 'Cannot read properties of null'.",
-        brokenCode: `export default function ProfileCard({ user }) {
-  return (
-    <div className="p-4 border rounded">
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-      <p>Joined: {user.createdAt.toLocaleDateString()}</p>
-    </div>
-  );
+          "When the database query fails, the error response includes the full Supabase error with table names, column names, and query details.",
+        brokenCode: `try {
+  const { data, error } = await supabase.from('users').select('*');
+  if (error) throw error;
+  return Response.json(data);
+} catch (err) {
+  return Response.json({ error: err.message, details: err }, { status: 500 });
 }`,
-        language: "tsx",
-        hint: "What if user is null or undefined? The component tries to read .name on nothing.",
+        language: "typescript",
+        hint: "Never send internal error details to the client. Log the real error server-side, send a generic message to the user.",
         expectedFix:
-          "Add a null check — if (!user) return a loading skeleton or a 'Not logged in' message. Only render user data when user is confirmed to exist.",
+          "Should console.error the real error for debugging, but return a generic message to the client like 'Something went wrong. Please try again.'",
       },
       {
-        id: "L32B3D3",
-        title: "Missing error boundary",
+        id: "L23B3S3",
+        title: "XSS vulnerability",
         description:
-          "The app shows a blank white screen when any component throws an error. There's no error.tsx file to catch the crash.",
-        brokenCode: `// src/app/dashboard/page.tsx
-export default async function DashboardPage() {
-  const data = await fetchDashboardData();
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      <StatsGrid data={data} />
-      <RecentActivity items={data.activity} />
-    </div>
-  );
-}
-
-// No error.tsx exists anywhere in the app
-// If fetchDashboardData() fails → white screen of death`,
+          "User input is rendered directly in HTML without sanitization. A user could submit a task title containing a script tag.",
+        brokenCode: `// Rendering user input directly
+<div dangerouslySetInnerHTML={{ __html: task.title }} />`,
         language: "tsx",
-        hint: "Next.js needs an error.tsx file to catch errors and show a fallback UI. Without it, errors produce a blank white screen.",
+        hint: "Never use dangerouslySetInnerHTML with user input. Use regular text rendering — React escapes it automatically.",
         expectedFix:
-          "Create an error.tsx file (with 'use client' directive) that shows a user-friendly error message and a 'Try again' button that calls reset().",
+          "Replace dangerouslySetInnerHTML with regular JSX text rendering: <div>{task.title}</div>. React auto-escapes HTML entities.",
       },
     ],
     passingCount: 2,
   },
   {
-    id: "L32B4",
-    levelId: 32,
-    type: "build",
-    title: "Add Error Handling",
-    xp: 40,
+    id: "L23B4",
+    levelId: 23,
+    type: "review",
+    title: "Spot Vulnerabilities",
+    xp: 20,
     required: true,
     order: 4,
-    mission:
-      "Add error.tsx, loading.tsx, not-found.tsx, try/catch in API routes. No more white screens.",
-    githubChecks: { minFiles: 12, commitAfter: "level_start" },
-    aiReviewPrompt:
-      "Check for: error.tsx, loading.tsx, not-found.tsx, try/catch in API routes, user-friendly error messages.",
-    passingScore: 55,
+    code: `// lib/supabase.ts
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  'https://abc123.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiYzEyMyIsInJvbGUiOiJzZXJ2aWNlX3JvbGUifQ.fake-key'
+);
+
+export default supabase;
+
+// api/tasks/route.ts
+export async function DELETE(request) {
+  const { id } = await request.json();
+  await supabase.from('tasks').delete().eq('id', id);
+  return Response.json({ success: true });
+}`,
+    language: "typescript",
+    description:
+      "This code connects to Supabase and has a delete endpoint. It was generated by AI. Find the security issues.",
+    knownIssues: [
+      {
+        id: "hardcoded-url",
+        lineRange: [4, 4],
+        description:
+          "Supabase URL is hardcoded instead of using process.env.NEXT_PUBLIC_SUPABASE_URL. Minor but makes it hard to change environments.",
+        severity: "warning",
+      },
+      {
+        id: "service-role-key-exposed",
+        lineRange: [5, 5],
+        description:
+          "This is a SERVICE ROLE KEY (not anon key) — it bypasses Row Level Security. If this file is in the frontend bundle, anyone can access ALL data in the database. Service role should only be used in server-side code with extreme caution.",
+        severity: "critical",
+      },
+      {
+        id: "no-auth-on-delete",
+        lineRange: [11, 14],
+        description:
+          "No authentication check on the DELETE endpoint. Anyone can delete any task by ID. No ownership check either — user A could delete user B's task.",
+        severity: "critical",
+      },
+    ],
+    minIssuesFound: 2,
   },
 
-  // ─── Level 33: Get Found & Shared (4 blocks) ───
+  // ─── Level 24: The Full Audit (4 blocks) ───
   {
-    id: "L33B1",
-    levelId: 33,
-    type: "theory",
-    title: "SEO = Your Store's Sign",
-    xp: 10,
+    id: "L24B1",
+    levelId: 24,
+    type: "audit",
+    title: "Security Checklist",
+    xp: 25,
     required: true,
     order: 1,
-    content: `# SEO = Your Store's Sign
-
-Imagine opening a store but forgetting to put a sign outside. That's a website without SEO.
-
-SEO tells Google three things:
-1. **What your site is about** — title and description
-2. **What pages exist** — sitemap
-3. **What to show when shared on social media** — OG tags (the preview card on Twitter/LinkedIn)
-
-## The basics
-
-- **Title tag** — the text in the browser tab
-- **Meta description** — the preview text in Google search results
-- **OG image** — the picture shown when someone shares your link
-
-Most apps skip this. Don't skip it — it takes 5 minutes with AI.`,
+    description: "The 10-point security audit for your app.",
+    checklist: [
+      {
+        id: "no-secrets-in-code",
+        category: "security",
+        title: "No Secrets in Code",
+        description: "No API keys, passwords, or tokens in any committed file.",
+        severity: "critical",
+        howToCheck: "Search your repo for: sk_, eyJ, whsec_, password=, secret=. Check that .env is in .gitignore.",
+      },
+      {
+        id: "auth-on-routes",
+        category: "security",
+        title: "Auth on All API Routes",
+        description: "Every API route that returns or modifies user data checks for a valid session.",
+        severity: "critical",
+        howToCheck: "Use curl or Postman to call each API route without a session cookie. All should return 401.",
+      },
+      {
+        id: "user-data-isolation",
+        category: "security",
+        title: "User Data Isolation",
+        description: "Every query filters by user_id. No user can access another user's data.",
+        severity: "critical",
+        howToCheck: "Log in as User A. Try to access User B's data by changing IDs in API calls.",
+      },
+      {
+        id: "input-validation",
+        category: "security",
+        title: "Input Validation",
+        description: "All user inputs are validated before processing. No SQL injection or XSS possible.",
+        severity: "critical",
+        howToCheck: "Try submitting forms with: empty fields, very long strings, HTML tags, SQL-like strings.",
+      },
+      {
+        id: "webhook-verification",
+        category: "security",
+        title: "Webhook Signature Verification",
+        description: "Stripe webhooks verify the signature before processing events.",
+        severity: "critical",
+        howToCheck: "Check webhook code for stripe.webhooks.constructEvent() with STRIPE_WEBHOOK_SECRET.",
+      },
+      {
+        id: "feature-gating-server",
+        category: "security",
+        title: "Server-Side Feature Gating",
+        description: "Pro features are checked in API routes, not just hidden in the UI.",
+        severity: "warning",
+        howToCheck: "As a free user, call pro-only API routes directly. Do they return 403?",
+      },
+      {
+        id: "env-example",
+        category: "code-quality",
+        title: ".env.example Exists",
+        description: "A .env.example documents required environment variables without real values.",
+        severity: "warning",
+        howToCheck: "Check repo for .env.example. Does it list all required variables?",
+      },
+      {
+        id: "safe-error-messages",
+        category: "security",
+        title: "Safe Error Messages",
+        description: "Error responses don't leak internal details (table names, stack traces, query details).",
+        severity: "warning",
+        howToCheck: "Trigger errors (bad input, missing auth) and check the response body. No internal details?",
+      },
+      {
+        id: "no-next-public-secrets",
+        category: "security",
+        title: "No Secrets in NEXT_PUBLIC_ Vars",
+        description: "Secret keys (service role, Stripe secret) are NOT prefixed with NEXT_PUBLIC_.",
+        severity: "critical",
+        howToCheck: "Check .env.local — only public/anon keys should have NEXT_PUBLIC_ prefix.",
+      },
+      {
+        id: "https-only",
+        category: "security",
+        title: "HTTPS Only",
+        description: "Your deployed site uses HTTPS (Vercel does this automatically).",
+        severity: "critical",
+        howToCheck: "Visit your deployed URL. Does it show the lock icon in the browser bar?",
+      },
+    ],
+    minPassed: 7,
   },
   {
-    id: "L33B2",
-    levelId: 33,
+    id: "L24B2",
+    levelId: 24,
     type: "theory",
-    title: "Analytics = Did Anyone Come?",
+    title: "Rate Limiting & Legal",
     xp: 10,
     required: true,
     order: 2,
-    content: `# Analytics = Did Anyone Come?
+    content: `# Rate Limiting
 
-You built it. You deployed it. But... is anyone using it?
+Without rate limiting, a single bot can:
+- Hit your API 10,000 times per minute
+- Rack up database costs
+- Brute-force passwords
+- Scrape all your data
 
-Analytics answer that question.
+## Simple Rate Limiting
 
-## What to track
+Use \`@upstash/ratelimit\` with a Redis store (Upstash has a free tier):
 
-- **Page views** — which pages are popular?
-- **Events** — what buttons do users click?
-- **Funnels** — where do users drop off?
+\`\`\`javascript
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
-## Tools
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, "10 s"), // 10 requests per 10 seconds
+});
 
-- **PostHog** — free, open source, full-featured
-- **Plausible** — privacy-focused, simple
-- **Vercel Analytics** — built-in if you're on Vercel
+// In your API route:
+const { success } = await ratelimit.limit(userId || ip);
+if (!success) return Response.json({ error: "Too many requests" }, { status: 429 });
+\`\`\`
 
-## Start simple
+Start with rate limiting on: sign up, login, and any public API endpoints.
 
-Track page views + 3 key events: sign up, create item, complete task. That's it.
+# Legal Pages
 
-You can't improve what you don't measure.`,
-    miniQuiz: [
-      {
-        question: "Why add analytics to your app?",
-        options: [
-          "To know if anyone is using it and how they use it",
-          "To make the app load faster",
-          "Because Google requires it for SEO",
-        ],
-        correctIndex: 0,
-      },
-    ],
+Stripe requires a Terms of Service and Privacy Policy before you can accept real payments.
+
+## AI Can Draft These
+
+Ask AI: "Write a Terms of Service and Privacy Policy for [your app]. It's a SaaS that stores [what data] and processes payments via Stripe."
+
+AI generates a reasonable draft. Have a lawyer review it later when you're making real money. For launch, an AI-drafted version is fine — most indie SaaS companies start this way.
+
+## Required Pages
+- \`/terms\` — Terms of Service
+- \`/privacy\` — Privacy Policy
+- Link to both in your footer`,
   },
   {
-    id: "L33B3",
-    levelId: 33,
+    id: "L24B3",
+    levelId: 24,
     type: "prompt",
-    title: "Write SEO & Analytics Prompt",
+    title: "AI Security Audit",
     xp: 20,
     required: true,
     order: 3,
     scaffold: "none",
-    goal: "Add SEO optimization and analytics tracking to your app",
-    referencePrompt:
-      "Add SEO and analytics to my Next.js app: 1) Metadata exports in layout.tsx with site title, description, and OG tags. 2) Unique metadata per page. 3) sitemap.ts that generates sitemap.xml. 4) robots.txt in public folder. 5) PostHog analytics: track page views and 3 custom events (user_signed_up, item_created, task_completed). 6) Analytics key from environment variable.",
-    hints: [
-      "Cover meta tags, OG tags, sitemap, robots.txt",
-      "Name the analytics tool",
-      "List specific events to track",
-    ],
+    goal: "Ask AI to perform a thorough security audit of your codebase.",
+    referencePrompt: `Do a security audit of my entire codebase. Check every file for these issues:
+
+1. Hardcoded secrets — any API keys, passwords, or tokens in source code
+2. Unprotected API routes — routes that don't check authentication
+3. Missing user_id filters — queries that could return other users' data
+4. Input validation — forms and API endpoints that don't validate input
+5. Dangerous patterns — dangerouslySetInnerHTML, eval(), unsanitized SQL
+6. Error leaking — error responses that include internal details
+7. NEXT_PUBLIC_ misuse — secret keys with NEXT_PUBLIC_ prefix
+8. Missing rate limiting on public endpoints
+
+For each issue found, tell me:
+- File and line number
+- What's wrong
+- How to fix it
+- Severity (critical/warning)
+
+Also check: is .env in .gitignore? Does .env.example exist?`,
     passingThreshold: 3.0,
   },
   {
-    id: "L33B4",
-    levelId: 33,
+    id: "L24B4",
+    levelId: 24,
     type: "build",
-    title: "Add SEO & Analytics",
-    xp: 40,
+    title: "Add Legal Pages",
+    xp: 30,
     required: true,
     order: 4,
     mission:
-      "Add SEO (meta tags, OG tags, sitemap, robots.txt) and basic analytics tracking.",
+      "Add Terms of Service and Privacy Policy pages. Link to them from the footer. Fix any security issues found in the audit.",
     githubChecks: {
-      fileExists: ["public/robots.txt"],
+      minCommits: 2,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for: metadata exports, OG tags, sitemap, robots.txt, analytics setup, unique page titles.",
-    passingScore: 55,
+      "Check for Terms of Service and Privacy Policy pages (or links to them). Footer should link to both. Any obvious security issues in the codebase should be addressed.",
+    passingScore: 50,
   },
 
-  // ─── Level 34: Polish (4 blocks) ───
+  // ─── Level 25: Security Boss (3 blocks) ───
   {
-    id: "L34B1",
-    levelId: 34,
-    type: "theory",
-    title: "The 5% That Makes 50% Difference",
-    xp: 10,
-    required: true,
-    order: 1,
-    content: `# The 5% That Makes 50% Difference
-
-The difference between "my project" and "a product" is **polish**.
-
-5 things that take 5% effort but feel like 50% improvement:
-
-1. **Loading skeletons** — gray boxes instead of blank screen while loading
-2. **Hover effects** — buttons change color on mouse-over
-3. **Smooth transitions** — things don't just appear, they fade/slide in
-4. **Empty states** — "No tasks yet — create your first one!" instead of blank white
-5. **Mobile testing** — does it work when you resize to phone size?
-
-Each one is a single sentence in your prompt. "Add loading skeletons." "Add hover effects to buttons." "Add empty states for lists."
-
-5 extra sentences → your app feels professional.`,
-  },
-  {
-    id: "L34B2",
-    levelId: 34,
-    type: "pattern",
-    title: "Debug Pattern",
-    xp: 15,
-    required: true,
-    order: 2,
-    patternId: "debug-pattern",
-    exercise: {
-      goal: "Use the Debug Pattern to describe unexpected behavior clearly",
-      template: `Something isn't working:
-Expected: ___
-Actual: ___
-Relevant code: ___
-Environment: ___
-Console output: ___`,
-      exampleFilled: `Something isn't working:
-Expected: PostHog events show in the dashboard when users click buttons
-Actual: Page views show up fine, but custom events (item_created, task_completed) never appear
-Relevant code: Button has onClick handler but no posthog.capture() call inside it — only the page view tracking was set up automatically
-Environment: Chrome, Next.js 14, PostHog cloud
-Console output: No errors, no warnings — it just silently doesn't track`,
-    },
-  },
-  {
-    id: "L34B3",
-    levelId: 34,
-    type: "audit",
-    title: "Launch Readiness Audit",
+    id: "L25B1",
+    levelId: 25,
+    type: "debug",
+    title: "Stop the Attacks",
     xp: 25,
     required: true,
-    order: 3,
-    description:
-      "Run through this checklist against YOUR project. Check each item you've verified or fixed. Be honest — launching with critical issues will hurt your users.",
-    checklist: [
+    order: 1,
+    scenarios: [
       {
-        id: "L34A1",
-        category: "ux",
-        title: "Loading states on all pages",
-        description: "Users see a spinner or skeleton while data loads, not a blank screen.",
-        severity: "critical",
-        howToCheck: "Open each page on slow 3G (Chrome DevTools → Network → Slow 3G). Do you see loading feedback or a white screen?",
+        id: "L25B1S1",
+        title: "Auth bypass via direct API call",
+        description:
+          "A hacker noticed your /api/users endpoint doesn't check auth. They call it directly and get every user's email and plan status.",
+        brokenCode: `// api/users/route.ts
+export async function GET() {
+  const { data } = await supabase
+    .from('users')
+    .select('id, email, name, plan, stripe_customer_id');
+  return Response.json(data);
+}`,
+        language: "typescript",
+        hint: "Add session check. Also: even for authed users, only return THEIR data. And never return stripe_customer_id to the frontend.",
+        expectedFix:
+          "Add auth check (return 401 if no session). Filter by user_id (return only their own data). Remove sensitive fields like stripe_customer_id from the select.",
       },
       {
-        id: "L34A2",
-        category: "ux",
-        title: "Empty states for lists",
-        description: "Empty lists show a helpful message like 'No items yet — create your first one!'",
-        severity: "warning",
-        howToCheck: "Sign up as a new user (or clear your data). Are there blank areas, or does each empty section guide you?",
-      },
-      {
-        id: "L34A3",
-        category: "ux",
-        title: "Mobile responsive at 375px",
-        description: "All pages work on phone screens. No horizontal scroll, no cut-off text, buttons are tappable.",
-        severity: "critical",
-        howToCheck: "Resize browser to 375px width (or use DevTools device toolbar). Check every page. Can you tap all buttons?",
-      },
-      {
-        id: "L34A4",
-        category: "ux",
-        title: "Hover & focus states on interactive elements",
-        description: "Buttons, links, and inputs visually respond to hover and keyboard focus.",
-        severity: "suggestion",
-        howToCheck: "Mouse over every button and link. Do they change? Tab through the page with keyboard. Can you see where focus is?",
-      },
-      {
-        id: "L34A5",
-        category: "code-quality",
-        title: "No hardcoded localhost URLs",
-        description: "No http://localhost:3000 links anywhere in the code. All URLs are relative or from env vars.",
-        severity: "critical",
-        howToCheck: "Search your codebase for 'localhost'. If you find any outside of dev config — fix them.",
-      },
-      {
-        id: "L34A6",
-        category: "code-quality",
-        title: "Error boundary exists (error.tsx)",
-        description: "App crashes show a friendly 'Something went wrong' page instead of a white screen.",
-        severity: "critical",
-        howToCheck: "Check if src/app/error.tsx exists. Temporarily throw an error in a page component and see what the user sees.",
-      },
-      {
-        id: "L34A7",
-        category: "code-quality",
-        title: "Build passes clean",
-        description: "npm run build completes without errors or warnings.",
-        severity: "critical",
-        howToCheck: "Run `npm run build` in your terminal. Does it finish without errors? Fix any TypeScript or import issues.",
-      },
-      {
-        id: "L34A8",
-        category: "seo",
-        title: "Page titles and favicon set",
-        description: "Each page has a unique title in the browser tab. Favicon shows your logo, not the default Next.js icon.",
-        severity: "warning",
-        howToCheck: "Open each page and look at the browser tab. Does it say your app name + page? Is there a favicon?",
-      },
-      {
-        id: "L34A9",
-        category: "performance",
-        title: "Images are optimized",
-        description: "Using next/image or compressed images. No 5MB PNGs loading on the landing page.",
-        severity: "warning",
-        howToCheck: "Open DevTools → Network → filter by Img. Are any images over 500KB? Use next/image for automatic optimization.",
-      },
-      {
-        id: "L34A10",
-        category: "ux",
-        title: "404 page exists",
-        description: "Visiting a non-existent URL shows a custom 'Page not found' instead of a blank page.",
-        severity: "warning",
-        howToCheck: "Visit /some-random-page-that-doesnt-exist on your site. Do you see a helpful 404 page?",
+        id: "L25B1S2",
+        title: "Data leak via ID guessing",
+        description:
+          "Tasks use sequential integer IDs. A user can change the task ID in the URL (/api/tasks/42 → /api/tasks/41) and see other users' tasks.",
+        brokenCode: `// api/tasks/[id]/route.ts
+export async function GET(request, { params }) {
+  const { data } = await supabase
+    .from('tasks')
+    .select('*')
+    .eq('id', params.id)
+    .single();
+  return Response.json(data);
+}`,
+        language: "typescript",
+        hint: "Even if the user is authenticated, you must verify they OWN this task. Add .eq('user_id', session.user.id) to the query.",
+        expectedFix:
+          "Add auth check AND ownership check: .eq('id', params.id).eq('user_id', session.user.id). If no result, return 404 (not 403 — don't reveal that the task exists).",
       },
     ],
-    minPassed: 6,
+    passingCount: 2,
   },
   {
-    id: "L34B4",
-    levelId: 34,
-    type: "experiment",
-    title: "Test Like a User",
+    id: "L25B2",
+    levelId: 25,
+    type: "pattern",
+    title: "The Debug Pattern",
     xp: 15,
     required: true,
-    order: 4,
-    description: "Test your app the way a real user would.",
-    steps: [
-      {
-        id: "L34B4S1",
-        instruction:
-          "Open your app on mobile (or resize your browser to 375px width). Does everything work? Can you tap all buttons? Is any text cut off?",
-        expectedOutcome:
-          "You find at least one layout issue at mobile width — text overflowing, buttons too small to tap, or content hidden off-screen.",
-        question:
-          "What broke at mobile width? How would you tell AI to fix it?",
-      },
-      {
-        id: "L34B4S2",
-        instruction:
-          "Open Chrome DevTools → Network tab → select 'Slow 3G' throttling. Reload the page. Does anything useful show while loading, or is it a blank white screen?",
-        expectedOutcome:
-          "On a slow connection, you see either loading skeletons (good) or a blank screen for several seconds (bad — needs loading.tsx).",
-        question:
-          "What did the user experience on slow 3G? Was there any feedback while loading?",
-      },
-      {
-        id: "L34B4S3",
-        instruction:
-          "Sign out and try using the app as a brand new user who has never seen it before. Is the first screen clear? Do you know what to do?",
-        expectedOutcome:
-          "You notice at least one confusing thing — unclear navigation, missing onboarding, or an empty dashboard with no guidance.",
-        question:
-          "What was confusing as a first-time user? What would make the first experience better?",
-      },
-    ],
-  },
-
-  // ─── Level 35: Launch Boss (3 blocks) ───
-  {
-    id: "L35B1",
-    levelId: 35,
-    type: "quiz",
-    title: "World 7 Review",
-    xp: 30,
-    required: true,
-    order: 1,
-    questions: [
-      {
-        question: "What does deployment do?",
-        options: [
-          "Puts your app on the internet so anyone with the URL can access it",
-          "Deletes your local code and moves it to the cloud",
-          "Converts your app into a mobile app",
-          "Sends your code to GitHub for backup",
-        ],
-        correctIndex: 0,
-      },
-      {
-        question:
-          "Where should you store API keys and database passwords?",
-        options: [
-          "In a config.js file committed to GitHub",
-          "In environment variables on the deployment platform",
-          "In comments in the source code",
-          "In the README file",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question: "What is the purpose of error.tsx in Next.js?",
-        options: [
-          "It logs errors to the console",
-          "It shows a friendly fallback UI when a page crashes, instead of a white screen",
-          "It prevents errors from happening in the first place",
-          "It sends error reports to the developer's email",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question: "What are OG tags used for?",
-        options: [
-          "Making the app load faster",
-          "Controlling what preview card is shown when your link is shared on social media",
-          "Preventing hackers from accessing your site",
-          "Generating a sitemap for Google",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question: "Why should you add analytics to your app?",
-        options: [
-          "It's required by law",
-          "To make your app faster",
-          "To know if anyone is using it and how they behave",
-          "To improve your Google search ranking",
-        ],
-        correctIndex: 2,
-      },
-    ],
-    passingScore: 3,
-  },
-  {
-    id: "L35B2",
-    levelId: 35,
-    type: "prompt",
-    title: "Write a Launch Audit Prompt",
-    xp: 30,
-    required: true,
     order: 2,
-    scaffold: "none",
-    goal: "Write a comprehensive prompt to audit your app for launch readiness",
-    referencePrompt:
-      "Audit my Next.js app for launch readiness. Check: 1) All pages have error boundaries and loading states. 2) SEO meta tags on every page. 3) Mobile responsive at 375px, 768px, 1024px. 4) Analytics tracking for key actions. 5) All env vars documented in .env.example. 6) No hardcoded localhost URLs. 7) npm run build passes clean. 8) Landing page has clear value prop and CTA.",
-    hints: [
-      "Cover every aspect: errors, SEO, mobile, analytics, security",
-      "Include specific checks and widths",
-      "Mention build verification",
-    ],
-    passingThreshold: 3.5,
+    patternId: "error-fix",
+    exercise: {
+      goal: "Practice the systematic debugging pattern for a production issue",
+      template: `I'm getting this error in production:
+
+\`\`\`
+[error]
+\`\`\`
+
+Context:
+- File: ___
+- What I was doing: ___
+- Expected: ___
+- Already tried: ___`,
+      exampleFilled: `I'm getting this error in production:
+
+\`\`\`
+500 Internal Server Error on POST /api/stripe/webhook
+Stripe webhook event: checkout.session.completed
+\`\`\`
+
+Context:
+- File: api/stripe/webhook/route.ts
+- What I was doing: completing a test payment through Stripe Checkout
+- Expected: webhook processes the event, updates user plan to 'pro' in database
+- Already tried: checked Stripe dashboard — event was sent. Checked Vercel logs — "STRIPE_WEBHOOK_SECRET is undefined"
+
+The env var exists in .env.local but I forgot to add it to Vercel's environment variables.`,
+    },
   },
   {
-    id: "L35B3",
-    levelId: 35,
+    id: "L25B3",
+    levelId: 25,
     type: "build",
-    title: "Launch Ready",
-    xp: 400,
+    title: "Hardened Product",
+    xp: 200,
     required: true,
     order: 3,
     mission:
-      "Production-ready app: deployed, error handling, SEO, analytics, mobile responsive, polished UI. Would you share this URL publicly?\n\nSuggested project: TaskFlow deployed, polished, SEO, analytics",
+      "Boss level: pass the 10-point security audit. Auth on all API routes, user data isolation, no secrets in code, safe error messages, ToS and Privacy Policy. Deploy a hardened app.",
     githubChecks: {
-      hasDeploy: true,
-      minFiles: 20,
-      minCommits: 10,
+      fileExists: [".env.example", ".gitignore"],
+      minCommits: 5,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Boss level. Full audit: deployment, error handling, loading states, SEO, mobile responsive, analytics, polish. Launch-ready?",
+      "Boss level. Security audit: no secrets in committed code, auth on all API routes, user data isolation (queries filter by user_id), input validation, safe error messages (no internal details leaked), .env.example exists, .gitignore includes .env. Terms/Privacy pages are a bonus.",
     passingScore: 60,
   },
 ];

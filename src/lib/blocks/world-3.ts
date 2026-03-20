@@ -1,696 +1,672 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 3 — Components (Levels 11-15)
-// React as LEGO blocks
-// Patterns: Component Request, Layout, Iteration
+// World 3 — Give It Memory (Levels 8-11)
+// Supabase database, CRUD, states
 // ═══════════════════════════════════════
 
 export const WORLD_3_BLOCKS: Block[] = [
-  // ─── Level 11: Building Blocks (4 blocks) ───
+  // ─── Level 8: Your App Needs a Brain (4 blocks) ───
   {
-    id: "L11B1",
-    levelId: 11,
+    id: "L8B1",
+    levelId: 8,
     type: "theory",
-    title: "Components = LEGO",
+    title: "What is a Database?",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Components = LEGO
+    content: `# Your App Needs a Brain
 
-Think of any website you use. It's not one giant blob — it's built from **pieces**.
+Right now your app is like a whiteboard. Write something, close the browser, it's gone. Refresh the page — gone.
 
-A card. A button. A navigation bar. A footer. Each piece is a **component**.
+A **database** is permanent memory. Data stays even when:
+- The user closes the browser
+- The server restarts
+- You deploy a new version
 
-## The LEGO analogy
+## Supabase — Your Free Database
 
-LEGO gives you different bricks — flat ones, tall ones, wheels, windows. You snap them together to build anything: a house, a car, a spaceship.
+You don't need to set up a server. **Supabase** gives you:
 
-Components work the same way. You have different UI pieces — headers, cards, lists, forms. You snap them together to build any app.
+- **PostgreSQL database** — the industry standard, free tier is generous
+- **Visual dashboard** — create tables by clicking, not writing SQL
+- **Auto-generated API** — your app talks to the database through simple function calls
+- **Built-in auth** — sign up/sign in (we'll use this in World 4)
+- **Free tier** — enough for your first 50,000 users
 
-## React
+This is what 90% of indie SaaS founders use in 2026. It's the default for a reason.
 
-React is the most popular way to build with components. When you tell AI **"Create a React app"**, you're saying: "build me something from components."
+## What is Data Modeling?
 
-You don't need to write components yourself. You **describe what blocks you need**, and AI assembles them.
+Before you create tables, think about your **entities** — the things your app deals with.
 
-## What this means for you
+For a project management tool:
+- **Users** — people who sign in
+- **Projects** — collections of tasks
+- **Tasks** — individual to-do items
 
-Your job isn't to code components. It's to **decide which pieces your app needs** and how they fit together — like being the architect, not the bricklayer.`,
-  },
-  {
-    id: "L11B2",
-    levelId: 11,
-    type: "theory",
-    title: "React: What to Tell AI",
-    xp: 10,
-    required: true,
-    order: 2,
-    content: `# React: What to Tell AI
+Each entity becomes a **table**. Connections between them become **relationships**.
 
-When prompting AI for a React app, you need to communicate three things:
+Users → have many → Projects → have many → Tasks
 
-## 1. What components you need
-
-Name them like real objects: Header, ProductCard, SearchBar, ShoppingCart. The name should instantly explain what it does.
-
-## 2. What data each component shows
-
-A ProductCard shows: image, title, price, rating. A UserProfile shows: avatar, name, bio. Be specific about what information lives inside each piece.
-
-## 3. How they connect
-
-- A ProductList contains many ProductCards
-- A Header appears on every page
-- A SearchBar filters what the ProductList shows
-
-That's it. Don't worry about import/export, useState, or any syntax. **AI handles the code. YOU decide the architecture.**`,
+Think about this on paper (or Excalidraw) BEFORE asking AI to create anything.`,
     miniQuiz: [
       {
-        question:
-          "When prompting AI for a React app, what do you describe?",
+        question: "Why does your app need a database?",
         options: [
-          "The exact JavaScript syntax to use",
-          "What components you need, what data they show, and how they connect",
-          "Which CSS framework is fastest",
-          "The server configuration",
+          "To make the app load faster",
+          "To permanently store data — so it survives browser refreshes and server restarts",
+          "To add animations to the UI",
         ],
         correctIndex: 1,
       },
     ],
   },
   {
-    id: "L11B3",
-    levelId: 11,
+    id: "L8B2",
+    levelId: 8,
+    type: "theory",
+    title: "Think About Data First",
+    xp: 10,
+    required: true,
+    order: 2,
+    content: `# Think About Data First
+
+The second biggest mistake (after no PRD): jumping straight to UI without thinking about data.
+
+## Entities = Things in Your App
+
+Ask yourself: what "things" does my app deal with?
+
+| App Type | Entities |
+|---|---|
+| Task manager | Users, Projects, Tasks, Comments |
+| SaaS invoicing | Users, Clients, Invoices, LineItems |
+| Booking system | Users, Services, Appointments, Reviews |
+
+## Relationships = Connections
+
+How do these things connect?
+
+- A **User** has many **Projects**
+- A **Project** has many **Tasks**
+- A **Task** belongs to one **Project** and one **User** (assignee)
+
+## Fields = Details About Each Thing
+
+Each entity has fields (columns):
+
+**Tasks table:**
+| Field | Type | Notes |
+|---|---|---|
+| id | uuid | Auto-generated unique ID |
+| title | text | The task name |
+| description | text | Optional details |
+| completed | boolean | Done or not |
+| project_id | uuid | Which project this belongs to |
+| user_id | uuid | Who created this |
+| created_at | timestamp | When it was created |
+
+## The Rule
+
+**Design your data BEFORE writing any code.** Changes to your database later are painful — much harder than changing UI.`,
+    miniQuiz: [
+      {
+        question: "When should you design your database tables?",
+        options: [
+          "After the UI is built",
+          "Before writing any code — data design comes first",
+          "Only when you run out of local storage",
+        ],
+        correctIndex: 1,
+      },
+    ],
+  },
+  {
+    id: "L8B3",
+    levelId: 8,
     type: "pattern",
-    title: "Component Request Pattern",
+    title: "The Data Schema Pattern",
     xp: 15,
     required: true,
     order: 3,
-    patternId: "component-request",
+    patternId: "data-schema",
     exercise: {
-      goal: "Use the Component Request Pattern to describe a React component to AI",
-      template: `Create a ___ React component that:
-- Props: ___
-- Shows: ___
-- Handles: ___
-- Style: ___`,
-      exampleFilled: `Create a UserCard React component that:
-- Props: name, email, avatarUrl
-- Shows: a card with the avatar image on the left, name and email on the right, and a "Follow" button
-- Handles: clicking "Follow" toggles between "Follow" and "Following"
-- Style: Tailwind — rounded card with shadow, hover effect, responsive`,
+      goal: "Design the database schema for your SaaS — tables, fields, and relationships",
+      template: `Database for [my app]:
+
+Tables:
+- [Table1]: [field1, field2, ...]
+- [Table2]: [field1, field2, ...]
+
+Relationships:
+- [Table1] has many [Table2]
+- ___
+
+Rules:
+- Every table has: id, created_at
+- ___`,
+      exampleFilled: `Database for FocusFlow:
+
+Tables:
+- users: id, email, name, avatar_url, plan (free/pro)
+- teams: id, name, owner_id
+- focus_sessions: id, user_id, team_id, started_at, duration_minutes, completed
+
+Relationships:
+- A user has many focus_sessions
+- A team has many users (through team_members join table)
+- A focus_session belongs to one user and one team
+
+Rules:
+- Every table has: id (uuid), created_at (timestamp)
+- Focus sessions must be 1-60 minutes
+- A free user can only be in 1 team`,
     },
   },
   {
-    id: "L11B4",
-    levelId: 11,
-    type: "build",
-    title: "Your First React App",
-    xp: 30,
+    id: "L8B4",
+    levelId: 8,
+    type: "experiment",
+    title: "Set Up Supabase",
+    xp: 15,
     required: true,
     order: 4,
-    mission:
-      "Create a React app with at least 3 custom components. Each should do one thing well.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [{ path: "package.json", contains: ["react"] }],
-      minFiles: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for at least 3 custom React components. Each component should have a clear purpose. Look for proper structure and clean code.",
-    passingScore: 55,
+    description: "Create a Supabase project and your first tables.",
+    steps: [
+      {
+        id: "L8B4S1",
+        instruction:
+          "Go to **supabase.com** and sign up with your GitHub account. Click **New Project**. Give it a name and pick a region close to you. Set a database password (save it somewhere!).",
+        expectedOutcome:
+          "Your Supabase project is created. You see the project dashboard.",
+        question: "Can you see your Supabase project dashboard?",
+      },
+      {
+        id: "L8B4S2",
+        instruction:
+          "Go to **Table Editor** in the left sidebar. Create your first table based on the schema you designed. Use the visual editor — no SQL needed.\n\nFor each table:\n- Click **New Table**\n- Add columns with the right types (text, boolean, uuid, timestamptz)\n- Enable **Row Level Security** (RLS) — we'll configure it in World 4",
+        expectedOutcome:
+          "Your tables exist in Supabase. You can see them in the Table Editor.",
+        question: "How many tables did you create?",
+      },
+      {
+        id: "L8B4S3",
+        instruction:
+          "Go to **Settings → API** in Supabase. Copy your **Project URL** and **anon public key**.\n\nCreate a `.env.local` file in your project:\n\n```\nNEXT_PUBLIC_SUPABASE_URL=your-project-url\nNEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key\n```\n\nMake sure `.env.local` is in your `.gitignore`!",
+        expectedOutcome:
+          "Your app can now connect to Supabase using environment variables.",
+        question: "Is .env.local in your .gitignore?",
+      },
+    ],
   },
 
-  // ─── Level 12: Things That Change (4 blocks) ───
+  // ─── Level 9: The Only 4 Things (4 blocks) ───
   {
-    id: "L12B1",
-    levelId: 12,
+    id: "L9B1",
+    levelId: 9,
     type: "theory",
-    title: "State = Memory Inside Components",
+    title: "CRUD — The Only 4 Things",
     xp: 10,
     required: true,
     order: 1,
-    content: `# State = Memory Inside Components
+    content: `# CRUD — Every Feature is One of Four Things
 
-Some things in your app **change**: a counter goes up, a menu opens, a form fills in.
+Every feature in every app ever built does one of these:
 
-This is **state** — the component's short-term memory.
+| Operation | What it does | Example |
+|---|---|---|
+| **C**reate | Add new data | "New Task" button, sign-up form |
+| **R**ead | Show existing data | Task list, user profile, dashboard |
+| **U**pdate | Change existing data | Edit task, mark as done, update settings |
+| **D**elete | Remove data | Delete task, remove team member |
 
-## Think of it like a whiteboard
+That's it. CRUD. Every app is just these four things in different combinations.
 
-Each component has a small whiteboard. It can write things on it (update state) and read what's there (display state). When the whiteboard changes, the component automatically re-draws itself.
+## Supabase Makes CRUD Simple
 
-- Counter component's whiteboard: "count = 7"
-- Menu component's whiteboard: "isOpen = true"
-- Form component's whiteboard: "name = 'Sarah', email = 's@email.com'"
+\`\`\`javascript
+// CREATE — insert a new row
+const { data } = await supabase
+  .from('tasks')
+  .insert({ title: 'Buy milk', user_id: userId })
 
-## What this means for prompting
+// READ — get rows
+const { data } = await supabase
+  .from('tasks')
+  .select('*')
+  .eq('user_id', userId)
 
-When you tell AI **"add a counter that goes up when clicked"**, AI uses state automatically behind the scenes. You just need to describe:
+// UPDATE — change a row
+const { data } = await supabase
+  .from('tasks')
+  .update({ completed: true })
+  .eq('id', taskId)
 
-1. **WHAT changes** — the counter value, the menu visibility, the form data
-2. **WHEN it changes** — on click, on type, on submit
+// DELETE — remove a row
+await supabase
+  .from('tasks')
+  .delete()
+  .eq('id', taskId)
+\`\`\`
 
-That's your whole job. AI wires up the state management.`,
-  },
-  {
-    id: "L12B2",
-    levelId: 12,
-    type: "theory",
-    title: "Events = Triggers",
-    xp: 10,
-    required: true,
-    order: 2,
-    content: `# Events = Triggers
+You don't need to memorize this. AI writes these queries. But knowing that every feature is CRUD helps you **describe what you want** clearly:
 
-Events are the **triggers** that cause things to happen:
-
-- **Click** → counter goes up
-- **Type** → input updates
-- **Hover** → color changes
-- **Submit** → form sends data
-
-## The prompt formula
-
-Always describe the **trigger** AND the **result**:
-
-**Bad:** "add a form"
-
-**Good:** "add a form with name and email fields. When submitted, show a success message and clear the form."
-
-**Bad:** "add a button"
-
-**Good:** "add a 'Save' button. When clicked, save the data and change the button text to 'Saved!' for 2 seconds."
-
-## Common trigger → result pairs
-
-| Trigger | Result |
-|---------|--------|
-| Click button | Add item, toggle state, navigate |
-| Submit form | Validate, send data, show confirmation |
-| Type in input | Filter list, search, validate |
-| Hover element | Show tooltip, change color |
-| Scroll page | Load more items, show/hide header |
-
-Every interactive element needs both halves: **what triggers it** and **what happens**.
-
-## Side Effects — When Components Do Things Automatically
-
-Events are things users trigger. But some things happen **automatically** — like fetching data when a page loads or starting a timer.
-
-These are called **side effects**, and React uses \`useEffect\` for them.
-
-**Think of it this way:**
-- **Events** = you press a button (manual)
-- **Effects** = your alarm goes off at 7am (automatic)
-
-Common use cases:
-- **Fetch data** when a page loads
-- **Update the page title** when something changes
-- **Start a timer** and clean it up when the page closes
-
-You don't write useEffect yourself — just tell AI: **"When the page loads, fetch users from the API"** and AI uses useEffect behind the scenes.`,
+- "I need a form that **creates** a new project" ← AI knows exactly what to build
+- "The dashboard should **read** all tasks for the current user" ← clear intent
+- "Clicking the checkbox should **update** the task's completed status" ← specific action`,
     miniQuiz: [
       {
-        question: "What's missing from the prompt: \"add a button\"?",
+        question: "Marking a task as 'done' is which CRUD operation?",
         options: [
-          "The button color",
-          "What happens when you click it",
-          "The button size",
-          "The CSS class name",
+          "Create — you're creating a 'done' status",
+          "Update — you're changing an existing task's status",
+          "Delete — you're removing it from the list",
         ],
         correctIndex: 1,
       },
     ],
   },
   {
-    id: "L12B3",
-    levelId: 12,
+    id: "L9B2",
+    levelId: 9,
     type: "prompt",
-    title: "Write an Interactive Component Prompt",
+    title: "Connect Your App to Supabase",
     xp: 20,
     required: true,
-    order: 3,
+    order: 2,
     scaffold: "template",
-    goal: "Write a prompt for a React app with interactive components",
-    referencePrompt:
-      "Create a React task manager with: 1) An input field and 'Add' button — when clicked, adds the task to a list below. 2) Each task shows the text and a 'Done' checkbox — clicking it crosses out the task. 3) A counter at the top showing 'X tasks remaining' (only counting unchecked tasks). 4) A 'Clear completed' button that removes all checked tasks.",
-    template:
-      "Create a React ___ with: 1) An input field and '___' button — when clicked, ___. 2) Each ___ shows ___ and a '___' ___ — clicking it ___. 3) A counter showing ___. 4) A '___' button that ___.",
+    goal: "Write a prompt to connect your app to Supabase and implement CRUD for your main entity.",
+    referencePrompt: `Connect my Next.js app to Supabase and add CRUD for the tasks table.
+
+My Supabase tables:
+- tasks: id (uuid), title (text), description (text), completed (boolean), user_id (uuid), created_at (timestamptz)
+
+What I need:
+1. Install @supabase/supabase-js
+2. Create lib/supabase.ts with the client (using env vars from .env.local)
+3. A page that shows all tasks (READ)
+4. A form to add new tasks (CREATE)
+5. A checkbox to mark tasks as done (UPDATE)
+6. A delete button on each task (DELETE)
+
+Use the NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY from my .env.local.`,
+    template: `Connect my Next.js app to Supabase and add CRUD for the ___ table.
+
+My Supabase tables:
+- ___: [fields]
+
+What I need:
+1. Install @supabase/supabase-js
+2. Create lib/supabase.ts with the client
+3. A page that shows all ___ (READ)
+4. A form to add new ___ (CREATE)
+5. ___ (UPDATE)
+6. A delete button (DELETE)`,
     passingThreshold: 2.5,
   },
   {
-    id: "L12B4",
-    levelId: 12,
+    id: "L9B3",
+    levelId: 9,
     type: "build",
-    title: "Build Something Interactive",
+    title: "Save Real Data",
     xp: 40,
-    required: true,
-    order: 4,
-    mission:
-      "Build a React app with interactive components — at least one counter/toggle and one form that does something.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [{ path: "package.json", contains: ["react"] }],
-      minFiles: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for interactive React components. Look for at least one counter or toggle and one form. State should update on user actions.",
-    passingScore: 55,
-  },
-
-  // ─── Level 13: Modern Styling (4 blocks) ───
-  {
-    id: "L13B1",
-    levelId: 13,
-    type: "theory",
-    title: "Tailwind = Words Instead of CSS Files",
-    xp: 10,
-    required: true,
-    order: 1,
-    content: `# Tailwind = Words Instead of CSS Files
-
-Remember CSS files from World 1? Tailwind replaces them with a simpler idea.
-
-Instead of writing styles in a separate file, you add **descriptive words** directly to your HTML:
-
-\`bg-blue-500 text-white p-4 rounded-lg\`
-
-## It's like labeling boxes
-
-Imagine labeling a moving box: "blue, white text, padded, rounded corners." That's exactly what Tailwind classes are — labels that describe how something looks.
-
-## Why AI loves Tailwind
-
-Tailwind is **predictable**. The same class always does the same thing. No naming conflicts, no wondering what \`.card-wrapper-inner\` does. AI generates cleaner, more consistent code with Tailwind.
-
-## For your prompts
-
-Just say **"use Tailwind CSS"** and then describe what you want visually:
-
-"A blue card with white text, padding, rounded corners, and a shadow"
-
-AI translates your description into the right Tailwind classes. You never need to memorize them.`,
-  },
-  {
-    id: "L13B2",
-    levelId: 13,
-    type: "theory",
-    title: "Responsive = Every Screen Size",
-    xp: 10,
-    required: true,
-    order: 2,
-    content: `# Responsive = Every Screen Size
-
-Your app should work on phones, tablets, and desktops. "Responsive design" means the layout adapts to the screen.
-
-## How Tailwind handles it
-
-Tailwind uses prefixes for screen sizes:
-- **No prefix** → applies to all screens (start here — mobile first)
-- **sm:** → small screens and up (phones in landscape)
-- **md:** → medium screens and up (tablets)
-- **lg:** → large screens and up (desktops)
-
-## You don't write this — AI does
-
-You just describe what you want at each size:
-
-**"Responsive design, single column on mobile, 2 columns on tablet, 3 columns on desktop."**
-
-That one sentence gives AI everything it needs. It translates your intent into the right responsive classes.
-
-## Common responsive patterns
-
-| Pattern | What to say |
-|---------|-------------|
-| Stack → Grid | "single column on mobile, grid on desktop" |
-| Hide/show | "hide sidebar on mobile, show on desktop" |
-| Font size | "larger headings on desktop" |
-| Navigation | "hamburger menu on mobile, full nav bar on desktop" |`,
-    miniQuiz: [
-      {
-        question:
-          "What do you tell AI to make your app work on all screen sizes?",
-        options: [
-          "Write separate CSS files for each device",
-          "Use responsive design — describe mobile and desktop layouts",
-          "Only build for desktop, phones will figure it out",
-          "Add a zoom setting",
-        ],
-        correctIndex: 1,
-      },
-    ],
-  },
-  {
-    id: "L13B3",
-    levelId: 13,
-    type: "pattern",
-    title: "The Layout Pattern",
-    xp: 15,
     required: true,
     order: 3,
-    patternId: "layout-pattern",
-    exercise: {
-      goal: "Use the Layout Pattern to describe a responsive page layout",
-      template: `Build a ___ layout:
-- Structure: ___
-- Responsive: mobile: ___, desktop: ___
-- Navigation: ___
-- Content: ___`,
-      exampleFilled: `Build a portfolio layout:
-- Structure: sticky header, full-width hero section, grid content area, footer
-- Responsive: mobile: single column stack, hamburger menu. Desktop: sidebar appears, 3-column project grid
-- Navigation: logo on the left, links on the right, hamburger menu on mobile
-- Content: hero with name and tagline, project cards in a grid, about section below`,
-    },
-  },
-  {
-    id: "L13B4",
-    levelId: 13,
-    type: "build",
-    title: "Style with Tailwind",
-    xp: 40,
-    required: true,
-    order: 4,
     mission:
-      "Style your React app with Tailwind CSS. Responsive layout for mobile and desktop. No custom CSS files.",
+      "Connect your app to Supabase. Users can create, view, edit, and delete data. Real data from the database, not hardcoded.",
     githubChecks: {
-      hasPackageJson: true,
-      fileContains: [{ path: "package.json", contains: ["tailwind"] }],
       minCommits: 3,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for Tailwind CSS usage. Look for responsive utilities (sm:, md:, lg:), proper layout (flex/grid), and consistent styling. No custom CSS files.",
+      "Check for Supabase integration with real CRUD operations. Data should come from Supabase, not be hardcoded. Should have: create (form/button), read (list/display), update (edit/toggle), and delete (remove button).",
     passingScore: 55,
   },
-
-  // ─── Level 14: AI Makes Mistakes (4 blocks) ───
   {
-    id: "L14B1",
-    levelId: 14,
-    type: "theory",
-    title: "Common React Mistakes AI Makes",
-    xp: 10,
-    required: true,
-    order: 1,
-    content: `# Common React Mistakes AI Makes
-
-AI is fast but careless. Here are the patterns to watch for:
-
-## 1. Duplicate code
-
-AI loves copying and pasting. Three identical product cards? Should be **one** ProductCard component used three times. If you see the same chunk of JSX repeated, that's a red flag.
-
-## 2. Missing states
-
-AI builds the "happy path" — everything works perfectly. But what about:
-- **Loading** — what shows while data loads?
-- **Error** — what if something fails?
-- **Empty** — what if there's no data yet?
-
-Always check: did AI handle all three?
-
-## 3. Dead buttons
-
-Buttons that look clickable but **do nothing**. AI generates the visual button but forgets to wire up the behavior. Click every button and verify something actually happens.
-
-## 4. Giant files
-
-One 500-line file instead of organized components. If a file is doing more than one thing, ask AI to split it up.
-
-## Your job
-
-You're the **quality inspector**. Spot these patterns, then tell AI specifically what to fix.
-
-## Reading AI's Code
-
-You don't need to write code, but you DO need to **scan** it. Here's how:
-
-### 1. Find the return statement
-Scroll to the \`return (\` line — that's where the UI lives. Everything inside is what the user sees.
-
-### 2. Spot the components
-Look for capitalized tags like \`<Header />\`, \`<TaskCard />\`. These are the building blocks. Each one should do ONE thing.
-
-### 3. Change simple things yourself
-Want to change a color? Find \`bg-blue-500\` and change \`blue\` to \`red\`. Want different text? Find the string in quotes and edit it. Small edits are faster than re-prompting.
-
-### 4. Understand imports
-The top of the file shows \`import ... from ...\` lines. These tell you what external pieces the component uses. If something is missing, the import is probably wrong.`,
-  },
-  {
-    id: "L14B2",
-    levelId: 14,
-    type: "review",
-    title: "Spot the Problems",
-    xp: 20,
-    required: true,
-    order: 2,
-    code: `import React from 'react';
-
-function App() {
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Product Store</h1>
-
-      <div className="grid grid-cols-3 gap-4">
-        <div className="border rounded-lg p-4">
-          <img src="/shoes.jpg" alt="Running Shoes" className="w-full h-48 object-cover rounded" />
-          <h3 className="font-bold mt-2">Running Shoes</h3>
-          <p className="text-gray-600">$89.99</p>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add to Cart</button>
-        </div>
-
-        <div className="border rounded-lg p-4">
-          <img src="/jacket.jpg" alt="Winter Jacket" className="w-full h-48 object-cover rounded" />
-          <h3 className="font-bold mt-2">Winter Jacket</h3>
-          <p className="text-gray-600">$149.99</p>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add to Cart</button>
-        </div>
-
-        <div className="border rounded-lg p-4">
-          <img src="/hat.jpg" alt="Baseball Hat" className="w-full h-48 object-cover rounded" />
-          <h3 className="font-bold mt-2">Baseball Hat</h3>
-          <p className="text-gray-600">$24.99</p>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add to Cart</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default App;`,
-    language: "jsx",
-    description:
-      "This React app works but has structural problems. Can you spot them?",
-    knownIssues: [
-      {
-        id: "L14B2I1",
-        lineRange: [8, 28],
-        description:
-          "Three product cards are copy-pasted — should be a reusable ProductCard component",
-        severity: "critical",
-      },
-      {
-        id: "L14B2I2",
-        lineRange: [8, 28],
-        description:
-          "Product data is hardcoded in JSX — should come from an array and be mapped over",
-        severity: "warning",
-      },
-      {
-        id: "L14B2I3",
-        lineRange: [14, 14],
-        description:
-          "Button has no onClick handler — clicking 'Add to Cart' does nothing",
-        severity: "warning",
-      },
-    ],
-    minIssuesFound: 2,
-  },
-  {
-    id: "L14B3",
-    levelId: 14,
-    type: "debug",
-    title: "Fix React Issues",
-    xp: 20,
-    required: true,
-    order: 3,
-    scenarios: [
-      {
-        id: "L14B3D1",
-        title: "Missing responsive class",
-        description:
-          "This card grid shows 3 columns on all screen sizes, even on mobile where it looks cramped and unreadable.",
-        brokenCode: `<div className="grid grid-cols-3 gap-4">
-  <div className="bg-white p-4 rounded-lg shadow">Card 1</div>
-  <div className="bg-white p-4 rounded-lg shadow">Card 2</div>
-  <div className="bg-white p-4 rounded-lg shadow">Card 3</div>
-</div>`,
-        language: "jsx",
-        hint: "On mobile, 3 columns is too many. Tailwind has responsive prefixes like sm: and lg: to change layout at different screen sizes.",
-        expectedFix:
-          "Change grid-cols-3 to grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 so it stacks on mobile and expands on larger screens",
-      },
-      {
-        id: "L14B3D2",
-        title: "Counter goes negative",
-        description:
-          "This counter lets you click minus below 0, showing negative numbers which doesn't make sense for a quantity selector.",
-        brokenCode: `function Counter() {
-  const [count, setCount] = useState(0);
-  return (
-    <div>
-      <button onClick={() => setCount(count - 1)}>-</button>
-      <span>{count}</span>
-      <button onClick={() => setCount(count + 1)}>+</button>
-    </div>
-  );
-}`,
-        language: "jsx",
-        hint: "The minus button should check if count is already 0 before subtracting.",
-        expectedFix:
-          "Add a check to prevent going below 0: onClick={() => setCount(Math.max(0, count - 1))} or disable the button when count is 0",
-      },
-    ],
-    passingCount: 1,
-  },
-  {
-    id: "L14B4",
-    levelId: 14,
-    type: "pattern",
-    title: "The Iteration Pattern",
+    id: "L9B4",
+    levelId: 9,
+    type: "experiment",
+    title: "Test Your CRUD",
     xp: 15,
     required: true,
     order: 4,
-    patternId: "iteration-pattern",
-    exercise: {
-      goal: "Use the Iteration Pattern to ask AI to fix a specific problem in its output",
-      template: `The output has this issue: ___
-What I expected: ___
-Please fix by: ___`,
-      exampleFilled: `The output has this issue: the product cards are all copy-pasted HTML with hardcoded data.
-What I expected: a reusable ProductCard component that takes props, used in a loop over a products array.
-Please fix by: creating a ProductCard component that accepts title, price, and image as props, then mapping over a products array to render them.`,
-    },
-  },
-
-  // ─── Level 15: App Boss (3 blocks) ───
-  {
-    id: "L15B1",
-    levelId: 15,
-    type: "quiz",
-    title: "World 3 Review",
-    xp: 30,
-    required: true,
-    order: 1,
-    questions: [
+    description: "Verify all four CRUD operations work end-to-end.",
+    steps: [
       {
-        question: "What is a React component?",
-        options: [
-          "A type of database",
-          "A reusable piece of UI — like a LEGO brick you can snap together with others",
-          "A CSS animation",
-          "A server configuration file",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Components are reusable UI pieces. You describe which ones you need and AI builds them.",
+        id: "L9B4S1",
+        instruction:
+          "**Create:** Add 3 items using your form. Check the Supabase Table Editor — are they there?",
+        expectedOutcome: "All 3 items appear both in your app and in the Supabase dashboard.",
+        question: "Do items appear in both your app and Supabase?",
       },
       {
-        question: "What is 'state' in a component?",
-        options: [
-          "The geographic location of the server",
-          "The component's short-term memory — data that changes over time",
-          "A CSS property",
-          "The file extension",
-        ],
-        correctIndex: 1,
-        explanation:
-          "State is data inside a component that can change — like a counter value or whether a menu is open.",
+        id: "L9B4S2",
+        instruction:
+          "**Update:** Edit one item (change text, toggle status, etc). Refresh the page. Is the change still there?",
+        expectedOutcome: "The update persists after refresh — it's saved in the database.",
+        question: "Does the update survive a page refresh?",
       },
       {
-        question:
-          "What should you always describe when prompting for interactive elements?",
-        options: [
-          "The file size",
-          "The trigger (what the user does) AND the result (what happens)",
-          "The server port number",
-          "The database schema",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Every interactive element needs both: what triggers it and what happens as a result.",
-      },
-      {
-        question: "Why does AI produce better code with Tailwind CSS?",
-        options: [
-          "Tailwind is faster than CSS",
-          "Tailwind classes are predictable — same class always does the same thing, no naming conflicts",
-          "Tailwind is the only CSS AI understands",
-          "Tailwind files are smaller",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Tailwind's predictable utility classes help AI generate consistent, conflict-free styling.",
-      },
-      {
-        question: "What's the most common mistake AI makes with React?",
-        options: [
-          "Using the wrong programming language",
-          "Duplicating code instead of making reusable components",
-          "Making the app too fast",
-          "Adding too many tests",
-        ],
-        correctIndex: 1,
-        explanation:
-          "AI often copy-pastes similar blocks instead of creating one reusable component. Always check for duplication.",
+        id: "L9B4S3",
+        instruction:
+          "**Delete:** Delete one item. Refresh. Is it gone? Check Supabase — is it gone there too?",
+        expectedOutcome: "The item is permanently deleted from both your app and the database.",
+        question: "Is the deleted item gone from both app and database?",
       },
     ],
-    passingScore: 3,
+  },
+
+  // ─── Level 10: Handle Everything (4 blocks) ───
+  {
+    id: "L10B1",
+    levelId: 10,
+    type: "theory",
+    title: "The Three States",
+    xp: 10,
+    required: true,
+    order: 1,
+    content: `# Loading, Success, Error — Always Handle All Three
+
+Every time your app fetches data, there are three possible outcomes:
+
+1. **Loading** — data is on the way (show a spinner or skeleton)
+2. **Success** — data arrived (show it)
+3. **Error** — something broke (show a helpful message)
+
+AI almost always forgets states 1 and 3. It builds the happy path (data is there) and ignores everything else.
+
+## What Users See Without Proper States
+
+| State | Without handling | With handling |
+|---|---|---|
+| Loading | Blank white screen for 2 seconds | Skeleton animation or spinner |
+| Error | App crashes or shows nothing | "Something went wrong. Try again." |
+| Empty | Blank page, user confused | "No tasks yet. Create your first one!" |
+
+## The Empty State — The Forgotten Fourth
+
+What does a **brand new user** see? They have no data. If you show a blank table, they'll think the app is broken.
+
+Good empty states:
+- "No projects yet. Click 'New Project' to get started!"
+- An illustration + CTA button
+- A quick tutorial or example
+
+## The Rule
+
+Every component that fetches data needs ALL of these:
+\`\`\`
+if (loading) return <Skeleton />
+if (error) return <ErrorMessage />
+if (data.length === 0) return <EmptyState />
+return <DataList data={data} />
+\`\`\`
+
+Ask AI: "Make sure to handle loading, error, and empty states." Say this in EVERY prompt that involves data.`,
+    miniQuiz: [
+      {
+        question: "What three states must every data-fetching component handle?",
+        options: [
+          "Open, closed, and minimized",
+          "Loading, success (with data), and error",
+          "Light mode, dark mode, and auto",
+        ],
+        correctIndex: 1,
+      },
+    ],
   },
   {
-    id: "L15B2",
-    levelId: 15,
-    type: "prompt",
-    title: "Design Your React App",
-    xp: 30,
+    id: "L10B2",
+    levelId: 10,
+    type: "debug",
+    title: "Fix Missing States",
+    xp: 20,
     required: true,
     order: 2,
-    scaffold: "template",
-    goal: "Write a comprehensive prompt for a complete React + Tailwind app",
-    referencePrompt:
-      "Create a recipe app with React and Tailwind CSS. Components: 1) Header with app name 'Tasty Recipes' and a search bar. 2) RecipeCard showing recipe image, title, cook time, and a heart icon to favorite. 3) RecipeList that displays RecipeCards in a responsive grid. 4) SearchBar that filters recipes by name as you type. State: search query filters the recipe list in real-time, clicking the heart toggles the recipe as a favorite. Styling: responsive — single column on mobile, 2 columns on tablet, 3 on desktop. Clean white cards with subtle shadows, rounded corners. Show a 'No recipes found' message when search matches nothing.",
-    template:
-      "Create a ___ app with React and Tailwind CSS. Components: 1) Header with ___. 2) ___ showing ___. 3) ___ that displays ___ in a responsive grid. 4) ___ that ___. State: ___. Styling: responsive — ___. Show a '___' message when ___.",
-    passingThreshold: 3.0,
+    scenarios: [
+      {
+        id: "L10B2S1",
+        title: "No loading state",
+        description:
+          "The task list shows a blank screen for 1-2 seconds while data loads. Users think the app is broken.",
+        brokenCode: `export default function TaskList() {
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    supabase.from('tasks').select('*').then(({ data }) => {
+      setTasks(data || []);
+    });
+  }, []);
+
+  return (
+    <div>
+      <h1>My Tasks</h1>
+      {tasks.map(task => (
+        <div key={task.id}>{task.title}</div>
+      ))}
+    </div>
+  );
+}`,
+        language: "tsx",
+        hint: "Add a loading state (useState for isLoading) and show a spinner or skeleton while data is being fetched.",
+        expectedFix:
+          "Should have isLoading state set to true initially, show a loading indicator while fetching, and set to false when data arrives.",
+      },
+      {
+        id: "L10B2S2",
+        title: "No error handling",
+        description:
+          "If the Supabase query fails (network issue, wrong table name), the app shows nothing. No error message, no way to retry.",
+        brokenCode: `useEffect(() => {
+    supabase.from('tasks').select('*').then(({ data }) => {
+      setTasks(data || []);
+    });
+  }, []);`,
+        language: "tsx",
+        hint: "Check for the error in the Supabase response: const { data, error } = await supabase... If error, show a message to the user.",
+        expectedFix:
+          "Should destructure { data, error } from Supabase response. If error, set an error state and display a user-friendly message with a retry option.",
+      },
+    ],
+    passingCount: 2,
   },
   {
-    id: "L15B3",
-    levelId: 15,
+    id: "L10B3",
+    levelId: 10,
     type: "build",
-    title: "Ship Your App",
-    xp: 250,
+    title: "Bulletproof Data",
+    xp: 40,
     required: true,
     order: 3,
     mission:
-      "Build a polished React + Tailwind app: 3+ views/sections, interactive components, responsive design. Think: recipe app, task list, weather dashboard, movie browser.\n\nSuggested project: TaskFlow React app (TaskCard, TaskList, AddTask components)",
+      "Add loading indicators, error messages, and empty states to ALL data-fetching features. A new user should see helpful guidance, not a blank page.",
     githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["react", "tailwind"] },
-      ],
-      minFiles: 10,
-      minCommits: 5,
+      minCommits: 2,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Boss level — be thorough. Check for: 3+ custom components, interactive features (state changes on user actions), responsive Tailwind styling, clean code structure. Should feel like a real app, not a demo.",
+      "Check for loading states (spinner/skeleton), error handling (user-friendly messages with retry), and empty states (helpful guidance for new users). No blank screens, no raw error dumps.",
+    passingScore: 55,
+  },
+  {
+    id: "L10B4",
+    levelId: 10,
+    type: "experiment",
+    title: "Break It On Purpose",
+    xp: 15,
+    required: true,
+    order: 4,
+    description: "Test your error handling by intentionally breaking things.",
+    steps: [
+      {
+        id: "L10B4S1",
+        instruction:
+          "**Test empty state:** Delete ALL data from your Supabase table (or create a new user). Open your app. Do you see helpful guidance, or a blank page?",
+        expectedOutcome: "The app shows an empty state with clear instructions on what to do next.",
+        question: "What does your app show when there's no data?",
+      },
+      {
+        id: "L10B4S2",
+        instruction:
+          "**Test error state:** Temporarily change your Supabase URL to something wrong in .env.local. Reload the app. Does it show an error message, or just crash?",
+        expectedOutcome: "The app shows a user-friendly error message, not a crash or blank screen.",
+        question: "Does the app show a helpful error message?",
+      },
+    ],
+  },
+
+  // ─── Level 11: Data Boss (3 blocks) ───
+  {
+    id: "L11B1",
+    levelId: 11,
+    type: "review",
+    title: "Spot Data Problems",
+    xp: 20,
+    required: true,
+    order: 1,
+    code: `import { supabase } from "@/lib/supabase";
+
+export default function ProjectList() {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  async function loadProjects() {
+    const { data } = await supabase.from("projects").select("*");
+    setProjects(data);
+  }
+
+  async function createProject(name) {
+    await supabase.from("projects").insert({ name: name });
+    loadProjects();
+  }
+
+  return (
+    <div>
+      <h1>Projects</h1>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        createProject(e.target.name.value);
+      }}>
+        <input name="name" placeholder="Project name" />
+        <button>Create</button>
+      </form>
+      <ul>
+        {projects.map((p) => (
+          <li key={p.id}>{p.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}`,
+    language: "tsx",
+    description:
+      "This component loads and creates projects. It works in the happy path but has several data handling issues.",
+    knownIssues: [
+      {
+        id: "no-loading-state",
+        lineRange: [5, 5],
+        description:
+          "No loading state — the list will be empty/flash before data arrives. Should show a skeleton or spinner.",
+        severity: "warning",
+      },
+      {
+        id: "no-error-handling",
+        lineRange: [11, 11],
+        description:
+          "Error from Supabase is ignored — `{ data }` without checking `error`. If the query fails, data will be null and the app crashes.",
+        severity: "critical",
+      },
+      {
+        id: "no-empty-state",
+        lineRange: [28, 28],
+        description:
+          "If there are no projects, the user sees an empty <ul> — no guidance on what to do next.",
+        severity: "warning",
+      },
+      {
+        id: "no-input-validation",
+        lineRange: [23, 23],
+        description:
+          "No validation on the input — user can create a project with an empty name.",
+        severity: "warning",
+      },
+    ],
+    minIssuesFound: 3,
+  },
+  {
+    id: "L11B2",
+    levelId: 11,
+    type: "audit",
+    title: "Data Layer Checklist",
+    xp: 25,
+    required: true,
+    order: 2,
+    description: "Audit your app's data handling against these 5 requirements.",
+    checklist: [
+      {
+        id: "loading-states",
+        category: "ux",
+        title: "Loading States",
+        description: "Every data-fetching component shows a loading indicator (spinner, skeleton) while data is being fetched.",
+        severity: "critical",
+        howToCheck: "Throttle your network to Slow 3G in DevTools, reload each page. Do you see a loading state or a blank screen?",
+      },
+      {
+        id: "error-handling",
+        category: "ux",
+        title: "Error Handling",
+        description: "Every data fetch checks for errors and shows a user-friendly message with a retry option.",
+        severity: "critical",
+        howToCheck: "Temporarily break your Supabase URL. Does each page show an error message, or crash?",
+      },
+      {
+        id: "empty-states",
+        category: "ux",
+        title: "Empty States",
+        description: "Every list/table shows helpful guidance when there's no data — not a blank space.",
+        severity: "warning",
+        howToCheck: "Delete all data from your tables. Does each page guide the user on what to do next?",
+      },
+      {
+        id: "input-validation",
+        category: "code-quality",
+        title: "Input Validation",
+        description: "All forms validate input before submitting — no empty required fields, no invalid formats.",
+        severity: "warning",
+        howToCheck: "Try submitting every form with empty fields. Does it prevent submission and show an error?",
+      },
+      {
+        id: "data-persistence",
+        category: "ux",
+        title: "Data Persistence",
+        description: "All CRUD operations actually save to the database. Data survives page refresh.",
+        severity: "critical",
+        howToCheck: "Create, update, and delete items. Refresh the page after each. Are changes persisted?",
+      },
+    ],
+    minPassed: 4,
+  },
+  {
+    id: "L11B3",
+    levelId: 11,
+    type: "build",
+    title: "Ship Your App with Real Data",
+    xp: 150,
+    required: true,
+    order: 3,
+    mission:
+      "Boss level: app with Supabase CRUD, all states handled (loading/error/empty), input validation, deployed to Vercel.",
+    githubChecks: {
+      minCommits: 5,
+      minFiles: 5,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Boss level. Check for: Supabase integration with real CRUD operations, loading states (spinner/skeleton), error handling (user-friendly messages), empty states (guidance for new users), input validation on forms. No hardcoded data. App should feel solid and complete.",
     passingScore: 60,
   },
 ];

@@ -1,204 +1,69 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 8 — Get Paid (Levels 36-40)
-// Payments, landing, retention, graduation
-// Scaffold: "none" for prompt blocks
+// World 8 — Get Users (Levels 26-29)
+// Landing page, retention, growth, graduation
 // ═══════════════════════════════════════
 
 export const WORLD_8_BLOCKS: Block[] = [
-  // ─── Level 36: Money Moves (4 blocks) ───
+  // ─── Level 26: The Landing Page (4 blocks) ───
   {
-    id: "L36B1",
-    levelId: 36,
+    id: "L26B1",
+    levelId: 26,
     type: "theory",
-    title: "How Online Payments Work",
+    title: "Your Page Has 10 Seconds",
     xp: 10,
     required: true,
     order: 1,
-    content: `# How Online Payments Work
+    content: `# Your Landing Page Has 10 Seconds
 
-You **NEVER** touch credit cards. Here's how it actually works:
+A visitor lands on your page. In **10 seconds** they decide: stay or leave.
 
-1. User clicks "Subscribe" on your site
-2. They go to **Stripe's checkout page** (Stripe's website, not yours)
-3. They enter card details on Stripe's secure page
-4. Stripe charges them and sends a **webhook** (notification) to your server
-5. Your server gets the webhook → updates user to "paid" in database
+That means your **hero section** (the top of the page, before scrolling) must answer:
+1. **What is this?** — one clear headline
+2. **Why should I care?** — one sentence of value
+3. **What do I do?** — one button
 
-## What you handle
+## The 8-Section Structure
 
-- The "Subscribe" button
-- The webhook receiver (an API route)
-- The database update
+Every high-converting landing page follows this:
 
-## What Stripe handles
+| # | Section | Job |
+|---|---------|-----|
+| 1 | **Hero** | Headline + CTA. Above the fold. |
+| 2 | **Problem** | Describe the pain. Make them nod. |
+| 3 | **Solution** | How you fix it. Simple. |
+| 4 | **Features** | 3-5 benefits (not specs) with icons |
+| 5 | **Social proof** | Testimonials, logos, or user count |
+| 6 | **Pricing** | Clear plans. Highlight the popular one. |
+| 7 | **FAQ** | Kill objections. 4-6 questions. |
+| 8 | **Final CTA** | Same button as hero. Last chance. |
 
-- Credit cards, security, fraud detection, receipts, refunds
+## The #1 Mistake
 
-You never see a credit card number. Stripe does all the scary stuff.
+AI generates landing pages with **4 competing CTAs**: "Sign Up", "Watch Demo", "View Pricing", "Contact Sales". The visitor doesn't know which to click.
 
-## Common Gotcha: Webhook URL
-
-The #1 reason payments "work locally but not in production" is a **wrong webhook URL** in Stripe's dashboard.
-
-Your webhook endpoint lives at \`/api/webhooks/stripe\` — but people often register it as \`/webhooks/stripe\` (missing \`/api/\`). Stripe sends the event, gets a 404, and your user's plan never updates.
-
-**Always double-check:** the webhook URL in Stripe's dashboard must match the **exact path** of your API route file. If your file is at \`src/app/api/webhooks/stripe/route.ts\`, the URL is \`https://yourapp.com/api/webhooks/stripe\`.`,
-  },
-  {
-    id: "L36B2",
-    levelId: 36,
-    type: "theory",
-    title: "Pricing That Works",
-    xp: 10,
-    required: true,
-    order: 2,
-    content: `# Pricing That Works
-
-Three models that work:
-
-## Freemium
-Free version with limits, pay to unlock more. (Spotify, Notion)
-Best for: **getting users in the door**.
-
-## Subscription
-Monthly/yearly payment. (Netflix, SaaS tools)
-Best for: **recurring revenue**.
-
-## One-time
-Pay once, use forever. (Lifetime deals)
-Best for: **simple products**.
-
-## For your first product
-
-Start with **freemium**. Free tier gets users. Paid tier ($9-29/mo) unlocks the good stuff.
-
-Make the free tier useful but limited enough that power users **WANT** to upgrade.`,
+**One page. One action. One button.**`,
     miniQuiz: [
       {
-        question: "Which pricing model is best for getting users?",
+        question: "What's the most important job of a landing page hero section?",
         options: [
-          "Freemium — free tier gets users in the door",
-          "Subscription — users pay monthly from day one",
-          "One-time — charge a big upfront fee",
+          "List every feature the product has",
+          "Show the company's story and team photos",
+          "Communicate the value proposition and drive one clear action — in under 10 seconds",
         ],
-        correctIndex: 0,
+        correctIndex: 2,
       },
     ],
   },
   {
-    id: "L36B3",
-    levelId: 36,
-    type: "pattern",
-    title: "Payment Pattern",
-    xp: 15,
-    required: true,
-    order: 3,
-    patternId: "payment-pattern",
-    exercise: {
-      goal: "Plan a complete payment integration using the Payment Pattern",
-      template: `Add ___ payments:
-- Plans: ___
-- Checkout: ___
-- Webhooks: ___
-- User model: ___
-- Gating: ___
-- Security: ___`,
-      exampleFilled: `Add Stripe payments:
-- Plans: Free (basic features, 10 items max), Pro $12/mo (unlimited items, priority support)
-- Checkout: Redirect to Stripe Checkout session
-- Webhooks: checkout.session.completed → upgrade user plan to Pro, customer.subscription.deleted → downgrade to Free
-- User model: Add "plan" field (FREE or PRO) and "stripeCustomerId" to User
-- Gating: Free users limited to 10 items (check count server-side), Pro users unlimited
-- Security: Verify webhook signatures with Stripe secret, check user plan server-side (never trust client)`,
-    },
-  },
-  {
-    id: "L36B4",
-    levelId: 36,
-    type: "build",
-    title: "Add Payments",
-    xp: 50,
-    required: true,
-    order: 4,
-    mission:
-      "Add payment integration: pricing page, checkout flow, webhook handler.",
-    githubChecks: { minFiles: 15, commitAfter: "level_start" },
-    aiReviewPrompt:
-      "Check for: pricing page, checkout redirect, webhook handler, plan field in user model or schema.",
-    passingScore: 55,
-  },
-
-  // ─── Level 37: The Landing Page (4 blocks) ───
-  {
-    id: "L37B1",
-    levelId: 37,
-    type: "theory",
-    title: "Landing Page = Your Sales Pitch",
-    xp: 10,
-    required: true,
-    order: 1,
-    content: `# Landing Page = Your Sales Pitch
-
-A landing page has **ONE job**: convince the visitor to take **ONE action** (sign up, start free trial, buy).
-
-## The structure that works
-
-1. **HERO** — Clear headline + what you do + CTA button (above the fold, no scrolling)
-2. **PROBLEM** — "Tired of X?" — describe the pain
-3. **SOLUTION** — "We fix X by doing Y"
-4. **FEATURES** — 3-5 key benefits with icons
-5. **SOCIAL PROOF** — "10,000+ users" / testimonials / logos
-6. **PRICING** — Clear plans, highlight the popular one
-7. **FAQ** — Answer "but what about...?" objections
-8. **FINAL CTA** — Repeat the action button
-
-Every successful landing page follows this. Tell AI this exact structure.`,
-  },
-  {
-    id: "L37B2",
-    levelId: 37,
-    type: "pattern",
-    title: "Landing Page Pattern",
-    xp: 15,
-    required: true,
-    order: 2,
-    patternId: "landing-page",
-    exercise: {
-      goal: "Plan a conversion-optimized landing page using the Landing Page Pattern",
-      template: `Build a landing page:
-- Hero: headline: ___, subline: ___, CTA: ___
-- Problem: ___
-- Solution: ___
-- Features (3-5): ___
-- Social proof: ___
-- Pricing: ___
-- FAQ (3-5 questions): ___
-- Final CTA: ___
-- Tone: ___
-- Target audience: ___`,
-      exampleFilled: `Build a landing page:
-- Hero: headline: "Ship tasks, not stress", subline: "The task manager that solo founders actually finish building", CTA: "Start free — no credit card"
-- Problem: "You've tried Notion, Trello, Todoist — but you spend more time organizing tasks than doing them"
-- Solution: "TaskFlow gives you ONE view, ONE workflow, ZERO configuration. Add tasks, do tasks, done."
-- Features (3-5): 1) One-click task creation, 2) AI-powered priority sorting, 3) Daily focus mode (shows only today's 3 tasks), 4) Built-in Pomodoro timer
-- Social proof: "Used by 2,000+ indie hackers" + 3 short testimonials
-- Pricing: Free (up to 25 tasks), Pro $9/mo (unlimited + AI features)
-- FAQ: "Is my data safe?" / "Can I import from Todoist?" / "What happens if I cancel Pro?"
-- Final CTA: "Start free today — your tasks aren't going to do themselves"
-- Tone: Casual, direct, slightly playful
-- Target audience: Solo founders and indie hackers who want simplicity`,
-    },
-  },
-  {
-    id: "L37B3",
-    levelId: 37,
+    id: "L26B2",
+    levelId: 26,
     type: "review",
-    title: "Spot Conversion Problems",
+    title: "Spot Conversion Killers",
     xp: 20,
     required: true,
-    order: 3,
+    order: 2,
     code: `<section class="hero py-20 text-center">
   <h1 class="text-4xl font-bold">Welcome to Our Platform</h1>
   <p class="mt-4 text-gray-600">
@@ -215,24 +80,24 @@ Every successful landing page follows this. Tell AI this exact structure.`,
 </section>`,
     language: "html",
     description:
-      "This landing page hero was generated by AI. It has conversion problems — can you spot them?",
+      "This AI-generated landing page hero has conversion problems. Can you spot them?",
     knownIssues: [
       {
-        id: "L37B3I1",
+        id: "L26B2I1",
         lineRange: [2, 2],
         description:
           "Generic headline — 'Welcome to Our Platform' says nothing. Should state a specific benefit like 'Ship Projects 2x Faster' or solve a pain point.",
         severity: "critical",
       },
       {
-        id: "L37B3I2",
+        id: "L26B2I2",
         lineRange: [3, 8],
         description:
-          "Feature dump — listing 8 different features instead of one clear value proposition. The visitor has no idea what this product DOES in 5 seconds.",
+          "Feature dump — listing 8 features instead of one clear value proposition. A visitor can't understand what this product DOES in 5 seconds.",
         severity: "warning",
       },
       {
-        id: "L37B3I3",
+        id: "L26B2I3",
         lineRange: [9, 14],
         description:
           "Four competing CTAs — the visitor doesn't know which button to click. Should be ONE primary action (e.g., 'Start Free Trial') and at most one secondary.",
@@ -242,142 +107,252 @@ Every successful landing page follows this. Tell AI this exact structure.`,
     minIssuesFound: 2,
   },
   {
-    id: "L37B4",
-    levelId: 37,
+    id: "L26B3",
+    levelId: 26,
+    type: "pattern",
+    title: "Landing Page Pattern",
+    xp: 15,
+    required: true,
+    order: 3,
+    patternId: "landing-page",
+    exercise: {
+      goal: "Plan a conversion-optimized landing page for YOUR product",
+      template: `Build a landing page for [your product]:
+
+Sections:
+1. Hero: headline: ___, subheadline: ___, CTA: ___
+2. Problem: ___
+3. Solution: ___
+4. Features (3-5): ___
+5. Social proof: ___
+6. Pricing: ___
+7. FAQ (4-6): ___
+8. Final CTA: ___
+
+Tone: ___
+Target audience: ___`,
+      exampleFilled: `Build a landing page for FocusFlow:
+
+Sections:
+1. Hero: headline: "Your team's focus time, protected", subheadline: "See who's in deep work. Stop unnecessary interruptions.", CTA: "Start free"
+2. Problem: "Your team spends 60% of the day in meetings. The other 40%? Recovering from meetings."
+3. Solution: "FocusFlow shows when your team is in deep work — so you interrupt less and ship more."
+4. Features: Focus timer (personal Pomodoro), Team dashboard (who's focused now), Weekly report (focus vs meeting hours), Quiet mode (block notifications during focus)
+5. Social proof: "500+ teams ship faster with FocusFlow" + 3 short testimonials
+6. Pricing: Free (1 team, basic timer) / Pro $12/mo (unlimited, analytics, reports)
+7. FAQ: How does it work? / Is my data private? / Can I try it free? / Do I need to install anything?
+8. Final CTA: "Start protecting your team's focus — free forever for small teams"
+
+Tone: professional but warm, no corporate jargon
+Target audience: remote team leads at startups (5-20 people)`,
+    },
+  },
+  {
+    id: "L26B4",
+    levelId: 26,
     type: "build",
     title: "Build Your Landing Page",
     xp: 50,
     required: true,
     order: 4,
     mission:
-      "Build a conversion-optimized landing page: hero, problem/solution, features, social proof, pricing, FAQ, CTAs.",
-    githubChecks: { minCommits: 3, commitAfter: "level_start" },
+      "Build a conversion-optimized landing page with all 8 sections: hero, problem, solution, features, social proof, pricing, FAQ, and final CTA.",
+    githubChecks: {
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
     aiReviewPrompt:
-      "Review for conversion: hero with clear value prop, problem/solution, features, social proof, pricing, FAQ, CTAs.",
+      "Check for landing page with: clear hero (headline + one CTA), problem/solution section, features, social proof, pricing section, FAQ, and final CTA. Should have one clear action, not multiple competing buttons.",
     passingScore: 55,
   },
 
-  // ─── Level 38: Keep Them Coming Back (4 blocks) ───
+  // ─── Level 27: Keep Them Coming Back (4 blocks) ───
   {
-    id: "L38B1",
-    levelId: 38,
+    id: "L27B1",
+    levelId: 27,
     type: "theory",
     title: "Why Users Leave",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Why Users Leave
+    content: `# Getting Users Is Half the Battle
 
-Getting users to sign up is half the battle. **Keeping them** is the other half.
+Signing up is easy. **Coming back tomorrow** is hard.
 
-Users leave because:
+Users leave your app for 4 reasons:
 
-1. **Confused** — didn't know what to do first (fix: onboarding flow)
-2. **No value fast** — took too long to see the benefit (fix: guide to "aha moment" in under 2 minutes)
-3. **Forgot about you** — no reason to come back (fix: emails, notifications)
-4. **No habit** — nothing pulling them back daily (fix: streaks, progress bars)
+## 1. Confused
+They didn't know what to do first. The dashboard was blank and overwhelming.
 
-Fix all four → users stay.`,
+**Fix:** Onboarding wizard. Guide them to their first success in under 2 minutes.
+
+## 2. No Value Fast
+It took too long to see the benefit. They signed up but never hit the "aha moment."
+
+**Fix:** Get them to create their first [item] immediately. Show the result. "You just did it!"
+
+## 3. Forgot About You
+No reason to come back. Out of sight, out of mind.
+
+**Fix:** Emails: "You have 3 tasks due today." Notifications: "Someone commented."
+
+## 4. No Habit
+Nothing pulls them back daily. There's no cost to leaving.
+
+**Fix:** Streaks, progress bars, daily stats. Loss aversion is powerful — people hate losing accumulated progress more than they enjoy gaining new progress.
+
+**Fix all four → users stay.**`,
+    miniQuiz: [
+      {
+        question: "Why do streaks work as a retention mechanism?",
+        options: [
+          "They make the app load faster for returning users",
+          "Loss aversion — people hate losing accumulated progress more than gaining new progress",
+          "Streaks are required by app store guidelines",
+        ],
+        correctIndex: 1,
+      },
+    ],
   },
   {
-    id: "L38B2",
-    levelId: 38,
+    id: "L27B2",
+    levelId: 27,
     type: "theory",
     title: "Engagement Hooks",
     xp: 10,
     required: true,
     order: 2,
-    content: `# Engagement Hooks
+    content: `# Engagement Hooks That Work
 
-Tools to bring users back:
+You don't need all of these. Pick 2-3 and implement them well.
 
-**Onboarding** — Welcome wizard: enter name → create first item → see result. The "You just did X!" moment.
+## Onboarding Wizard
+After first sign-in: 3 steps. Enter name → create first item → see result.
 
-**Emails** — "You have 3 tasks due today", "Someone commented on your post". Timely and useful.
+The goal: get them to the **aha moment** — when they first experience your product's value. This should happen in under 2 minutes.
 
-**Streaks** — "5-day streak! Don't break it." Loss aversion is powerful — people hate losing progress more than they enjoy gaining it.
+## Email Sequences
+- **Welcome**: immediate. "Here's how to get started."
+- **Day 2**: "You created [item]. Here's what to do next."
+- **Day 7**: "You haven't been back. Here's what you're missing."
 
-**Progress** — "Profile 80% complete." People feel compelled to fill bars. It's irresistible.
+Use Resend — it has a free tier and clean API.
 
-**Notifications** — "New activity on your project." Pull them back when something happens.
+## Streaks
+"5-day streak! Don't break it." Track consecutive active days. Show a fire emoji and count on the dashboard. People will come back just to not lose the streak.
 
-Pick 2-3 and implement them. You don't need all.`,
-    miniQuiz: [
-      {
-        question: "Why do streaks work as a retention mechanism?",
-        options: [
-          "Loss aversion — people don't want to lose their accumulated streak",
-          "Streaks make the app load faster",
-          "Users earn money for maintaining streaks",
-        ],
-        correctIndex: 0,
-      },
-    ],
+## Progress Bars
+"Profile 80% complete." People feel compelled to fill bars — it's irresistible. Show setup progress: name filled, first project, first task, payment method.
+
+## Notifications
+"New activity on your project." Only send when something **actually happened**. Never spam.`,
   },
   {
-    id: "L38B3",
-    levelId: 38,
+    id: "L27B3",
+    levelId: 27,
     type: "prompt",
-    title: "Write a Retention Prompt",
-    xp: 25,
+    title: "Retention Prompt",
+    xp: 20,
     required: true,
     order: 3,
     scaffold: "none",
-    goal: "Add retention features to keep users engaged",
-    referencePrompt:
-      "Add retention features to my Next.js app: 1) Onboarding flow — after first sign-in, show a 3-step wizard: enter name, create first project, add first task. Skip if already completed. 2) Daily email notification for users with due tasks. 3) Streak system — track consecutive active days, show streak count and fire emoji on dashboard. Reset if user misses a day. 4) Progress bar showing 'Setup: X% complete' based on: profile filled, first project, first task, payment method.",
+    goal: "Write a prompt that adds retention features to your app",
+    referencePrompt: `Add retention features to my app:
+
+1. Onboarding flow — after first sign-in, show a 3-step wizard:
+   - Step 1: enter display name
+   - Step 2: create first [item]
+   - Step 3: see success message with "aha moment"
+   Skip if already completed (check a flag in the user profile).
+
+2. Welcome email — send via Resend immediately after sign-up.
+   Subject: "Welcome to [App] — here's how to get started"
+   Include a link to the dashboard and their first task.
+
+3. Streak system — track consecutive active days.
+   - Show streak count + fire emoji on dashboard
+   - Reset if user misses a day
+   - Store lastActiveDate and streakCount on user profile
+
+4. Setup progress bar — "Setup: X% complete" based on:
+   - Profile name filled (25%)
+   - First project created (25%)
+   - First task added (25%)
+   - Payment method added (25%)
+   Show on dashboard until 100%.`,
     hints: [
-      "Include onboarding for new users",
-      "Add re-engagement (emails/notifications)",
-      "Include gamification (streaks, progress)",
+      "Include onboarding for new users — guide to aha moment",
+      "Add email or notification to bring them back",
+      "Include gamification: streaks, progress bars, or achievements",
     ],
     passingThreshold: 3.0,
   },
   {
-    id: "L38B4",
-    levelId: 38,
+    id: "L27B4",
+    levelId: 27,
     type: "build",
     title: "Add Retention Features",
     xp: 50,
     required: true,
     order: 4,
     mission:
-      "Add retention: onboarding flow, email notifications, at least one gamification element (streaks, progress, badges).",
+      "Add retention features: onboarding wizard for new users, at least one re-engagement mechanism (email or notification), and at least one gamification element (streaks, progress bar, or achievements).",
     githubChecks: {
-      minFiles: 18,
-      minCommits: 5,
+      minCommits: 3,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for: onboarding flow, email/notification triggers, gamification element. Integrated into app flow.",
+      "Check for: onboarding flow (wizard, tour, or guided first-use), at least one re-engagement mechanism (email, notification), and at least one gamification element (streak, progress bar, achievement). Should be integrated into the app flow, not standalone.",
     passingScore: 55,
   },
 
-  // ─── Level 39: The Complete Product (4 blocks) ───
+  // ─── Level 28: What's Next (3 blocks) ───
   {
-    id: "L39B1",
-    levelId: 39,
+    id: "L28B1",
+    levelId: 28,
     type: "theory",
-    title: "Project vs Product",
+    title: "Running Your SaaS",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Project vs Product
+    content: `# What Running a SaaS Actually Costs
 
-A **PROJECT** works on your laptop. A **PRODUCT** works for strangers who have never seen it before.
+Your app is live. Here's what it costs to keep it running:
 
-The gap:
+## Monthly Costs (Solo Founder)
 
-1. **Edge cases** — What if there's no data? What if they enter weird input? What if the internet is slow?
-2. **Security** — Are API routes protected? Are webhooks verified? Can users access each other's data?
-3. **First impression** — Does the landing page make sense in 5 seconds?
-4. **Complete journey** — Can a stranger go from landing → sign up → use core feature → pay?
+| Service | Free Tier | When You Pay |
+|---------|-----------|-------------|
+| **Vercel** (hosting) | 100GB bandwidth | $20/mo after free tier |
+| **Supabase** (database) | 500MB, 50K requests | $25/mo for Pro |
+| **Stripe** (payments) | No monthly fee | 2.9% + 30¢ per transaction |
+| **Domain** | — | $10-15/year |
+| **Resend** (email) | 100 emails/day | $20/mo for more |
+| **PostHog** (analytics) | 1M events/mo | $0 for most indie apps |
 
-Test every step yourself **as if you've never seen the app**. Better yet, have a friend try it while you watch silently.`,
+**Total to start: $0-15/month.** You can run a real SaaS for almost nothing until you have paying users.
+
+## When to Use a Boilerplate
+
+If you're starting your **second** project, consider a SaaS boilerplate:
+- **MakerKit** — Next.js + Supabase + Stripe, pre-built
+- **ShipFast** — similar, popular with indie hackers
+
+They cost $100-300 but save you weeks of auth/payments/email setup.
+
+Don't use one for your first project — you need to understand what's under the hood.
+
+## When to Hire Help
+
+- **UI polish**: Fiverr/Upwork for a designer to review your CSS ($50-200)
+- **Complex backend**: when you need real-time, complex queries, or scale
+- **Legal**: real lawyer for ToS/Privacy when you have real revenue
+
+For everything else: AI + your skills = enough to build and launch.`,
   },
   {
-    id: "L39B2",
-    levelId: 39,
+    id: "L28B2",
+    levelId: 28,
     type: "pattern",
     title: "Feature Planning Pattern",
     xp: 15,
@@ -385,185 +360,88 @@ Test every step yourself **as if you've never seen the app**. Better yet, have a
     order: 2,
     patternId: "feature-planning",
     exercise: {
-      goal: "Plan a new feature with clear MVP scope using the Feature Planning Pattern",
-      template: `Plan the ___ feature:
-User story: As a ___, I want ___ so that ___
-Scope (MVP):
-- Must have: ___
-- Nice to have: ___
-- Out of scope: ___
-Technical: new models, new routes, new components`,
-      exampleFilled: `Plan the streak system feature:
-User story: As a user, I want to see my daily streak so that I stay motivated to use the app every day
-Scope (MVP):
-- Must have: Track last active date, calculate streak count, display streak on dashboard, reset on missed day
-- Nice to have: Streak milestones (7-day, 30-day), streak freeze (skip one day), weekly email with streak summary
-- Out of scope: Leaderboard, streak rewards/prizes, social sharing of streaks
-Technical: new fields on User model (lastActiveDate, streakCount), middleware to update on each visit, dashboard component to display streak`,
+      goal: "Plan your next 3 features using the Feature Planning Pattern",
+      template: `Plan the [feature] feature:
+
+User story: As a [user], I want to [action] so that [benefit]
+
+Scope:
+- Must have: [ship doesn't work without these]
+- Nice to have: [add in v2]
+- Out of scope: [explicitly NOT building]
+
+Technical:
+- Database changes: [new tables/columns]
+- New pages/components: [UI pieces]
+- External services: [APIs, emails, payments]`,
+      exampleFilled: `Plan the Team Invites feature:
+
+User story: As a team admin, I want to invite people by email so they can join my workspace.
+
+Scope:
+- Must have: send invite email, click link to accept, join the team
+- Nice to have: bulk invite, choose role on invite, invite expiration
+- Out of scope: SSO, domain auto-join, admin approval workflow
+
+Technical:
+- Database changes: new "invites" table (email, team_id, invited_by, status, token, expires_at)
+- New pages: InviteForm (email input + send), InvitePage (/invite?token=xxx), InviteList (pending invites in settings)
+- External services: Resend for invite emails`,
     },
   },
   {
-    id: "L39B3",
-    levelId: 39,
-    type: "audit",
-    title: "Security Audit",
-    xp: 25,
+    id: "L28B3",
+    levelId: 28,
+    type: "theory",
+    title: "Where to Find Users",
+    xp: 10,
     required: true,
     order: 3,
-    description:
-      "Audit YOUR project for security vulnerabilities. A single critical issue can get your app hacked, your users' data leaked, or your Stripe account drained. Check everything.",
-    checklist: [
+    content: `# Where to Find Your First 100 Users
+
+You built the product. Now you need people to use it.
+
+## Free Channels (Start Here)
+
+**Product Hunt** — launch here for your first wave. Prepare a good tagline, screenshots, and a 1-minute demo video. Launch on Tuesday or Wednesday.
+
+**Twitter/X** — build in public. Post your progress. "Just shipped [feature]. Here's what I learned." People follow builders. Tag #buildinpublic.
+
+**Reddit** — find your niche subreddit. Don't spam "check out my app." Instead: help people, share your journey, mention your tool when relevant.
+
+**Indie Hackers** — post your milestones. "From idea to first paying customer in 30 days." This community loves builders.
+
+**Hacker News** — "Show HN: [Your App] — [one-line description]." If it resonates, you'll get thousands of visits in a day.
+
+## The Launch Checklist
+
+1. Landing page is conversion-optimized (World 8, Level 26)
+2. Onboarding gets users to "aha" in under 2 minutes
+3. Screenshots and a short demo ready
+4. Product Hunt listing prepared
+5. Tweet thread about your journey written
+6. Reddit/community posts planned
+
+## The Real Secret
+
+Your first 100 users won't come from marketing. They'll come from **talking to people**. DM founders, reply to tweets, answer questions on Reddit. Manual, one-by-one. It doesn't scale — but you don't need scale yet.`,
+    miniQuiz: [
       {
-        id: "L39A1",
-        category: "security",
-        title: "No secrets in code or git history",
-        description: "API keys, database URLs, and tokens are in .env — never committed to git.",
-        severity: "critical",
-        howToCheck: "Search your codebase for actual key values (sk_live_, pk_live_, password=). Run `git log -p | grep -i 'secret\\|password\\|api_key'` to check history.",
-      },
-      {
-        id: "L39A2",
-        category: "security",
-        title: "API routes require authentication",
-        description: "Protected endpoints check for a valid session before doing anything. No auth = no access.",
-        severity: "critical",
-        howToCheck: "Open each API route file. Does it call auth() or getServerSession() at the top? Try calling the endpoint without being logged in (use curl or Postman).",
-      },
-      {
-        id: "L39A3",
-        category: "security",
-        title: "Users can't access each other's data",
-        description: "Every database query filters by the logged-in user's ID. User A can't see User B's items.",
-        severity: "critical",
-        howToCheck: "Check every Prisma query in API routes. Does it include `where: { userId: session.user.id }`? Log in as two different users and try to access each other's data.",
-      },
-      {
-        id: "L39A4",
-        category: "security",
-        title: "Webhook signatures are verified",
-        description: "Stripe webhooks use constructEvent() with the signing secret. No one can fake a payment.",
-        severity: "critical",
-        howToCheck: "Open your webhook handler. Is it using `stripe.webhooks.constructEvent(body, sig, secret)`? If it just does `req.json()` without verification — anyone can POST fake events.",
-      },
-      {
-        id: "L39A5",
-        category: "security",
-        title: "Input validation on forms and API",
-        description: "User input is validated server-side. No SQL injection, no XSS, no unlimited-length strings.",
-        severity: "warning",
-        howToCheck: "Try submitting forms with empty fields, very long strings (10,000+ chars), and HTML like `<script>alert('xss')</script>`. Does the server reject bad input?",
-      },
-      {
-        id: "L39A6",
-        category: "security",
-        title: "Feature gating is server-side",
-        description: "Pro features are enforced on the server, not just hidden in the UI. Free users can't bypass the paywall.",
-        severity: "critical",
-        howToCheck: "Check API routes for paid features. Do they verify the user's plan before proceeding? Try calling a Pro API endpoint as a Free user directly.",
-      },
-      {
-        id: "L39A7",
-        category: "security",
-        title: ".env.example exists without real values",
-        description: "New developers can set up the project without seeing real secrets.",
-        severity: "warning",
-        howToCheck: "Check if .env.example exists. Does it list all required env vars with placeholder values like YOUR_API_KEY_HERE?",
-      },
-      {
-        id: "L39A8",
-        category: "security",
-        title: "Auth cookies are secure",
-        description: "Session cookies use httpOnly, secure, and sameSite flags in production.",
-        severity: "warning",
-        howToCheck: "Open DevTools → Application → Cookies. Check your session cookie. Is it httpOnly? Secure? If using NextAuth — it handles this, but verify.",
-      },
-      {
-        id: "L39A9",
-        category: "code-quality",
-        title: "Error messages don't leak internals",
-        description: "API errors return user-friendly messages, not stack traces or database schema details.",
-        severity: "warning",
-        howToCheck: "Trigger an error in your API (e.g., request a non-existent item). Does the response show internal error details or a clean error message?",
-      },
-      {
-        id: "L39A10",
-        category: "security",
-        title: "Rate limiting on auth endpoints",
-        description: "Login/signup endpoints limit attempts to prevent brute-force attacks.",
-        severity: "suggestion",
-        howToCheck: "Try sending 100 rapid requests to your login endpoint. Does it start rejecting them? If not, consider adding rate limiting middleware.",
+        question: "What's the best way to get your first 100 users?",
+        options: [
+          "Run expensive Facebook ads",
+          "Manual outreach — DMs, communities, building in public",
+          "Wait for Google to index your site",
+        ],
+        correctIndex: 1,
       },
     ],
-    minPassed: 6,
-  },
-  {
-    id: "L39B4",
-    levelId: 39,
-    type: "debug",
-    title: "Fix Production Issues",
-    xp: 25,
-    required: true,
-    order: 4,
-    scenarios: [
-      {
-        id: "L39B4D1",
-        title: "Auth redirect loop",
-        description:
-          "Users are stuck in an infinite redirect loop. The protected dashboard page redirects to /login, but /login immediately redirects back to /dashboard. The browser shows 'too many redirects'.",
-        brokenCode: `// middleware.ts
-import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-
-export async function middleware(req) {
-  const token = await getToken({ req });
-
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-
-  return NextResponse.next();
-}
-
-export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
-};
-
-// The matcher catches ALL routes including /login itself
-// So: /dashboard → no token → redirect to /login → no token → redirect to /login → loop`,
-        language: "typescript",
-        hint: "The middleware matcher catches /login too. When an unauthenticated user hits /login, it redirects them... back to /login.",
-        expectedFix:
-          "Exclude /login from the middleware matcher, or add a condition to skip the redirect when the user is already on the /login page. For example: matcher: ['/((?!api|_next/static|_next/image|favicon.ico|login).*)']",
-      },
-      {
-        id: "L39B4D2",
-        title: "Webhook fails silently",
-        description:
-          "Stripe sends webhooks but the user's plan never updates. The Stripe dashboard shows webhooks are being sent, but they all return 404. The app works fine locally.",
-        brokenCode: `// Local development (works):
-// Stripe CLI forwards to: http://localhost:3000/api/webhooks/stripe
-
-// Production (broken):
-// Stripe dashboard webhook URL: https://myapp.vercel.app/webhooks/stripe
-//
-// The API route file is at:
-// src/app/api/webhooks/stripe/route.ts
-//
-// Stripe dashboard shows: 404 Not Found for every webhook
-// The URL in Stripe is missing the /api/ prefix`,
-        language: "typescript",
-        hint: "Compare the webhook URL in Stripe's dashboard with where the actual API route lives. Look at the path carefully.",
-        expectedFix:
-          "The webhook URL in Stripe's dashboard is missing the /api/ prefix. Change it from https://myapp.vercel.app/webhooks/stripe to https://myapp.vercel.app/api/webhooks/stripe",
-      },
-    ],
-    passingCount: 1,
   },
 
-  // ─── Level 40: Graduate (3 blocks) ───
+  // ─── Level 29: Graduate (3 blocks) ───
   {
-    id: "L40B1",
-    levelId: 40,
+    id: "L29B1",
+    levelId: 29,
     type: "quiz",
     title: "Final Review",
     xp: 50,
@@ -572,10 +450,10 @@ export const config = {
     questions: [
       {
         question:
-          "In a Stripe integration, why should you verify webhook signatures?",
+          "In a Stripe integration, why must you verify webhook signatures?",
         options: [
           "To make webhooks faster",
-          "To prevent anyone from faking a webhook and upgrading themselves for free",
+          "To prevent anyone from faking a payment event and upgrading themselves for free",
           "Stripe won't send webhooks without verification",
           "It's required by JavaScript",
         ],
@@ -584,11 +462,11 @@ export const config = {
           "Without signature verification, anyone can POST to your webhook URL and trigger a plan upgrade. Always verify with stripe.webhooks.constructEvent().",
       },
       {
-        question: "What is the purpose of the hero section on a landing page?",
+        question: "What's the purpose of a landing page hero section?",
         options: [
           "To list every feature of the product",
-          "To show the company's history and founding story",
-          "To communicate the core value proposition and drive one clear action — in under 5 seconds",
+          "To show the company's history",
+          "To communicate the value proposition and drive one clear action — in under 10 seconds",
           "To display the navigation menu",
         ],
         correctIndex: 2,
@@ -596,7 +474,7 @@ export const config = {
           "The hero must answer 'What does this do and why should I care?' immediately. One headline, one CTA.",
       },
       {
-        question: "What is the 'aha moment' in onboarding?",
+        question: "What's the 'aha moment' in user onboarding?",
         options: [
           "When the user creates their account",
           "When the user first experiences the core value of the product",
@@ -608,25 +486,24 @@ export const config = {
           "The aha moment is when users GET IT — they see why your product is valuable. Guide them there in under 2 minutes.",
       },
       {
-        question: "Why do streaks work as a retention tool?",
+        question: "Why should feature gating be enforced server-side?",
         options: [
-          "They make the app load faster for returning users",
-          "Loss aversion — people hate losing accumulated progress more than they enjoy gaining new progress",
-          "Streaks are required by app store guidelines",
-          "They reduce server costs",
+          "Client-side checks are slower",
+          "Because anyone can bypass UI restrictions by calling API routes directly",
+          "Server-side code runs faster",
+          "It's a Stripe requirement",
         ],
         correctIndex: 1,
         explanation:
-          "Loss aversion is a powerful psychological principle. A 30-day streak feels too valuable to break.",
+          "Hiding a button in the UI doesn't prevent someone from calling the API directly with curl. Always check the user's plan in your API routes.",
       },
       {
-        question:
-          "When planning a new feature, why define 'out of scope'?",
+        question: "When planning features, why define 'out of scope'?",
         options: [
-          "To impress stakeholders with how much you thought about",
+          "To impress stakeholders",
           "To prevent scope creep — knowing what you WON'T build keeps the MVP focused and shippable",
-          "Out of scope items are automatically added to the next sprint",
-          "It's a legal requirement for software projects",
+          "Out of scope items are added to the next sprint automatically",
+          "It's a legal requirement",
         ],
         correctIndex: 1,
         explanation:
@@ -636,43 +513,68 @@ export const config = {
     passingScore: 3,
   },
   {
-    id: "L40B2",
-    levelId: 40,
+    id: "L29B2",
+    levelId: 29,
     type: "prompt",
-    title: "Write Your Product Audit",
+    title: "Your Product Audit",
     xp: 50,
     required: true,
     order: 2,
     scaffold: "none",
     goal: "Write a comprehensive prompt to audit your entire product before launch",
-    referencePrompt:
-      "Complete audit of my app. Check: 1) User journey — landing → sign up → use feature → pay. Test every step. 2) Payments — checkout working? webhooks updating? feature gating enforced server-side? 3) Error handling — what happens if DB is down? payment fails? invalid input? 4) Mobile — every page at 375px width. 5) SEO — proper meta tags, OG images. 6) Performance — loads under 3 seconds? 7) Security — secrets in env vars? routes protected? webhooks verified? List all issues with severity.",
+    referencePrompt: `Do a complete audit of my app before launch. Check everything:
+
+1. User journey — can a stranger go from landing page → sign up → use the core feature → pay? Test every step.
+2. Payments — does checkout work? Do webhooks update the database? Is feature gating enforced server-side?
+3. Error handling — what happens if the database is down? Payment fails? Invalid input? Show me every broken state.
+4. Mobile — check every page at 375px width. Nothing should overflow or be unreadable.
+5. SEO — meta title and description on every page? OG tags for social sharing? Sitemap.xml?
+6. Performance — does the page load in under 3 seconds? Any unnecessary large images or scripts?
+7. Security — secrets in .env (not code)? Auth on all API routes? User data isolation? Webhook signatures verified?
+
+For each issue found, tell me:
+- What page/file
+- What's wrong
+- How to fix it
+- Severity (critical/warning/suggestion)`,
     hints: [
-      "Cover the entire user journey",
-      "Check payments end-to-end",
+      "Cover the entire user journey end-to-end",
+      "Check payments flow completely",
       "Test mobile and performance",
-      "Verify security",
+      "Verify all security measures",
     ],
     passingThreshold: 3.5,
   },
   {
-    id: "L40B3",
-    levelId: 40,
+    id: "L29B3",
+    levelId: 29,
     type: "build",
     title: "Graduate",
     xp: 500,
     required: true,
     order: 3,
-    mission:
-      "Your app is live, accepting payments, has a complete user experience. Deploy, share, start getting users. This is graduation.\n\nSuggested project: TaskFlow with payments, landing page, retention",
+    mission: `Final boss. Your SaaS is live and ready for real users.
+
+Checklist:
+- Deployed and accessible
+- Auth: sign up, sign in, sign out
+- Database: CRUD operations with real data
+- Payments: Stripe checkout + webhooks + feature gating
+- Landing page: hero, features, pricing, CTA
+- SEO: meta tags, OG tags
+- Analytics: tracking page views and key events
+- Security: no secrets in code, auth on routes, user isolation
+- Mobile: works on 375px
+
+Ship it. Share it. Get your first users.`,
     githubChecks: {
       hasDeploy: true,
-      minFiles: 25,
-      minCommits: 15,
+      minCommits: 10,
+      minFiles: 15,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Final boss — full product audit. Deployment, payments, complete user journey (landing → sign up → use → pay), polished UI, error handling, SEO, emails. Would this earn money?",
+      "Final boss. Comprehensive audit: deployed live, auth working, database with CRUD, Stripe payments, landing page with clear CTA, SEO (meta/OG), analytics, error handling, mobile responsive, security (no secrets in code, auth on API routes, user data isolation). This should be a real, shippable product — not a tutorial demo.",
     passingScore: 65,
   },
 ];

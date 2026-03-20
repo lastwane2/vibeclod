@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════
 // Prompt Toolkit — collected patterns
+// Only patterns a non-tech founder needs
 // ═══════════════════════════════════════
 
 export interface PromptPattern {
@@ -21,7 +22,104 @@ export interface ToolkitChapter {
 }
 
 export const PROMPT_PATTERNS: PromptPattern[] = [
-  // ── Chapter 1: World 1 — Hello, Vibe ──
+  // ── Chapter 1: World 1 — Idea to Internet ──
+  {
+    id: "prd-pattern",
+    name: "PRD Pattern",
+    description: "Write a Product Requirements Document that AI understands",
+    worldId: 1,
+    chapter: 1,
+    template: `# [Product Name]
+
+## Problem
+[What pain does this solve? Who has this pain?]
+
+## Target User
+[Who specifically will use this? Be concrete — not "everyone"]
+
+## Core Features (MVP)
+1. [Feature 1 — what it does, not how]
+2. [Feature 2]
+3. [Feature 3]
+
+## Out of Scope (NOT building yet)
+- [Feature to skip]
+- [Feature to skip]
+
+## Success Criteria
+[How do you know it works? What does "done" look like?]`,
+    example: `# FocusFlow — Pomodoro Timer for Remote Teams
+
+## Problem
+Remote workers lose track of focus time. Managers can't tell if the team is in deep work or stuck in meetings.
+
+## Target User
+Remote team leads (5-20 people) who want to protect focus time without micromanaging.
+
+## Core Features (MVP)
+1. Personal Pomodoro timer — 25 min focus / 5 min break
+2. Team dashboard — see who's in focus mode right now
+3. Focus score — weekly report of deep work hours vs meetings
+
+## Out of Scope (NOT building yet)
+- Calendar integration
+- Slack notifications
+- Mobile app
+
+## Success Criteria
+A team lead can see their team's focus time at a glance. Each member can run their own timer.`,
+    whenToUse:
+      "Before writing ANY code. Every project starts with a PRD. Paste it into AI before your first prompt.",
+  },
+  {
+    id: "design-brief",
+    name: "Design Brief Pattern",
+    description: "Tell AI exactly how your app should look and feel",
+    worldId: 1,
+    chapter: 1,
+    template: `## Visual Style
+- Mood: [modern/playful/serious/minimal/bold]
+- Inspiration: [reference sites or apps]
+
+## Colors
+- Primary: [hex code — the main brand color]
+- Background: [hex code — light or dark]
+- Accent: [hex code — buttons, highlights]
+- Text: [hex code]
+
+## Typography
+- Font: [Google Font name — or "system default"]
+- Heading style: [large bold / ALL CAPS / normal]
+
+## Layout
+- Style: [clean with lots of whitespace / dense and data-heavy / card-based]
+- Responsive: mobile-first, must work on 375px
+
+## Tone
+- [Professional / casual / technical / friendly]`,
+    example: `## Visual Style
+- Mood: clean, professional, slightly techy
+- Inspiration: Linear.app, Vercel.com
+
+## Colors
+- Primary: #6366F1 (indigo)
+- Background: #0F172A (dark navy)
+- Accent: #22D3EE (cyan for CTAs)
+- Text: #F8FAFC (off-white)
+
+## Typography
+- Font: Inter
+- Heading style: large bold, no ALL CAPS
+
+## Layout
+- Style: clean with generous whitespace, card-based for features
+- Responsive: mobile-first, must work on 375px
+
+## Tone
+- Professional but approachable, no corporate jargon`,
+    whenToUse:
+      "After your PRD, before building. Prevents AI from giving you the default purple gradient + Inter combo.",
+  },
   {
     id: "basic-prompt",
     name: "Basic Prompt Pattern",
@@ -31,230 +129,221 @@ export const PROMPT_PATTERNS: PromptPattern[] = [
     template: `[TASK]: What you want the AI to build
 [CONTEXT]: Background info, tech stack, constraints
 [FORMAT]: How the output should be structured`,
-    example: `Create an HTML page with a hero section that has a headline "Welcome to My Site" and a blue call-to-action button. Use modern CSS with flexbox centering. Output a single index.html file.`,
-    whenToUse: "Every time you start a new prompt. This is your baseline structure.",
-  },
-  {
-    id: "styling-pattern",
-    name: "The Styling Pattern",
-    description: "How to describe visual design to AI",
-    worldId: 1,
-    chapter: 1,
-    template: `Style [component] with:
-- Colors: [specific hex/named colors]
-- Layout: [flexbox/grid/positioning]
-- Typography: [font family, sizes, weights]
-- Spacing: [margins, padding]
-- Effects: [shadows, borders, transitions]`,
-    example: `Style the hero section with:
-- Colors: background #1a1a2e, text white, button #e94560
-- Layout: flexbox centered both axes, min-height 100vh
-- Typography: Inter font, heading 48px bold, body 18px
-- Spacing: 32px padding, 16px gap between elements
-- Effects: button hover glow, subtle text shadow`,
-    whenToUse: "When AI-generated styling looks generic or you want a specific look.",
-  },
+    example: `Build a landing page for FocusFlow, a Pomodoro timer for remote teams.
 
-  {
-    id: "project-setup",
-    name: "Project Setup Pattern",
-    description: "Scaffold a new project with clear structure",
-    worldId: 1,
-    chapter: 1,
-    template: `Set up a new project:
-- Name: [project name]
-- Tech: [languages, frameworks, tools]
-- Structure: [folders and key files]
-- Features: [core features for MVP]
-- Styling: [design approach, colors, fonts]`,
-    example: `Set up a new project:
-- Name: recipe-app
-- Tech: HTML, CSS, JavaScript
-- Structure: index.html, styles.css, app.js, /images folder
-- Features: recipe cards with image and ingredients, search bar that filters recipes, favorites button
-- Styling: warm earthy tones, card-based layout, Google Fonts (Poppins), responsive grid`,
+Context: Next.js with Tailwind CSS. Dark theme (#0F172A background, #6366F1 primary). Inter font. Must be responsive — looks good on mobile 375px.
+
+Format: Single page with sections: hero (headline + CTA), problem, solution, 3 features with icons, pricing (Free/Pro), FAQ (4 questions), footer.`,
     whenToUse:
-      "When starting any new project from scratch. Plan the structure before writing code.",
+      "Every time you start a new prompt. This is your baseline structure — task, context, format.",
   },
 
-  // ── Chapter 2: World 2 — Build Mode ──
+  // ── Chapter 2: World 2 — Your Toolkit ──
   {
-    id: "component-request",
-    name: "Component Request Pattern",
-    description: "How to request a React component",
+    id: "claudemd-pattern",
+    name: "CLAUDE.md Pattern",
+    description: "Project rules that make AI remember your preferences",
     worldId: 2,
     chapter: 2,
-    template: `Create a [ComponentName] React component that:
-- Props: [list props with types]
-- State: [what state it manages]
-- Renders: [describe the UI]
-- Handles: [events/interactions]
-- Styles: [Tailwind classes or CSS approach]`,
-    example: `Create a TaskCard React component that:
-- Props: title (string), completed (boolean), onToggle (function)
-- State: isExpanded (boolean) for showing details
-- Renders: card with checkbox, title, expand button
-- Handles: click to toggle complete, click to expand
-- Styles: Tailwind — rounded-lg, shadow-sm, hover:shadow-md`,
-    whenToUse: "When you need AI to generate a specific, well-defined component.",
-  },
-  {
-    id: "layout-pattern",
-    name: "The Layout Pattern",
-    description: "Describe page layouts precisely",
-    worldId: 2,
-    chapter: 2,
-    template: `Build a [page type] layout:
-- Structure: [header/sidebar/main/footer arrangement]
-- Responsive: [mobile: ..., tablet: ..., desktop: ...]
-- Navigation: [what links, where they go]
-- Content areas: [what goes in each section]`,
-    example: `Build a dashboard layout:
-- Structure: fixed sidebar left (240px), top header (64px), scrollable main
-- Responsive: mobile: sidebar hidden + hamburger, tablet: collapsed sidebar, desktop: full
-- Navigation: Dashboard, Projects, Settings, Profile in sidebar
-- Content areas: main has grid of stat cards top, data table below`,
-    whenToUse: "When building page layouts. Prevents AI from making weird layout choices.",
+    template: `# Project Rules
+
+## Stack
+- [Framework, language, styling, database]
+
+## Commands
+- Dev: [how to run locally]
+- Build: [how to build]
+- Deploy: [how to deploy]
+
+## Conventions
+- [File naming: kebab-case / camelCase]
+- [Component structure preferences]
+- [What to always/never do]
+
+## After Changes
+- Always commit and push to GitHub
+- Use descriptive commit messages
+- Test before committing`,
+    example: `# Project Rules
+
+## Stack
+- Next.js 14 (App Router) + TypeScript
+- Tailwind CSS + shadcn/ui components
+- Supabase (database + auth)
+- Stripe (payments)
+
+## Commands
+- Dev: npm run dev
+- Build: npm run build
+- Deploy: git push (Vercel auto-deploys)
+
+## Conventions
+- File naming: kebab-case for files, PascalCase for components
+- All data queries go through lib/supabase.ts, not inline
+- Always handle loading, error, and empty states
+- Never put secrets in code — use .env.local
+
+## After Changes
+- Always commit and push to GitHub
+- Use descriptive commit messages
+- Test on mobile (375px) before committing`,
+    whenToUse:
+      "Create this file on day one of every project. Update it as your project grows. AI reads it automatically.",
   },
   {
     id: "breaking-down-complexity",
     name: "Breaking Down Complexity",
-    description: "Split big tasks into small prompts",
+    description: "Split big tasks into small, testable steps",
     worldId: 2,
     chapter: 2,
     template: `I'm building [big thing]. Let's do it step by step.
 
-Step 1: [smallest working piece]
-Step 2: [add next feature]
+Step 1: [smallest working piece — can test immediately]
+Step 2: [add next feature — can test immediately]
 Step 3: [add next feature]
 ...
 
-Start with Step 1 only.`,
-    example: `I'm building a todo app with React. Let's do it step by step.
+Start with Step 1 only. I'll tell you when to proceed.`,
+    example: `I'm adding user authentication to my app. Let's do it step by step.
 
-Step 1: Create the basic TodoList component that renders a static list of 3 todos
-Step 2: Add an input + button to create new todos
-Step 3: Add toggle complete functionality
-Step 4: Add delete button
-Step 5: Add localStorage persistence
+Step 1: Install Supabase Auth and add the sign-in page with email/password
+Step 2: Add the sign-up page with email confirmation
+Step 3: Add a sign-out button to the nav bar
+Step 4: Protect the /dashboard route — redirect to /login if not signed in
+Step 5: Show the user's email in the nav bar when logged in
 
-Start with Step 1 only.`,
-    whenToUse: "When a task is too big for one prompt. Always break it down.",
+Start with Step 1 only. I'll tell you when to proceed.`,
+    whenToUse:
+      "When a task is too big for one prompt. The #1 rule: never ask AI to build everything at once.",
   },
-
   {
     id: "iteration-pattern",
     name: "Iteration Pattern",
-    description: "Fix specific problems in AI output",
+    description: "Fix specific problems in AI output instead of regenerating",
     worldId: 2,
     chapter: 2,
     template: `The output has this problem:
-[describe what's wrong]
+[describe what's wrong — be specific]
 
 Expected behavior:
 [what it should do instead]
 
 Please fix by:
-[specific fix approach]`,
+[specific approach to fix — help AI understand what you want]`,
     example: `The output has this problem:
-The product cards are all copy-pasted HTML with hardcoded data instead of reusable components.
+The pricing cards are all the same width, and the "Pro" plan doesn't stand out. All three buttons say "Get Started" with no visual difference.
 
 Expected behavior:
-A single ProductCard component that takes props (title, price, image), rendered in a loop over a products array.
+The Pro plan should be slightly larger with a "Most Popular" badge. Its button should be the accent color (#22D3EE). Free and Team buttons should be outlined/secondary style.
 
 Please fix by:
-Creating a ProductCard component that accepts title, price, and image as props, then mapping over a products array to render them.`,
+Making the Pro card scale(1.05) with a border highlight and badge. Change the Pro button to bg-cyan-400 and the other two to border-only variants.`,
     whenToUse:
-      "When AI's output is close but has specific issues. Don't regenerate from scratch — iterate on what you have.",
+      "When AI's output is close but not right. Don't regenerate from scratch — iterate on what you have. Faster and better results.",
   },
 
-  // ── Chapter 3: World 3 — Full Stack ──
+  // ── Chapter 3: World 3 — Give It Memory ──
   {
-    id: "database-schema",
-    name: "Database Schema Pattern",
-    description: "Define data models clearly",
+    id: "data-schema",
+    name: "Data Schema Pattern",
+    description: "Plan your database before writing code",
     worldId: 3,
     chapter: 3,
-    template: `Create a Prisma schema for [app type]:
+    template: `Design a database for [app type]:
 
-Models needed:
-- [Model1]: [fields and types]
-- [Model2]: [fields and types]
+Tables:
+- [Table1]: [fields with types]
+- [Table2]: [fields with types]
 
-Relations:
-- [Model1] has many [Model2]
+Relationships:
+- [Table1] has many [Table2]
 - [etc.]
 
-Include: id, timestamps, proper types, indexes`,
-    example: `Create a Prisma schema for a blog:
+Rules:
+- Every table has: id (uuid), created_at (timestamp)
+- [Any business rules — e.g., "a user can only have one active subscription"]`,
+    example: `Design a database for FocusFlow (Pomodoro timer for teams):
 
-Models needed:
-- User: email (unique), name, avatar URL
-- Post: title, content (long text), published (boolean), slug (unique)
-- Comment: body, approved (boolean)
+Tables:
+- users: id, email, name, avatar_url, plan (free/pro), stripe_customer_id
+- teams: id, name, owner_id (references users)
+- team_members: id, team_id, user_id, role (admin/member)
+- focus_sessions: id, user_id, team_id, started_at, ended_at, duration_minutes, completed (boolean)
 
-Relations:
-- User has many Posts (author)
-- User has many Comments
-- Post has many Comments
+Relationships:
+- A user can be in many teams (through team_members)
+- A team has many members
+- A user has many focus_sessions
+- A focus_session belongs to one team
 
-Include: id, createdAt, updatedAt, proper types, indexes on foreign keys`,
-    whenToUse: "Before writing any database code. Plan your schema first.",
+Rules:
+- Every table has: id (uuid), created_at (timestamp)
+- A user can only be in 3 teams on the free plan
+- Focus sessions must have duration between 1-60 minutes`,
+    whenToUse:
+      "Before touching any database code. Think about your data first, then build. Changes later are painful.",
   },
+
+  // ── Chapter 4: World 5 — Take Money ──
   {
-    id: "api-route",
-    name: "API Route Pattern",
-    description: "Request API endpoints precisely",
-    worldId: 3,
-    chapter: 3,
-    template: `Create a Next.js API route at [path]:
+    id: "payment-pattern",
+    name: "Payment Pattern",
+    description: "Integrate Stripe payments safely",
+    worldId: 5,
+    chapter: 4,
+    template: `Add Stripe to [app]:
 
-- Method: [GET/POST/PUT/DELETE]
-- Auth: [required/optional/none]
-- Input: [body/query params with types]
-- Logic: [what it does step by step]
-- Response: [success shape + error cases]
-- Database: [which Prisma queries]`,
-    example: `Create a Next.js API route at /api/posts:
+Plans:
+- [Plan 1]: [price, what's included]
+- [Plan 2]: [price, what's included]
 
-- Method: POST
-- Auth: required (check session)
-- Input: body { title: string, content: string, published?: boolean }
-- Logic: validate input → create post with userId from session → return post
-- Response: 201 { post } on success, 400 on validation error, 401 if not auth'd
-- Database: prisma.post.create with author connection`,
-    whenToUse: "When you need API endpoints. Be specific about inputs, outputs, and errors.",
+Flow:
+1. User clicks "Buy" on pricing page
+2. Server creates Stripe Checkout Session
+3. User completes payment on Stripe
+4. Stripe sends webhook to [endpoint]
+5. Server updates user plan in database
+
+Gating:
+- Free users: [what they can access]
+- Pro users: [what they can access]
+
+Security:
+- Verify webhook signatures with STRIPE_WEBHOOK_SECRET
+- Check plan in API routes, not just UI
+- Never trust client-side plan status`,
+    example: `Add Stripe to FocusFlow:
+
+Plans:
+- Free: 1 team, 5 focus sessions/day, basic stats
+- Pro ($12/mo): unlimited teams, unlimited sessions, detailed analytics, team reports
+
+Flow:
+1. User clicks "Upgrade to Pro" on /pricing
+2. POST /api/stripe/checkout creates a Checkout Session
+3. User pays on Stripe's hosted page
+4. Stripe webhook hits POST /api/stripe/webhook
+5. On checkout.session.completed: update user.plan = "pro" and save stripeSubscriptionId
+
+Gating:
+- Free: show upgrade banner in dashboard, limit to 5 sessions/day, 1 team
+- Pro: no limits, show analytics tab, allow team creation
+
+Security:
+- Verify webhook signatures with STRIPE_WEBHOOK_SECRET
+- Check user.plan in API routes before returning premium data
+- On subscription.deleted: downgrade user to free`,
+    whenToUse:
+      "When adding payments. Get the webhook handling right — it's the most common source of bugs.",
   },
-  {
-    id: "integration-pattern",
-    name: "Integration Pattern",
-    description: "Connect frontend to backend (reference pattern — available without unlock)",
-    worldId: 3,
-    chapter: 3,
-    template: `Connect [component] to [API endpoint]:
 
-- Fetch: [when to load data — on mount, on action, etc.]
-- Loading: [what to show while loading]
-- Error: [how to handle errors]
-- Success: [what to do with the data]
-- Optimistic: [update UI before server confirms?]`,
-    example: `Connect PostList component to GET /api/posts:
-
-- Fetch: on component mount using useEffect
-- Loading: show skeleton cards (3 placeholder cards)
-- Error: show error message with retry button
-- Success: render PostCard for each post
-- Optimistic: no, wait for server response`,
-    whenToUse: "When connecting UI to API. Prevents the 'it works locally' trap.",
-  },
-
-  // ── Chapter 4: World 4 — Ship It ──
+  // ── Chapter 5: World 6/7 — Ship & Secure ──
   {
     id: "error-fix",
     name: "Error Fix Pattern",
-    description: "How to describe errors to AI",
-    worldId: 4,
-    chapter: 4,
+    description: "How to report errors to AI so it actually fixes them",
+    worldId: 6,
+    chapter: 5,
     template: `I'm getting this error:
 
 \`\`\`
@@ -263,197 +352,101 @@ Include: id, createdAt, updatedAt, proper types, indexes on foreign keys`,
 
 Context:
 - File: [which file]
-- Line: [approximate line number]
 - What I was doing: [action that triggered it]
 - What I expected: [what should have happened]
-- What I already tried: [previous fix attempts]`,
+- What I already tried: [previous fix attempts]
+
+[Attach screenshot if relevant]`,
     example: `I'm getting this error:
 
 \`\`\`
 TypeError: Cannot read properties of undefined (reading 'map')
+at TaskList (src/components/TaskList.tsx:15:22)
 \`\`\`
 
 Context:
-- File: src/components/PostList.tsx
-- Line: around line 15
-- What I was doing: loading the posts page
-- What I expected: list of posts to render
-- What I already tried: checked the API returns data in Postman, it works there`,
-    whenToUse: "Every time you hit an error. Never just paste the error alone.",
-  },
-  {
-    id: "debug-pattern",
-    name: "Debug Pattern",
-    description: "Systematic debugging with AI",
-    worldId: 4,
-    chapter: 4,
-    template: `Something isn't working right:
+- File: src/components/TaskList.tsx, line 15
+- What I was doing: loading the dashboard page after signing in
+- What I expected: list of tasks to appear
+- What I already tried: checked Supabase dashboard — data is there. The API route returns data in the browser. Cleared cache.
 
-Expected behavior: [what should happen]
-Actual behavior: [what actually happens]
-
-Here's the relevant code:
-\`\`\`
-[paste code]
-\`\`\`
-
-Environment: [browser, Node version, etc.]
-Console output: [any logs or errors]`,
-    example: `Something isn't working right:
-
-Expected behavior: clicking "Save" should create a new post and redirect to /posts
-Actual behavior: clicking "Save" does nothing, no network request in dev tools
-
-Here's the relevant code:
-\`\`\`tsx
-<form onSubmit={handleSubmit}>
-  <button type="button">Save</button>
-</form>
-\`\`\`
-
-Environment: Chrome 120, Next.js 14
-Console output: no errors, no logs`,
-    whenToUse: "When something doesn't work but there's no clear error message.",
-  },
-  {
-    id: "performance-pattern",
-    name: "Performance Pattern",
-    description: "Optimize with specific constraints (reference pattern — available without unlock)",
-    worldId: 4,
-    chapter: 4,
-    template: `Optimize [component/page/route] for performance:
-
-Current issue: [what's slow]
-Measurement: [load time, bundle size, etc.]
-Constraints: [what can't change]
-
-Areas to check:
-- [ ] Unnecessary re-renders
-- [ ] Large bundle imports
-- [ ] Missing caching
-- [ ] Unoptimized images/assets
-- [ ] N+1 database queries`,
-    example: `Optimize the Dashboard page for performance:
-
-Current issue: takes 3 seconds to load, shows blank screen
-Measurement: Lighthouse performance score 45
-Constraints: must keep all current features
-
-Areas to check:
-- [ ] StatCards re-render on every state change
-- [ ] Importing entire chart library for one pie chart
-- [ ] No caching on /api/stats endpoint
-- [ ] Hero image is 2MB PNG
-- [ ] Loading all posts then filtering client-side`,
-    whenToUse: "When your app feels slow. Always measure before optimizing.",
+The tasks variable seems to be undefined on first render before the data loads.`,
+    whenToUse:
+      "Every time you hit an error. Never just paste the error alone — AI needs context to help you.",
   },
 
-  // ── Chapter 5: World 5 — Get Paid ──
+  // ── Chapter 6: World 8 — Get Users ──
   {
     id: "landing-page",
     name: "Landing Page Pattern",
-    description: "Structure conversion-optimized pages",
-    worldId: 5,
-    chapter: 5,
+    description: "Structure a conversion-optimized page",
+    worldId: 8,
+    chapter: 6,
     template: `Build a landing page for [product]:
 
 Sections (in order):
-1. Hero: [headline, subheadline, CTA]
-2. Problem: [pain point you solve]
-3. Solution: [how you solve it]
-4. Features: [3-5 key features with icons]
-5. Social proof: [testimonials/logos/numbers]
-6. Pricing: [plans and prices]
-7. FAQ: [common questions]
-8. Final CTA: [closing push]
+1. Hero: [headline — benefit, not feature] / [subheadline] / [one CTA]
+2. Problem: [pain point you solve — make them feel it]
+3. Solution: [how you solve it — simple, clear]
+4. Features: [3-5 key features with icons — benefits, not specs]
+5. Social proof: [testimonials, logos, or numbers]
+6. Pricing: [plans with clear differences]
+7. FAQ: [4-6 common questions]
+8. Final CTA: [closing push — same as hero CTA]
 
 Tone: [professional/casual/bold]
-Target audience: [who is this for]`,
-    example: `Build a landing page for TaskFlow (project management tool):
+Target audience: [who is this for — be specific]`,
+    example: `Build a landing page for FocusFlow:
 
 Sections (in order):
-1. Hero: "Ship projects faster" / "The project tool for small teams" / "Start free"
-2. Problem: "Spreadsheets and Slack aren't project management"
-3. Solution: "One board for tasks, timelines, and team chat"
-4. Features: Kanban boards, Time tracking, Team chat, Auto-reports, Integrations
-5. Social proof: "Used by 500+ teams" + 3 testimonials
-6. Pricing: Free (5 users), Pro $12/user, Team $8/user
-7. FAQ: 5 questions about pricing, data, migration
-8. Final CTA: "Start your free trial — no credit card needed"
+1. Hero: "Your team's focus time, protected" / "See who's in deep work. Stop unnecessary interruptions." / "Start free"
+2. Problem: "Your team spends 60% of the day in meetings. The other 40%? Recovering from meetings."
+3. Solution: "FocusFlow shows when your team is in deep work — so you interrupt less and ship more."
+4. Features: Focus timer (personal Pomodoro), Team dashboard (who's focused now), Weekly report (focus hours vs meeting hours), Quiet mode (block notifications during focus), Team analytics (find your most productive hours)
+5. Social proof: "500+ teams ship faster with FocusFlow" + 3 short testimonials
+6. Pricing: Free (1 team, basic timer) / Pro $12/mo (unlimited, analytics, reports)
+7. FAQ: How does it work? Is my data private? Can I try it free? Do I need to install anything?
+8. Final CTA: "Start protecting your team's focus — free forever for small teams"
 
-Tone: professional but friendly
-Target audience: startup founders and small team leads`,
-    whenToUse: "When building any marketing or landing page.",
-  },
-  {
-    id: "payment-pattern",
-    name: "Payment Pattern",
-    description: "Integrate payments safely",
-    worldId: 5,
-    chapter: 5,
-    template: `Add [payment provider] to [app]:
-
-Requirements:
-- Plans: [list plans with prices]
-- Checkout: [embedded/redirect/custom]
-- Webhooks: [which events to handle]
-- User model: [what to store in DB]
-- Gating: [what features are behind paywall]
-
-Security:
-- Validate webhook signatures
-- Never trust client-side plan status
-- Handle failed payments gracefully`,
-    example: `Add Stripe to my SaaS app:
-
-Requirements:
-- Plans: Free (no card), Pro $12/mo, Team $29/mo
-- Checkout: Stripe Checkout redirect
-- Webhooks: checkout.session.completed, invoice.paid, invoice.payment_failed, customer.subscription.deleted
-- User model: add plan (FREE/PRO/TEAM), stripeCustomerId, stripeSubscriptionId
-- Gating: Free = 3 projects, Pro = unlimited, Team = unlimited + team features
-
-Security:
-- Validate webhook signatures with STRIPE_WEBHOOK_SECRET
-- Check plan in API routes, not just UI
-- On payment_failed: downgrade after 3 days grace period`,
-    whenToUse: "When adding any payment functionality. Get the webhook handling right.",
+Tone: professional but warm, no corporate jargon
+Target audience: remote team leads at startups (5-20 people)`,
+    whenToUse:
+      "When building your marketing landing page. Structure matters more than design — get the message right first.",
   },
   {
     id: "feature-planning",
     name: "Feature Planning Pattern",
-    description: "Plan features before building",
-    worldId: 5,
-    chapter: 5,
+    description: "Plan features before building them",
+    worldId: 8,
+    chapter: 6,
     template: `Plan the [feature name] feature:
 
 User story: As a [user type], I want to [action] so that [benefit]
 
-Scope (MVP only):
-- Must have: [essential items]
-- Nice to have: [can add later]
-- Out of scope: [explicitly not doing]
+Scope:
+- Must have: [essential — ship doesn't work without these]
+- Nice to have: [add in v2 if time]
+- Out of scope: [explicitly NOT building]
 
 Technical:
-- New models: [database changes]
-- New routes: [API endpoints]
-- New components: [UI pieces]
-- Integrations: [external services]`,
+- Database changes: [new tables/columns]
+- New pages/components: [UI pieces]
+- External services: [APIs, email, payments]`,
     example: `Plan the Team Invites feature:
 
-User story: As a team admin, I want to invite people by email so they can join my workspace
+User story: As a team admin, I want to invite people by email so they can join my workspace.
 
-Scope (MVP only):
-- Must have: send invite email, accept invite link, join workspace
-- Nice to have: bulk invite, role selection, invite expiry
-- Out of scope: SSO, domain auto-join, invite approval workflow
+Scope:
+- Must have: send invite email, click link to accept, join the team
+- Nice to have: bulk invite, choose role on invite, invite expiration
+- Out of scope: SSO, domain auto-join, admin approval workflow
 
 Technical:
-- New models: Invite (email, workspaceId, invitedBy, status, token, expiresAt)
-- New routes: POST /api/invites, GET /api/invites/accept?token=
-- New components: InviteForm, InviteList, AcceptInvitePage
-- Integrations: Resend for invite emails`,
-    whenToUse: "Before building any feature. Prevents scope creep and wasted time.",
+- Database changes: new "invites" table (email, team_id, invited_by, status, token, expires_at)
+- New pages/components: InviteForm (email input + send), InvitePage (/invite?token=xxx), InviteList (pending invites in settings)
+- External services: Resend for invite emails`,
+    whenToUse:
+      "Before building any feature. Prevents scope creep. The 'Out of scope' section is the most important part.",
   },
 ];
 
@@ -467,25 +460,31 @@ export const TOOLKIT_CHAPTERS: ToolkitChapter[] = [
   {
     id: 2,
     worldId: 2,
-    title: "Building UIs",
+    title: "Directing AI",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 2),
   },
   {
     id: 3,
     worldId: 3,
-    title: "Full Stack",
+    title: "Data & Backend",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 3),
   },
   {
     id: 4,
-    worldId: 4,
-    title: "Shipping & Debugging",
+    worldId: 5,
+    title: "Getting Paid",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 4),
   },
   {
     id: 5,
-    worldId: 5,
-    title: "Monetization",
+    worldId: 6,
+    title: "Ship & Fix",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 5),
+  },
+  {
+    id: 6,
+    worldId: 8,
+    title: "Growth",
+    patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 6),
   },
 ];

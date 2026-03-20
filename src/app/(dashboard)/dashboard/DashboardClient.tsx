@@ -123,7 +123,7 @@ export function DashboardClient({
             <p className="text-[11px] sm:text-xs text-[#8B7355]">
               {completedLevelIds.length === 0
                 ? "Start your journey — set up your tools"
-                : `${completedLevelIds.length}/40 levels completed`}
+                : `${completedLevelIds.length}/30 levels completed`}
             </p>
           </div>
         </div>
@@ -147,7 +147,7 @@ export function DashboardClient({
               <EarlyBirdBadge />
             </div>
             <p className="text-base sm:text-lg font-bold text-white mb-1">
-              Unlock All 40 Levels
+              Unlock All 30 Levels
             </p>
             <p className="text-xs sm:text-sm text-white/60 mb-3 sm:mb-4">
               Lifetime Pro access — one-time payment

@@ -36,7 +36,9 @@ Other options that work: **Cursor**, **Windsurf**, **ChatGPT + copy/paste**. Any
 
 Chrome or any browser with DevTools (F12). You'll use this to test everything you build.
 
-That's it. **GitHub + AI tool + browser.** Let's set them up.`,
+That's it. **GitHub + AI tool + browser.** Let's set them up.
+
+> You'll create **Vercel** (hosting) and **Supabase** (database) accounts later when you need them — Level 3 and Level 8.`,
     miniQuiz: [
       {
         question: "What three things do you need to start vibe coding?",

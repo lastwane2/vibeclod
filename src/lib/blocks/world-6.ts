@@ -1,665 +1,614 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 6 — Full Stack (Levels 26-30)
-// Database, API, Auth — concepts first
+// World 6 — Ship & Polish (Levels 19-22)
+// SEO, domain, analytics, email, polish
 // ═══════════════════════════════════════
 
 export const WORLD_6_BLOCKS: Block[] = [
-  // ─── Level 26: Your App Needs Memory (4 blocks) ───
+  // ─── Level 19: Get Found (4 blocks) ───
   {
-    id: "L26B1",
-    levelId: 26,
+    id: "L19B1",
+    levelId: 19,
     type: "theory",
-    title: "What is a Database?",
+    title: "SEO = Your Store's Sign",
     xp: 10,
     required: true,
     order: 1,
-    content: `# What is a Database?
+    content: `# SEO — How Google and Twitter Find You
 
-Right now your app has **amnesia**. Refresh the page → everything resets. Close the browser → gone forever.
+SEO isn't magic. It's just telling Google and social media what your site is about.
 
-A database gives your app **permanent memory**.
+## The Three Things That Matter
 
-Think of it like the difference between writing on a **whiteboard** (erased daily) and writing in a **notebook** (permanent).
+### 1. Meta Tags (What Google Shows)
+\`\`\`html
+<title>FocusFlow — Pomodoro Timer for Remote Teams</title>
+<meta name="description" content="See who's in deep work. Protect your team's focus time." />
+\`\`\`
+This is what appears in Google search results. Make it specific and compelling.
 
-## Every real app has one
+### 2. OG Tags (What Social Media Shows)
+When someone shares your link on Twitter or LinkedIn:
+\`\`\`html
+<meta property="og:title" content="FocusFlow" />
+<meta property="og:description" content="Your team's focus time, protected." />
+<meta property="og:image" content="https://focusflow.app/og-image.png" />
+\`\`\`
+Without OG tags, shared links look blank. With them, they look professional with an image preview.
 
-- Instagram stores photos + users + likes
-- Twitter stores tweets + follows + likes
-- A task manager stores users + projects + tasks
+### 3. Sitemap & Robots.txt
+- \`sitemap.xml\` — lists all your pages so Google can find them
+- \`robots.txt\` — tells Google which pages to index
 
-Your app will store whatever **you** decide. That decision is the first step of going full stack.`,
-  },
-  {
-    id: "L26B2",
-    levelId: 26,
-    type: "theory",
-    title: "Think About Data First",
-    xp: 10,
-    required: true,
-    order: 2,
-    content: `# Think About Data First
+## Next.js Makes This Easy
 
-Before writing a single prompt, ask: **"What data does my app need?"**
-
-## Think in entities
-
-A recipe app needs: **Recipes**, **Users**, **Ingredients**, **Reviews**.
-
-A task manager needs: **Users**, **Projects**, **Tasks**, **Labels**.
-
-## Then think about connections
-
-- User CREATES recipes
-- Recipe HAS ingredients
-- User WRITES reviews about recipes
-
-This thinking is called **data modeling**. Do it on paper BEFORE prompting AI. A few minutes of planning saves hours of rework.
-
-## The process
-
-1. List your entities (nouns in your app)
-2. List their connections (verbs between them)
-3. THEN tell AI what to build`,
+In Next.js, you export metadata from your layout:
+\`\`\`typescript
+export const metadata = {
+  title: 'FocusFlow',
+  description: 'Your team\\'s focus time, protected.',
+  openGraph: { images: ['/og-image.png'] },
+}
+\`\`\`
+AI can set all of this up in one prompt.`,
     miniQuiz: [
       {
-        question:
-          "What should you do before prompting AI about your database?",
+        question: "What happens when someone shares your link without OG tags?",
         options: [
-          "Install every possible database package",
-          "Think about what entities you need and how they connect",
-          "Write all the SQL queries by hand first",
+          "It shows a beautiful preview automatically",
+          "It shows a blank, ugly link with no image or description",
+          "The link doesn't work",
         ],
         correctIndex: 1,
       },
     ],
   },
   {
-    id: "L26B3",
-    levelId: 26,
-    type: "pattern",
-    title: "Database Schema Pattern",
-    xp: 15,
-    required: true,
-    order: 3,
-    patternId: "database-schema",
-    exercise: {
-      goal: "Plan your database schema using the Database Schema Pattern",
-      template: `Create a Prisma schema for ___:
-
-Models needed:
-- ___: fields...
-- ___: fields...
-
-Relations:
-- ___
-
-Include: id, timestamps, proper types`,
-      exampleFilled: `Create a Prisma schema for a blog platform:
-
-Models needed:
-- User: email (unique), name, avatar
-- Post: title, content, published (boolean)
-- Comment: body, createdAt
-
-Relations:
-- User has many Posts
-- User has many Comments
-- Post has many Comments
-
-Include: id, timestamps, proper types`,
-    },
-  },
-  {
-    id: "L26B4",
-    levelId: 26,
-    type: "experiment",
-    title: "Design on Paper",
-    xp: 15,
-    required: true,
-    order: 4,
-    description: "Practice data modeling before touching code.",
-    steps: [
-      {
-        id: "L26B4S1",
-        instruction:
-          "Pick a simple app idea (recipe book, expense tracker, bookmark manager). Write down: what data does it store? List every 'thing' your app needs to remember.",
-        expectedOutcome:
-          "You identify 3-5 entities (nouns) that your app needs — like User, Recipe, Ingredient, Review.",
-      },
-      {
-        id: "L26B4S2",
-        instruction:
-          "Draw boxes for each entity. Draw arrows showing how they connect. Write the verb on each arrow: 'User → has many → Recipes'. This IS your database design.",
-        expectedOutcome:
-          "You have a visual map of your data: entities as boxes, relationships as arrows with labels.",
-        question:
-          "What entities did you identify and how do they connect?",
-      },
-    ],
-  },
-
-  // ─── Level 27: Connected Data (4 blocks) ───
-  {
-    id: "L27B1",
-    levelId: 27,
+    id: "L19B2",
+    levelId: 19,
     type: "theory",
-    title: "Prisma = Your Data Translator",
-    xp: 10,
-    required: true,
-    order: 1,
-    content: `# Prisma = Your Data Translator
-
-Prisma sits between your app and the database. You describe your data in a simple schema file, and Prisma handles all the database communication.
-
-Like a **translator at a UN conference** — you speak your language, the database speaks its language, Prisma translates between them.
-
-## How it works
-
-1. You describe your data in a schema file (plain English-like syntax)
-2. Prisma creates the database tables for you
-3. Prisma gives you functions to create, read, update, and delete data
-4. You never write raw database queries
-
-## In your prompts
-
-Tell AI: "Add Prisma with these models..." and describe your data in plain English. Prisma turns your description into a working database.
-
-## When Your Schema Changes
-
-You WILL change your schema — adding fields, removing models, renaming things. When you do:
-
-1. Edit \`prisma/schema.prisma\`
-2. Run \`npx prisma migrate dev --name describe-what-changed\`
-3. Prisma updates your database to match the new schema
-
-**Common gotchas:**
-- **Adding a required field** to a table that already has data? Prisma will ask for a default value. Add \`@default(...)\` or make the field optional first.
-- **Deleting a model** that other models reference? Remove the references first, then delete.
-- **Stuck in a bad state?** During development, \`npx prisma migrate reset\` wipes everything and starts fresh. Only use this in dev — never in production.
-
-Think of migrations like version control for your database. Each migration is a save point, just like git commits.`,
-    miniQuiz: [
-      {
-        question:
-          "What command do you run after changing your Prisma schema?",
-        options: [
-          "npm run build",
-          "npx prisma migrate dev --name describe-change",
-          "git push",
-        ],
-        correctIndex: 1,
-      },
-    ],
-  },
-  {
-    id: "L27B2",
-    levelId: 27,
-    type: "theory",
-    title: "Relations = Connections",
+    title: "Your Own Domain",
     xp: 10,
     required: true,
     order: 2,
-    content: `# Relations = Connections
+    content: `# Your Own Domain
 
-The power of databases is **connections** between data.
+\`your-app.vercel.app\` works, but \`focusflow.app\` looks professional.
 
-## Three types of connections
+## How to Get a Domain
 
-**One-to-many** (most common): One user has MANY posts. One project has MANY tasks. Think: parent with children.
+1. Go to **Namecheap** or **Cloudflare Registrar**
+2. Search for your domain (e.g., focusflow.app)
+3. Buy it — typically **$10-15/year**
+4. That's it, you own it
 
-**Many-to-many**: A post has MANY tags, AND a tag has MANY posts. Think: students and classes — each student takes many classes, each class has many students.
+## Connect to Vercel
 
-**One-to-one**: One user has ONE profile. Think: a person and their passport — exactly one each.
+1. In Vercel dashboard → your project → Settings → Domains
+2. Add your domain (e.g., focusflow.app)
+3. Vercel shows you DNS records to add
+4. Go to your domain registrar → DNS settings
+5. Add the records Vercel gave you
+6. Wait 5-30 minutes for DNS to propagate
+7. Your site is live at your custom domain with automatic HTTPS
 
-## In your prompts
+## Do You Need a Domain for Launch?
 
-Describe relationships in plain English: "User has many Tasks. Each Task belongs to one User. Tasks have a title, description, and completed status."
+No. \`your-app.vercel.app\` is fine for getting started. But if you're taking payments, a custom domain builds trust. Would you enter your credit card on \`random-words.vercel.app\`?
 
-AI knows how to turn that into the right database structure.`,
-    miniQuiz: [
-      {
-        question:
-          '"One User has many Posts" is which type of relation?',
-        options: ["One-to-one", "One-to-many", "Many-to-many"],
-        correctIndex: 1,
-      },
-    ],
+Budget: domain ($10-15/year) is your only required expense to look professional.`,
   },
   {
-    id: "L27B3",
-    levelId: 27,
+    id: "L19B3",
+    levelId: 19,
     type: "prompt",
-    title: "Write a Schema Prompt",
-    xp: 25,
+    title: "Add SEO",
+    xp: 20,
     required: true,
     order: 3,
     scaffold: "hints",
-    goal: "Write a prompt for a Prisma schema with related models",
-    referencePrompt:
-      "Add Prisma to my Next.js app. Create a schema with these models: 1) User — id, email (unique), name, createdAt. 2) Project — id, title, description, createdAt. 3) Task — id, title, completed (default false), priority (LOW/MEDIUM/HIGH), createdAt. Relations: User has many Projects. Project has many Tasks. Add proper indexes on frequently queried fields.",
+    goal: "Add SEO metadata, OG tags, sitemap, and robots.txt to your Next.js app.",
+    referencePrompt: `Add SEO to my Next.js app (FocusFlow):
+
+1. In app/layout.tsx, add metadata:
+   - title: "FocusFlow — Pomodoro Timer for Remote Teams"
+   - description: "See who's in deep work. Protect your team's focus time."
+   - OG tags: title, description, image (/og-image.png), type: website
+
+2. Create app/sitemap.ts that returns all public pages:
+   - /, /pricing, /login, /blog (if exists)
+
+3. Create app/robots.ts:
+   - Allow all pages
+   - Point to sitemap URL
+
+4. Create a simple OG image (1200x630px) or use next/og to generate one dynamically.`,
     hints: [
-      "Name each model and its fields",
-      "Specify which fields are unique or optional",
-      "Describe relations in plain English",
+      "Export metadata from layout.tsx — Next.js handles the rest",
+      "Use the Metadata type from next for type safety",
+      "OG image should be 1200x630px for best display on social media",
+      "sitemap.ts and robots.ts are special Next.js files that auto-generate",
     ],
-    passingThreshold: 3.0,
+    passingThreshold: 2.5,
   },
   {
-    id: "L27B4",
-    levelId: 27,
+    id: "L19B4",
+    levelId: 19,
     type: "build",
-    title: "Add Your Database",
+    title: "SEO & Domain",
     xp: 40,
     required: true,
     order: 4,
     mission:
-      "Add Prisma with at least 2 models connected by a relation. Generate the client.",
+      "Add meta tags, OG tags, sitemap.xml, robots.txt. Optionally connect a custom domain. Your link should look good when shared on Twitter.",
     githubChecks: {
-      fileExists: ["prisma/schema.prisma"],
-      fileContains: [
-        {
-          path: "prisma/schema.prisma",
-          contains: ["model", "@relation"],
-        },
-        { path: "package.json", contains: ["prisma"] },
-      ],
+      minCommits: 2,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check Prisma schema: at least 2 models, proper types, at least one relation, ids and timestamps on each model.",
-    passingScore: 55,
+      "Check for: meta title and description, OG tags (og:title, og:description, og:image), sitemap generation, robots.txt. Shared link should preview properly. Domain setup is a bonus.",
+    passingScore: 50,
   },
 
-  // ─── Level 28: The API Layer (4 blocks) ───
+  // ─── Level 20: Know Your Users (4 blocks) ───
   {
-    id: "L28B1",
-    levelId: 28,
+    id: "L20B1",
+    levelId: 20,
     type: "theory",
-    title: "API = The Waiter",
+    title: "Analytics — What Are Users Doing?",
     xp: 10,
     required: true,
     order: 1,
-    content: `# API = The Waiter
+    content: `# Analytics — See What Users Actually Do
 
-Your frontend (the dining room) can't walk into the kitchen (database) directly. It needs a **waiter** (API).
+Without analytics, you're guessing. With analytics, you know:
+- How many people visit your site
+- Where they come from
+- Which features they use
+- Where they drop off
 
-## The flow
+## PostHog — Free and Privacy-Friendly
 
-1. User clicks "Create Task"
-2. Frontend tells the API: "hey, new task please"
-3. API creates the task in the database
-4. API sends back: "done, here's the new task!"
-5. Frontend shows the new task on screen
+PostHog is the go-to for indie SaaS:
+- **Free tier**: 1 million events/month
+- **Self-hostable**: keep data on your servers if you want
+- **Privacy-friendly**: no selling data to advertisers
+- **Feature-rich**: events, funnels, session recording, A/B tests
 
-Every app feature goes through this loop. The API is the **middleman** that keeps things organized and secure.
+## What to Track
 
-## Why not talk to the database directly?
+Don't track everything. Start with these:
 
-Security. If the frontend talked to the database directly, anyone could open their browser console and delete everything. The API is the gatekeeper.`,
-  },
-  {
-    id: "L28B2",
-    levelId: 28,
-    type: "theory",
-    title: "CRUD = The Only 4 Things",
-    xp: 10,
-    required: true,
-    order: 2,
-    content: `# CRUD = The Only 4 Things
+| Event | Why |
+|---|---|
+| Page view | Know which pages get traffic |
+| Sign up | Your most important conversion |
+| First action | Did they actually USE the product? |
+| Upgrade to Pro | Money! |
+| Feature usage | Which features matter most |
 
-Every app in the world does exactly **4 operations** with data:
+## Setup is One Script Tag
 
-- **C**reate = add new (new task, new post, new user)
-- **R**ead = get existing (show tasks, display profile)
-- **U**pdate = change (edit task title, mark as done)
-- **D**elete = remove (delete task, remove account)
+\`\`\`javascript
+posthog.init('your-project-key', { api_host: 'https://app.posthog.com' })
+\`\`\`
 
-That's it. **CRUD.** Every feature you build is just one of these dressed up in a nice UI.
-
-## Real-world examples
-
-- An Instagram "like" is a **Create** (creating a like record)
-- An "unlike" is a **Delete** (removing that like record)
-- Editing your profile is an **Update**
-- Scrolling your feed is a **Read**
-
-## In your prompts
-
-Tell AI: "Create CRUD API routes for Tasks" — and it knows exactly what to build: endpoints to create, read, update, and delete.`,
+Then track custom events:
+\`\`\`javascript
+posthog.capture('task_created', { project_id: '123' })
+posthog.capture('upgraded_to_pro', { plan: 'monthly' })
+\`\`\``,
     miniQuiz: [
       {
-        question:
-          "When a user marks a task as 'done', which CRUD operation is that?",
-        options: ["Create", "Read", "Update", "Delete"],
-        correctIndex: 2,
+        question: "What's the most important thing to track for a SaaS?",
+        options: [
+          "Every mouse movement and scroll position",
+          "Key conversions: sign ups, first action, upgrades",
+          "How long users stare at the pricing page",
+        ],
+        correctIndex: 1,
       },
     ],
   },
   {
-    id: "L28B3",
-    levelId: 28,
-    type: "pattern",
-    title: "API Route Pattern",
-    xp: 15,
+    id: "L20B2",
+    levelId: 20,
+    type: "theory",
+    title: "Email — Talk to Your Users",
+    xp: 10,
     required: true,
-    order: 3,
-    patternId: "api-route",
-    exercise: {
-      goal: "Plan an API route using the API Route Pattern",
-      template: `Create a Next.js API route at ___:
+    order: 2,
+    content: `# Email — Every SaaS Needs It
 
-- Method: ___
-- Auth: ___
-- Input: ___
-- Logic: ___
-- Response: ___`,
-      exampleFilled: `Create a Next.js API route at /api/tasks:
+Your app needs to send emails. Not marketing spam — useful emails:
 
-- Method: POST
-- Auth: required (user must be logged in)
-- Input: { title: string, priority: "LOW" | "MEDIUM" | "HIGH" }
-- Logic: validate title is not empty, create task in database linked to logged-in user
-- Response: 201 with the created task on success, 400 if title is empty, 401 if not logged in`,
-    },
+## Transactional Emails
+
+| Email | When | Why |
+|---|---|---|
+| Welcome | After sign up | Confirm they're in, show next steps |
+| Receipt | After payment | Stripe can do this, or you can customize |
+| Password reset | When requested | If you use email/password auth |
+| Weekly digest | Every Monday | Remind them you exist + show value |
+
+## Resend — The Modern Way
+
+Resend is built for developers:
+- **Free tier**: 100 emails/day, 3,000/month
+- **Simple API**: one function call sends an email
+- **React Email**: write email templates in React
+- **Great deliverability**: emails actually arrive in inbox, not spam
+
+## Basic Setup
+
+\`\`\`javascript
+import { Resend } from 'resend';
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+await resend.emails.send({
+  from: 'FocusFlow <hello@focusflow.app>',
+  to: user.email,
+  subject: 'Welcome to FocusFlow!',
+  html: '<p>You\\'re in! Here\\'s how to get started...</p>'
+});
+\`\`\`
+
+You need a custom domain for the "from" address. Until then, use Resend's onboarding domain for testing.`,
   },
   {
-    id: "L28B4",
-    levelId: 28,
+    id: "L20B3",
+    levelId: 20,
+    type: "prompt",
+    title: "Add Analytics & Email",
+    xp: 20,
+    required: true,
+    order: 3,
+    scaffold: "hints",
+    goal: "Add PostHog analytics and Resend email to your app.",
+    referencePrompt: `Add analytics and email to my Next.js app:
+
+1. PostHog Analytics:
+   - Install posthog-js
+   - Create a PostHog provider component that initializes on mount
+   - Track page views automatically
+   - Add custom events: 'signed_up', 'task_created', 'upgraded_to_pro'
+   - My PostHog key is in NEXT_PUBLIC_POSTHOG_KEY
+
+2. Resend Email:
+   - Install resend
+   - Create API route POST /api/email/welcome
+   - Send a welcome email when a user signs up
+   - Template: "Welcome to FocusFlow! Here's how to get started: [3 steps]"
+   - My RESEND_API_KEY is in .env.local`,
+    hints: [
+      "PostHog needs a client-side provider component",
+      "Track page views with posthog.capture('$pageview')",
+      "Resend sends from server-side only (API routes)",
+      "Add RESEND_API_KEY and NEXT_PUBLIC_POSTHOG_KEY to .env.local",
+    ],
+    passingThreshold: 2.5,
+  },
+  {
+    id: "L20B4",
+    levelId: 20,
     type: "build",
-    title: "Build Your API",
+    title: "Track & Email",
     xp: 40,
     required: true,
     order: 4,
     mission:
-      "Create CRUD API routes for one model. GET (list), POST (create), PUT (update), DELETE. Connected to Prisma.",
+      "Add PostHog analytics (pageviews + key events) and Resend email (at least one transactional email). Deploy and verify.",
     githubChecks: {
-      fileContains: [
-        { path: "package.json", contains: ["next", "prisma"] },
-      ],
+      minCommits: 2,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for: analytics integration (PostHog or similar) with at least page view tracking and one custom event. Email setup (Resend or similar) with at least one email template. API keys in env vars, not hardcoded.",
+    passingScore: 50,
+  },
+
+  // ─── Level 21: Polish the Details (4 blocks) ───
+  {
+    id: "L21B1",
+    levelId: 21,
+    type: "theory",
+    title: "The 5% That Makes 50% Difference",
+    xp: 10,
+    required: true,
+    order: 1,
+    content: `# Polish — The Details That Separate Amateur from Professional
+
+Two apps can have the exact same features. One feels like a real product, the other feels like a student project. The difference is polish.
+
+## The Big 5
+
+### 1. Loading Skeletons
+Instead of a blank screen while data loads, show gray placeholder shapes that match the layout. Users perceive the app as faster.
+
+### 2. Hover & Focus Effects
+Buttons change color on hover. Links underline. Interactive elements feel alive. Without these, your app feels dead.
+
+### 3. Smooth Transitions
+Pages don't just appear — they fade in. Modals slide up. Toast notifications slide in from the corner. CSS transitions make everything feel intentional.
+
+### 4. Empty States
+When there's no data, show a friendly illustration + CTA. "No tasks yet. Create your first one!" is 100x better than a blank page.
+
+### 5. Error States
+When something breaks, show a helpful message: "Something went wrong. Try refreshing the page." Not a white screen of death.
+
+## The Mobile Test
+
+Open your app on your phone (or Chrome DevTools → 375px width):
+- Can you read all text?
+- Can you tap all buttons easily?
+- Does any content overflow off screen?
+- Do images look right?
+
+If anything breaks on mobile, fix it. Over 50% of web traffic is mobile.`,
+  },
+  {
+    id: "L21B2",
+    levelId: 21,
+    type: "pattern",
+    title: "The Error Fix Pattern",
+    xp: 15,
+    required: true,
+    order: 2,
+    patternId: "error-fix",
+    exercise: {
+      goal: "Practice describing an error to AI with enough context to get a real fix",
+      template: `I'm getting this error:
+
+\`\`\`
+[error message]
+\`\`\`
+
+Context:
+- File: ___
+- What I was doing: ___
+- Expected: ___
+- Already tried: ___`,
+      exampleFilled: `I'm getting this error:
+
+\`\`\`
+TypeError: Cannot read properties of undefined (reading 'map')
+at TaskList (src/components/TaskList.tsx:15)
+\`\`\`
+
+Context:
+- File: src/components/TaskList.tsx, line 15
+- What I was doing: loading dashboard after signing in
+- Expected: list of tasks to appear
+- Already tried: checked Supabase — data is there. API returns data in browser.
+
+The tasks variable is probably undefined on first render before data loads.`,
+    },
+  },
+  {
+    id: "L21B3",
+    levelId: 21,
+    type: "experiment",
+    title: "Test Like a User",
+    xp: 15,
+    required: true,
+    order: 3,
+    description: "Test your app the way real users will experience it.",
+    steps: [
+      {
+        id: "L21B3S1",
+        instruction:
+          "Open Chrome DevTools (F12) → toggle device toolbar (phone icon). Set to **iPhone SE (375px)**. Browse your entire app. Note everything that looks broken: overflowing text, tiny buttons, hidden content.",
+        expectedOutcome: "A list of mobile issues to fix.",
+        question: "How many issues did you find on mobile?",
+      },
+      {
+        id: "L21B3S2",
+        instruction:
+          "In DevTools → Network tab → change throttling to **Slow 3G**. Reload your app. Watch how it loads. Do you see loading states? Or does it show blank screens and then suddenly pop in?",
+        expectedOutcome: "Loading skeletons or spinners appear on slow connections.",
+        question: "Does your app show loading states on slow connections?",
+      },
+      {
+        id: "L21B3S3",
+        instruction:
+          "Open an **incognito window**. Go to your app as a brand new user. Sign up with a new email. Go through the entire flow: sign up → first action → create data → try a pro feature.\n\nIs anything confusing? Would a non-technical person know what to do?",
+        expectedOutcome: "The first-time experience is clear and guided.",
+        question: "Would your mom know what to do on first visit?",
+      },
+    ],
+  },
+  {
+    id: "L21B4",
+    levelId: 21,
+    type: "debug",
+    title: "Fix Polish Issues",
+    xp: 20,
+    required: true,
+    order: 4,
+    scenarios: [
+      {
+        id: "L21B4S1",
+        title: "Broken on mobile",
+        description:
+          "The dashboard sidebar is always visible, pushing the main content to a tiny column on mobile. The nav links overlap.",
+        brokenCode: `.dashboard {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+.sidebar {
+  position: fixed;
+  width: 240px;
+  height: 100vh;
+}`,
+        language: "css",
+        hint: "On mobile, the sidebar should be hidden by default and toggled with a hamburger menu. Use a media query or responsive Tailwind classes.",
+        expectedFix:
+          "Sidebar hidden on mobile (max-width: 768px) with a hamburger toggle. Main content takes full width on mobile.",
+      },
+      {
+        id: "L21B4S2",
+        title: "Flash of unstyled content",
+        description:
+          "When loading the dashboard, the user sees raw data flash for a split second before styles and layout kick in. Looks janky.",
+        brokenCode: `export default function Dashboard() {
+  const [tasks, setTasks] = useState([]);
+  useEffect(() => { loadTasks(); }, []);
+
+  return (
+    <div>
+      {tasks.map(t => <TaskCard key={t.id} task={t} />)}
+    </div>
+  );
+}`,
+        language: "tsx",
+        hint: "Add a loading state that shows skeleton cards while data is being fetched. The initial state should show the loading UI, not an empty list.",
+        expectedFix:
+          "Should start with isLoading=true, show skeleton cards during fetch, then switch to real cards when data arrives.",
+      },
+    ],
+    passingCount: 2,
+  },
+
+  // ─── Level 22: Launch Boss (3 blocks) ───
+  {
+    id: "L22B1",
+    levelId: 22,
+    type: "audit",
+    title: "Launch Readiness",
+    xp: 25,
+    required: true,
+    order: 1,
+    description: "The 10-point launch checklist. Pass this and you're ready for real users.",
+    checklist: [
+      {
+        id: "mobile-responsive",
+        category: "ux",
+        title: "Mobile Responsive",
+        description: "Every page works on 375px width. No overflowing content, no tiny tap targets.",
+        severity: "critical",
+        howToCheck: "Open DevTools, set to 375px. Browse every page. Check buttons are tappable.",
+      },
+      {
+        id: "loading-states",
+        category: "ux",
+        title: "Loading States",
+        description: "Every page that fetches data shows a loading skeleton or spinner.",
+        severity: "critical",
+        howToCheck: "Throttle to Slow 3G. Reload each page. Is there always a loading indicator?",
+      },
+      {
+        id: "error-handling",
+        category: "ux",
+        title: "Error Handling",
+        description: "When things break, users see a helpful message — not a white screen or cryptic error.",
+        severity: "critical",
+        howToCheck: "Temporarily break your Supabase URL. Does each page show a user-friendly error?",
+      },
+      {
+        id: "seo-tags",
+        category: "seo",
+        title: "SEO & OG Tags",
+        description: "Every page has a title and description. Landing page has OG tags for social sharing.",
+        severity: "warning",
+        howToCheck: "View page source. Check for <title>, <meta description>, og:title, og:image.",
+      },
+      {
+        id: "analytics",
+        category: "ux",
+        title: "Analytics Tracking",
+        description: "PostHog (or similar) tracks page views and key events.",
+        severity: "warning",
+        howToCheck: "Check PostHog dashboard. Do events appear when you browse your site?",
+      },
+      {
+        id: "404-page",
+        category: "ux",
+        title: "404 Page",
+        description: "Visiting a non-existent URL shows a helpful 404 page, not a broken page.",
+        severity: "warning",
+        howToCheck: "Go to your-app.com/this-page-does-not-exist. What do you see?",
+      },
+      {
+        id: "favicon",
+        category: "ux",
+        title: "Favicon",
+        description: "Your app has a favicon (the small icon in the browser tab).",
+        severity: "suggestion",
+        howToCheck: "Look at your browser tab. Is there an icon or is it the default globe?",
+      },
+      {
+        id: "no-placeholder-content",
+        category: "ux",
+        title: "No Placeholder Content",
+        description: "No 'Lorem ipsum', no 'TODO', no placeholder images anywhere visible to users.",
+        severity: "critical",
+        howToCheck: "Browse every page and look for any placeholder or dummy content.",
+      },
+      {
+        id: "build-succeeds",
+        category: "code-quality",
+        title: "Build Succeeds",
+        description: "npm run build completes without errors.",
+        severity: "critical",
+        howToCheck: "Run npm run build in your terminal. Does it complete without errors?",
+      },
+      {
+        id: "images-load",
+        category: "ux",
+        title: "All Images Load",
+        description: "No broken image icons anywhere on the site.",
+        severity: "warning",
+        howToCheck: "Browse every page. Check DevTools Network tab for failed image requests (red entries).",
+      },
+    ],
+    minPassed: 7,
+  },
+  {
+    id: "L22B2",
+    levelId: 22,
+    type: "prompt",
+    title: "Launch Audit Prompt",
+    xp: 20,
+    required: true,
+    order: 2,
+    scaffold: "none",
+    goal: "Ask AI to perform a comprehensive launch audit of your project.",
+    referencePrompt: `Do a comprehensive launch audit of my app. Check every page and report:
+
+1. Mobile: Does everything work on 375px? Any overflow, tiny buttons, or broken layouts?
+2. Loading: Does every data-fetching page have a loading state?
+3. Errors: What happens when API calls fail? Do users see helpful messages?
+4. SEO: Does the landing page have meta title, description, OG tags?
+5. Empty states: What does a new user with no data see?
+6. 404: What happens at a non-existent URL?
+7. Build: Does npm run build pass?
+8. Placeholder content: Any Lorem ipsum, TODO, or test data visible?
+9. Links: Do all navigation links and buttons work?
+10. Images: Do all images load?
+
+For each issue found, tell me: what's wrong, where it is, and how to fix it.`,
+    passingThreshold: 3.0,
+  },
+  {
+    id: "L22B3",
+    levelId: 22,
+    type: "build",
+    title: "Ready to Launch",
+    xp: 250,
+    required: true,
+    order: 3,
+    mission:
+      "Boss level: pass the 10-point launch readiness audit. Polished, deployed, SEO-ready, analytics tracking, email working. Your app is ready for real users.",
+    githubChecks: {
+      minCommits: 5,
       minFiles: 10,
+      hasDeploy: true,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for CRUD API routes: GET list, POST create, PUT update, DELETE. Prisma queries, proper HTTP methods, error handling with try/catch.",
-    passingScore: 55,
-  },
-
-  // ─── Level 29: Who Are You? (4 blocks) ───
-  {
-    id: "L29B1",
-    levelId: 29,
-    type: "theory",
-    title: "Auth = Bouncer at the Door",
-    xp: 10,
-    required: true,
-    order: 1,
-    content: `# Auth = Bouncer at the Door
-
-Some pages are open to everyone (landing page, pricing). Some are only for logged-in users (dashboard, settings).
-
-Auth is the **bouncer** who checks:
-
-- Are you logged in? → **Yes**: come in, here's your data.
-- Not logged in? → **No**: go to the login page.
-
-## Why auth matters
-
-Without auth, anyone could see everyone's data. With auth, each user sees only **their** data. Your task manager shows YOUR tasks, not everyone's tasks.
-
-## Two parts
-
-1. **Authentication** = "Who are you?" (login/signup)
-2. **Authorization** = "What can you do?" (permissions)
-
-Most apps start with just authentication. Authorization comes later when you have different user roles (admin, member, viewer).
-
-## Common Gotcha: Callback URL Mismatch
-
-OAuth providers (GitHub, Google) require you to register a **callback URL** — the exact address your app lives at. This is the #1 auth bug in production:
-
-- **Locally** it's \`http://localhost:3000/api/auth/callback/github\`
-- **In production** it's \`https://yourapp.vercel.app/api/auth/callback/github\`
-
-If these don't match what you registered on GitHub, auth **silently fails**. When you deploy, update the callback URL in your OAuth provider's settings.`,
-  },
-  {
-    id: "L29B2",
-    levelId: 29,
-    type: "theory",
-    title: "OAuth = Someone Else Checks IDs",
-    xp: 10,
-    required: true,
-    order: 2,
-    content: `# OAuth = Someone Else Checks IDs
-
-You COULD build login with email + password. But then YOU handle passwords — risky, complex, and users hate creating new accounts.
-
-**Better**: let Google or GitHub check IDs for you.
-
-## How it works
-
-1. User clicks "Sign in with GitHub"
-2. GitHub asks: "Is this really you?" (user enters GitHub password on GitHub's site)
-3. GitHub confirms identity → sends a token to your app
-4. Your app knows who they are. Done.
-
-This is **OAuth**. Think of it like a nightclub that accepts government IDs — the club doesn't issue IDs, they just check the ones issued by a trusted authority.
-
-## Why it's better
-
-- **Safer** — GitHub/Google handles the security, not you
-- **Easier** — one click sign-in, no passwords to manage
-- **Better UX** — users already have these accounts
-
-## In your prompts
-
-Tell AI: "Add NextAuth with GitHub OAuth provider." That single sentence gets you a full auth system.`,
-    miniQuiz: [
-      {
-        question:
-          "Why use OAuth instead of handling passwords yourself?",
-        options: [
-          "It's required by law",
-          "Safer — the provider handles security, users don't need new accounts",
-          "It makes the app faster",
-        ],
-        correctIndex: 1,
-      },
-    ],
-  },
-  {
-    id: "L29B3",
-    levelId: 29,
-    type: "prompt",
-    title: "Write an Auth Prompt",
-    xp: 25,
-    required: true,
-    order: 3,
-    scaffold: "hints",
-    goal: "Add authentication to your Next.js app",
-    referencePrompt:
-      "Add NextAuth.js to my Next.js app with GitHub OAuth. Create: 1) Auth config in src/lib/auth.ts with GitHub provider. 2) API route at /api/auth/[...nextauth]. 3) Sign-in page at /login with a 'Sign in with GitHub' button. 4) Header shows user name + avatar when logged in, 'Sign in' button when not. 5) Dashboard page is protected — redirects to /login if not authenticated. 6) Sign-out button in the header.",
-    hints: [
-      "Specify the auth provider (GitHub, Google, etc.)",
-      "List all auth-related pages (login, signup, profile)",
-      "Describe what logged-in vs logged-out looks like",
-      "Mention which routes are protected",
-    ],
-    passingThreshold: 3.0,
-  },
-  {
-    id: "L29B4",
-    levelId: 29,
-    type: "build",
-    title: "Add Auth",
-    xp: 50,
-    required: true,
-    order: 4,
-    mission:
-      "Add authentication: sign-in page, user profile display, sign-out, protected routes that require login.",
-    githubChecks: {
-      fileContains: [
-        { path: "package.json", contains: ["next-auth"] },
-      ],
-      minFiles: 12,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for auth: sign-in page, sign-out functionality, session handling, protected routes that redirect unauthenticated users, user profile display.",
-    passingScore: 55,
-  },
-
-  {
-    id: "L29B5",
-    levelId: 29,
-    type: "experiment",
-    title: "Set Up GitHub OAuth",
-    xp: 15,
-    required: true,
-    order: 5,
-    description:
-      "Walk through creating a real GitHub OAuth app — the step that blocks most beginners.",
-    steps: [
-      {
-        id: "L29B5S1",
-        instruction:
-          "Go to GitHub → Settings → Developer settings → OAuth Apps → New OAuth App. Fill in: Application name (your app name), Homepage URL (http://localhost:3000), Authorization callback URL (http://localhost:3000/api/auth/callback/github). Click Register.",
-        expectedOutcome:
-          "GitHub creates your OAuth app and shows you a Client ID.",
-        question: "Do you see a Client ID on the screen?",
-      },
-      {
-        id: "L29B5S2",
-        instruction:
-          "Click 'Generate a new client secret'. Copy both the Client ID and the Client Secret immediately — the secret is only shown once.",
-        expectedOutcome:
-          "You have both values copied. The secret will be hidden if you leave the page.",
-        question:
-          "Did you copy both values? The secret cannot be viewed again after you leave.",
-      },
-      {
-        id: "L29B5S3",
-        instruction:
-          "Create a `.env.local` file in your project root (if it doesn't exist). Add:\n\nGITHUB_ID=your_client_id_here\nGITHUB_SECRET=your_client_secret_here\nNEXTAUTH_SECRET=run-`openssl rand -base64 32`-to-generate\nNEXTAUTH_URL=http://localhost:3000\n\nMake sure `.env.local` is in your `.gitignore`.",
-        expectedOutcome:
-          "Your `.env.local` has all 4 variables. NextAuth can now use GitHub for sign-in.",
-        question:
-          "Is `.env.local` in your `.gitignore`? Never commit real secrets.",
-      },
-    ],
-  },
-
-  // ─── Level 30: Full Stack Boss (3 blocks) ───
-  {
-    id: "L30B1",
-    levelId: 30,
-    type: "quiz",
-    title: "World 6 Review",
-    xp: 30,
-    required: true,
-    order: 1,
-    questions: [
-      {
-        question: "What does a database do for your app?",
-        options: [
-          "Makes the UI look better",
-          "Gives your app permanent memory — data survives refreshes and restarts",
-          "Speeds up JavaScript execution",
-          "Replaces the need for an API",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question:
-          "A User has many Posts, and a Post belongs to one User. What type of relation is this?",
-        options: [
-          "Many-to-many",
-          "One-to-one",
-          "One-to-many",
-          "No relation",
-        ],
-        correctIndex: 2,
-      },
-      {
-        question: "What does CRUD stand for?",
-        options: [
-          "Code, Run, Upload, Deploy",
-          "Create, Read, Update, Delete",
-          "Connect, Route, Use, Design",
-          "Compile, Render, Undo, Debug",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question: "Why does the frontend talk to the database through an API instead of directly?",
-        options: [
-          "Databases don't support JavaScript",
-          "Security — the API is the gatekeeper that controls who can do what",
-          "It's required by Next.js",
-          "APIs are faster than direct connections",
-        ],
-        correctIndex: 1,
-      },
-      {
-        question: "What's the main advantage of OAuth (Sign in with GitHub/Google)?",
-        options: [
-          "It's the only way to do authentication",
-          "Someone else handles password security, and users don't need new accounts",
-          "It makes your app open source",
-          "It's faster than any other login method",
-        ],
-        correctIndex: 1,
-      },
-    ],
-    passingScore: 3,
-  },
-  {
-    id: "L30B2",
-    levelId: 30,
-    type: "prompt",
-    title: "Design Your SaaS",
-    xp: 30,
-    required: true,
-    order: 2,
-    scaffold: "hints",
-    goal: "Write a comprehensive prompt for a full-stack SaaS application",
-    referencePrompt:
-      "Build a full-stack task management SaaS with Next.js, Prisma, and NextAuth. Auth: GitHub OAuth, session-based, protected dashboard. Database: User (email, name, image), Project (title, description, belongsTo User), Task (title, completed, priority LOW/MEDIUM/HIGH, belongsTo Project). API routes: CRUD for Projects (/api/projects) and Tasks (/api/tasks). Each route validates input and checks auth. Pages: Landing page (public), Dashboard (shows user's projects with task counts), Project Detail (shows tasks, can add/complete/delete), Settings (update profile). Responsive Tailwind styling. Error handling: loading.tsx skeletons, error.tsx with retry, proper API error responses.",
-    hints: [
-      "Describe the complete user journey from landing to using the app",
-      "List database models and their relations",
-      "Specify API endpoints and what each does",
-      "Include error handling and edge cases",
-    ],
-    passingThreshold: 3.5,
-  },
-  {
-    id: "L30B3",
-    levelId: 30,
-    type: "build",
-    title: "Ship Your SaaS",
-    xp: 350,
-    required: true,
-    order: 3,
-    mission:
-      "Build a complete SaaS: auth, database with relations, CRUD API, 3+ pages, responsive UI. Users sign in, create data, see their data.\n\nSuggested project: TaskFlow SaaS (Prisma DB, auth, CRUD API)",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: ["prisma/schema.prisma", "src/app/layout.tsx"],
-      fileContains: [
-        {
-          path: "package.json",
-          contains: ["next", "prisma", "next-auth"],
-        },
-      ],
-      minFiles: 15,
-      minCommits: 8,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Boss level — full stack audit. Check: auth working (sign in/out, protected routes), Prisma schema with relations, CRUD API routes with error handling, 3+ pages, responsive Tailwind UI, data is scoped to the logged-in user.",
+      "Boss level. Comprehensive check: SEO (meta/OG tags), analytics, email, loading/error/empty states, mobile responsive, no broken links, favicon, polished design, no placeholder content. App should feel launch-ready for real users.",
     passingScore: 60,
   },
 ];

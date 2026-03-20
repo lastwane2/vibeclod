@@ -133,7 +133,7 @@ export default async function Image() {
             alignItems: "center",
           }}
         >
-          {["8 Worlds", "40 Levels", "Real Code"].map((stat) => (
+          {["9 Worlds", "30 Levels", "Real Code"].map((stat) => (
             <div
               key={stat}
               style={{

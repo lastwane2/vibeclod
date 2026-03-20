@@ -267,7 +267,7 @@ export function SettingsClient({
                 <span className="rounded-full bg-gradient-to-r from-[#E8A445] to-[#D4932E] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
                   Pro — Lifetime
                 </span>
-                <span className="text-sm text-[#8B7355]">All 40 levels unlocked</span>
+                <span className="text-sm text-[#8B7355]">All 30 levels unlocked</span>
               </div>
               <button
                 onClick={() => {

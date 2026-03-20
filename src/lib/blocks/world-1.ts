@@ -1,13 +1,12 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 1 — Hello, Vibe (Levels 1-5)
-// First HTML/CSS/JS sites. Scaffold: "full"
-// Patterns: Basic Prompt, Styling
+// World 1 — Idea to Internet (Levels 1-4)
+// PRD → first build → deploy → verify
 // ═══════════════════════════════════════
 
 export const WORLD_1_BLOCKS: Block[] = [
-  // ─── Level 1: Your First Prompt (4 blocks) ───
+  // ─── Level 1: What is Vibe Coding (4 blocks) ───
   {
     id: "L1B1",
     levelId: 1,
@@ -18,29 +17,38 @@ export const WORLD_1_BLOCKS: Block[] = [
     order: 1,
     content: `# What is Vibe Coding?
 
-Think of it like being a **movie director**. You don't act in the scenes, but you need to know exactly what movie you want to make.
+Vibe coding = you describe what you want, AI builds it, you verify it works.
 
-**You describe → AI builds → you ship.**
-
-The skill isn't writing code. It's **knowing what to ask for**. A great director doesn't need to operate the camera — but they need a crystal-clear vision.
-
-This course teaches you to be a great director.
+You're not a programmer. You're a **director**. AI is your team — it writes the code, sets up the project, deploys to the internet. Your job: tell it what to build and check that it built the right thing.
 
 ## The Loop
 
-1. **Describe** what you want (the prompt)
-2. **Generate** — AI writes the code
-3. **Verify** — you check it works
-4. **Ship** — push it live
+Every feature you build follows the same loop:
 
-That's it. Every level, every project, every real thing you build follows this loop.`,
+1. **Describe** what you want (a prompt)
+2. **AI builds** it (code appears)
+3. **You test** — does it work? Does it look right?
+4. **You iterate** — "change the button color" / "the link is broken"
+5. **You ship** — push to GitHub, live on the internet
+
+That's it. You'll do this loop hundreds of times. The better you get at step 1 (describing), the less time you spend on step 4 (fixing).
+
+## What This Course Teaches
+
+This is NOT a coding course. You won't memorize JavaScript syntax or CSS properties. AI knows all of that better than any human.
+
+What you WILL learn:
+- How to describe what you want so AI builds the right thing
+- How to spot when AI messes up (it will — a lot)
+- How to manage a real project: database, auth, payments, deploy
+- How to go from idea to live SaaS that takes money`,
     miniQuiz: [
       {
-        question: "What's the most important skill in vibe coding?",
+        question: "What's the most important skill for a vibe coder?",
         options: [
-          "Memorizing programming syntax",
-          "Knowing how to describe what you want",
-          "Typing faster than the AI",
+          "Memorizing JavaScript syntax",
+          "Describing what you want clearly and verifying the result",
+          "Writing code faster than AI",
         ],
         correctIndex: 1,
       },
@@ -49,107 +57,206 @@ That's it. Every level, every project, every real thing you build follows this l
   {
     id: "L1B2",
     levelId: 1,
-    type: "pattern",
-    title: "The Basic Prompt Pattern",
-    xp: 15,
+    type: "theory",
+    title: "How AI Thinks",
+    xp: 10,
     required: true,
     order: 2,
-    patternId: "basic-prompt",
-    exercise: {
-      goal: "Write a prompt using [TASK] + [CONTEXT] + [FORMAT]",
-      template: `[TASK]: ___
-[CONTEXT]: ___
-[FORMAT]: ___`,
-      exampleFilled: `[TASK]: Create an HTML page with a headline and a blue button
-[CONTEXT]: Simple static page, modern clean design
-[FORMAT]: Single index.html file with inline CSS`,
-    },
+    content: `# How AI Thinks (And Why It Gives You Purple Gradients)
+
+AI has **defaults**. When you say "make it look good," AI reaches for what it's seen most often in its training data:
+
+- **Font:** Inter (safe, everywhere)
+- **Colors:** Purple/indigo gradient (most common in AI demos)
+- **Framework:** React + Tailwind (what 90% of tutorials use)
+- **Database:** Whatever the AI prefers that week
+
+This isn't wrong — it's just not YOUR brand. If you don't tell AI what you want, it fills in the blanks with the most popular choice.
+
+## The Fix: Be Specific
+
+| Vague prompt | What AI gives you | Better prompt |
+|---|---|---|
+| "make it look good" | Purple gradient, Inter font | "Dark navy (#0F172A), cyan accents (#22D3EE), Inter font, minimal" |
+| "add a database" | Random ORM setup | "Use Supabase. Create a 'projects' table with: name, description, user_id" |
+| "make it responsive" | Broken on some screens | "Must work on mobile 375px. Stack cards vertically on mobile, 3-column grid on desktop" |
+| "add login" | DIY password hashing | "Use Supabase Auth with Google OAuth. Redirect to /dashboard after login" |
+
+## Tools You'll Use
+
+There's no single "best" tool. Different tools for different jobs:
+
+| Tool | Best for | How it works |
+|---|---|---|
+| **Lovable / Bolt.new** | Quick MVP in a day | Describe, see result, deploy. Browser-based |
+| **Cursor** | Building production apps | VS Code + AI. You see and edit the code |
+| **Claude Code** | Complex features, big changes | Terminal-based. AI reads entire codebase, makes multi-file changes |
+
+Most founders use **Lovable/Bolt to validate the idea**, then **Cursor or Claude Code to build the real product**.`,
+    miniQuiz: [
+      {
+        question:
+          "Why does AI give you Inter font and purple gradients by default?",
+        options: [
+          "Purple is objectively the best color",
+          "AI fills in defaults from training data — override with your own specifics",
+          "Your monitor is probably miscalibrated",
+        ],
+        correctIndex: 1,
+      },
+    ],
   },
   {
     id: "L1B3",
     levelId: 1,
-    type: "prompt",
-    title: "Write Your First Prompt",
-    xp: 20,
+    type: "pattern",
+    title: "The PRD Pattern",
+    xp: 15,
     required: true,
     order: 3,
-    scaffold: "full",
-    goal: "Write a prompt for an HTML page with headline and button",
-    referencePrompt:
-      "Create an HTML page with a large headline that says 'Hello World' and a styled button below it. Use inline CSS — center everything, clean sans-serif font, blue button with white text and rounded corners. Single index.html file.",
-    template:
-      "Create an HTML page with a large headline that says '___' and a styled ___ below it. Use inline CSS — center everything, ___ font, ___ button with ___ text. Single ___ file.",
-    hints: [
-      "Describe what elements should be on the page",
-      "Specify the styling approach",
-      "Mention the output format",
-    ],
-    passingThreshold: 2.5,
+    patternId: "prd-pattern",
+    exercise: {
+      goal: "Write a PRD for your SaaS idea using the template",
+      template: `# [Your Product Name]
+
+## Problem
+[What pain does this solve?]
+
+## Target User
+[Who specifically?]
+
+## Core Features (MVP)
+1. ___
+2. ___
+3. ___
+
+## Out of Scope
+- ___
+
+## Success Criteria
+[How do you know it works?]`,
+      exampleFilled: `# FocusFlow — Pomodoro Timer for Remote Teams
+
+## Problem
+Remote workers lose track of focus time. Managers interrupt deep work because they can't see who's busy.
+
+## Target User
+Remote team leads at startups (5-20 people) who want to protect focus time.
+
+## Core Features (MVP)
+1. Personal Pomodoro timer — 25 min focus / 5 min break
+2. Team dashboard — see who's in focus mode right now
+3. Focus score — weekly report of deep work vs meetings
+
+## Out of Scope
+- Calendar integration, Slack bot, mobile app
+
+## Success Criteria
+A team lead can see their team's focus time at a glance. Each member runs their own timer.`,
+    },
   },
   {
     id: "L1B4",
     levelId: 1,
-    type: "build",
-    title: "Push Your First Page",
-    xp: 30,
+    type: "quiz",
+    title: "Vibe Coding Basics",
+    xp: 15,
     required: true,
     order: 4,
-    mission:
-      "Use AI to generate an HTML page. Push it to your repo as index.html.",
-    githubChecks: {
-      fileExists: ["index.html"],
-      fileContains: [
-        { path: "index.html", contains: ["<button", "<h1"] },
-      ],
-      minCommits: 1,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check if index.html is a valid HTML page with visible heading and button. Should look intentional.",
-    passingScore: 50,
+    questions: [
+      {
+        question: "What's the vibe coding loop?",
+        options: [
+          "Learn syntax → write code → debug → deploy",
+          "Describe → AI builds → you test → you iterate → you ship",
+          "Copy code from Stack Overflow → paste → pray",
+        ],
+        correctIndex: 1,
+        explanation:
+          "Vibe coding = describe what you want, let AI build it, verify, iterate, ship.",
+      },
+      {
+        question: "What should you do BEFORE your first line of code?",
+        options: [
+          "Learn React and TypeScript",
+          "Write a PRD — define the problem, user, and features",
+          "Pick a color scheme",
+        ],
+        correctIndex: 1,
+        explanation:
+          "A PRD gives AI clear direction. Without it, you get generic output.",
+      },
+      {
+        question: "What is Lovable/Bolt best for?",
+        options: [
+          "Building production-ready apps with millions of users",
+          "Quick MVP validation — see if the idea works before investing time",
+          "Writing backend APIs",
+        ],
+        correctIndex: 1,
+        explanation:
+          "Lovable/Bolt are great for quick prototypes. Use Cursor or Claude Code for production.",
+      },
+      {
+        question:
+          "Why does AI give you Inter font and purple gradients by default?",
+        options: [
+          "Those are the best design choices",
+          "AI fills in defaults from training data — override with your own specifics",
+          "Your design brief was too detailed",
+        ],
+        correctIndex: 1,
+        explanation:
+          "AI uses what it's seen most. Be specific about YOUR colors, fonts, and style.",
+      },
+    ],
+    passingScore: 3,
   },
 
-  // ─── Level 2: Make It Pretty (4 blocks) ───
+  // ─── Level 2: Your Idea on Paper (4 blocks) ───
   {
     id: "L2B1",
     levelId: 2,
     type: "theory",
-    title: "Styling Vocabulary",
+    title: "Start with a Plan",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Styling Vocabulary
+    content: `# Start with a Plan, Not a Prompt
 
-You don't need to know CSS. You need the **right words**.
+The #1 mistake: opening your AI tool and typing "build me a SaaS."
 
-It's like ordering food — you don't need to cook, but "grilled salmon with lemon butter sauce" gets way better results than "fish, make it good."
+AI without a plan builds **generic garbage.** AI with a PRD builds **your product.**
 
-## Words That Work
+## The Peter Yang Rule
 
-| Category | Good words for prompts |
-|----------|----------------------|
-| **Colors** | hex codes (#0f172a), gradient, palette |
-| **Layout** | centered, flexbox, grid, max-width |
-| **Fonts** | sans-serif, Inter, Google Fonts, font-weight |
-| **Spacing** | padding 24px, margin, gap between elements |
-| **Effects** | box-shadow, rounded corners, hover effect |
+> "Vibe coding starts with vibe PMing."
 
-## The Key Insight
+Before you touch any AI tool:
+1. **Write down your idea** — even 3 sentences
+2. **Give it to AI** — "turn this into a proper PRD"
+3. **Review the PRD** — does it match your vision?
+4. **NOW start building** — with the PRD as context
 
-Be **SPECIFIC**.
+Your PRD is the most important document in your project. Every prompt you write later will reference it.
 
-- "dark navy background #0f172a" beats "dark background"
-- "Inter font at 18px" beats "nice font"
-- "blue button #3b82f6 with white text" beats "colored button"
+## What Makes a Good PRD
 
-The more specific your words, the closer the AI gets to what you imagined.`,
+A good PRD answers 5 questions:
+1. **What problem** does this solve?
+2. **Who** has this problem?
+3. **What features** solve it? (just 3-5 for MVP)
+4. **What are you NOT building** yet?
+5. **How do you know** it works?
+
+The "Not building" section is the most important. It prevents scope creep — the #1 project killer.`,
     miniQuiz: [
       {
-        question: "Which styling prompt will get better results?",
+        question: "What's the most important section of a PRD?",
         options: [
-          '"Make the page look nice with good colors"',
-          '"Dark navy background #0f172a, white text, Inter font, centered with 32px padding"',
-          '"Add CSS please"',
+          "The feature list — the more features, the better",
+          "The 'Out of Scope' section — it prevents building too much",
+          "The color scheme",
         ],
         correctIndex: 1,
       },
@@ -158,112 +265,146 @@ The more specific your words, the closer the AI gets to what you imagined.`,
   {
     id: "L2B2",
     levelId: 2,
-    type: "pattern",
-    title: "The Styling Pattern",
-    xp: 15,
+    type: "prompt",
+    title: "Write Your PRD",
+    xp: 20,
     required: true,
     order: 2,
-    patternId: "styling-pattern",
-    exercise: {
-      goal: "Use the Styling Pattern to describe your page's look",
-      template: `Style the page with:
-- Colors: ___
-- Layout: ___
-- Typography: ___
-- Spacing: ___
-- Effects: ___`,
-      exampleFilled: `Style the page with:
-- Colors: background #0f172a, text #e2e8f0, accent #3b82f6
-- Layout: centered vertically and horizontally, max-width 600px
-- Typography: Inter font from Google Fonts, heading 48px bold, body 18px
-- Spacing: 32px padding, 16px gap between elements
-- Effects: button hover brightens, subtle box-shadow on container, rounded-lg corners`,
-    },
+    scaffold: "full",
+    goal: "Write a PRD for your SaaS idea. Include: problem, target user, 3-5 core features, out of scope, success criteria.",
+    referencePrompt: `I have an idea for a SaaS product. Here's my rough concept:
+
+[FocusFlow — a Pomodoro timer for remote teams. Team leads can see who's in deep work. Weekly focus reports.]
+
+Turn this into a proper PRD with these sections:
+1. Product name and one-line description
+2. Problem (what pain does this solve?)
+3. Target user (who specifically — not "everyone")
+4. Core features — MVP only, max 5
+5. Out of scope — what we're NOT building yet
+6. Success criteria — how do we know it works?
+
+Keep it concrete and specific. No fluff.`,
+    passingThreshold: 2.5,
   },
   {
     id: "L2B3",
     levelId: 2,
-    type: "prompt",
-    title: "Write a Styling Prompt",
-    xp: 20,
+    type: "pattern",
+    title: "The Design Brief",
+    xp: 15,
     required: true,
     order: 3,
-    scaffold: "full",
-    goal: "Add CSS styling to your page with specific colors, fonts, and layout",
-    referencePrompt:
-      "Update my index.html to look like a modern landing page. Dark navy background (#0f172a), light gray text (#e2e8f0), bright blue accent (#3b82f6) for the button. Center everything with flexbox. Inter font from Google Fonts — heading at 48px bold, body at 18px. 32px padding, 16px gap between elements. Button: rounded corners, padding 12px 24px, hover effect that brightens the color. Subtle box-shadow on the main container.",
-    template:
-      "Update my index.html to look like a modern landing page. ___ background (___), ___ text (___), ___ accent (___) for the button. Center everything with ___. ___ font from Google Fonts. ___ padding, ___ gap. Button: ___ corners, ___ hover effect.",
-    hints: [
-      "Specify exact colors with hex codes",
-      "Name a specific font",
-      "Describe the layout method (flexbox or grid)",
-    ],
-    passingThreshold: 2.5,
+    patternId: "design-brief",
+    exercise: {
+      goal: "Write a design brief for your SaaS — colors, fonts, mood, layout",
+      template: `## Visual Style
+- Mood: ___
+- Inspiration: ___
+
+## Colors
+- Primary: #___
+- Background: #___
+- Accent: #___
+
+## Typography
+- Font: ___
+
+## Layout
+- Style: ___
+- Responsive: mobile-first, works on 375px`,
+      exampleFilled: `## Visual Style
+- Mood: clean, professional, slightly techy
+- Inspiration: Linear.app, Vercel.com
+
+## Colors
+- Primary: #6366F1 (indigo)
+- Background: #0F172A (dark navy)
+- Accent: #22D3EE (cyan)
+
+## Typography
+- Font: Inter
+
+## Layout
+- Style: clean whitespace, card-based features
+- Responsive: mobile-first, works on 375px`,
+    },
   },
   {
     id: "L2B4",
     levelId: 2,
-    type: "build",
-    title: "Push Your Styled Page",
-    xp: 30,
+    type: "prompt",
+    title: "Write Your Design Brief",
+    xp: 20,
     required: true,
     order: 4,
-    mission:
-      "Add CSS styling — custom colors, fonts, centered layout. Push to your repo.",
-    githubChecks: {
-      fileExists: ["index.html"],
-      fileContains: [
-        { path: "index.html", contains: ["style", "color", "font"] },
-      ],
-      minCommits: 2,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Review the CSS styling. Does it look intentional and polished? Check for custom colors, proper fonts, centered layout. Should not look like unstyled default HTML.",
-    passingScore: 55,
+    scaffold: "full",
+    goal: "Write a design brief that prevents AI from giving you generic styling. Include specific hex codes, font, mood, and layout preferences.",
+    referencePrompt: `I need a design brief for my SaaS app called FocusFlow. Here's what I want:
+
+Visual style: Clean and professional, inspired by Linear.app and Vercel.com. Not playful — this is a B2B tool.
+
+Colors:
+- Primary: #6366F1 (indigo) — main buttons and links
+- Background: #0F172A (dark navy) — dark theme
+- Accent: #22D3EE (cyan) — highlights and CTAs
+- Text: #F8FAFC (off-white)
+
+Typography: Inter font. Large bold headings, no ALL CAPS.
+
+Layout: Clean with generous whitespace. Card-based for features. Must work on mobile 375px — stack cards vertically.
+
+Tone: Professional but approachable. No corporate jargon.`,
+    passingThreshold: 2.5,
   },
 
-  // ─── Level 3: Pages & Clicks (4 blocks) ───
+  // ─── Level 3: First Deploy (4 blocks) ───
   {
     id: "L3B1",
     levelId: 3,
     type: "theory",
-    title: "Bigger Projects",
+    title: "Deploy = Share with the World",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Bigger Projects
+    content: `# Your Site, Live on the Internet
 
-Real websites aren't one page. They're a collection of pages connected by a **navigation bar** — the row of links at the top.
+The single most motivating moment: clicking a link and seeing YOUR site on the internet.
 
-## Two Key Concepts for Your Prompts
+## How Deployment Works
 
-### 1. Multi-Page = Shared Navigation
+1. You push code to **GitHub**
+2. **Vercel** watches your GitHub repo
+3. Every push = Vercel rebuilds and deploys automatically
+4. You get a URL like \`your-app.vercel.app\`
 
-When you ask AI to build multiple pages, ALWAYS mention:
-- **"Shared navigation"** — identical nav bar on every page
-- **"Consistent styling"** — same colors, fonts, spacing everywhere
+That's it. No servers to configure. No FTP. No SSH. Push, it's live.
 
-AI loves to make each page look slightly different. Pin it down.
+## Vercel Free Tier
 
-### 2. Interactivity = Trigger + Result
+Vercel's free tier is generous:
+- Unlimited personal projects
+- Automatic HTTPS (secure)
+- Auto-deploy on every git push
+- Custom domains (add your own later)
 
-For anything interactive, describe the **trigger** and the **result**:
+Free is enough to launch and get your first users. You'll only pay when you scale.
 
-- "When user clicks the menu icon, **show** the mobile nav"
-- "When user clicks 'Read More', **expand** the hidden text"
-- "When user clicks the counter button, **increment** the number"
+## Why Deploy NOW (Level 3, Not Level 30)
 
-Trigger → Result. That's how AI understands what you want.`,
+Most courses teach deployment last. That's backwards.
+
+- Deploying early forces you to **fix real issues** (not just "works on my machine")
+- You can **share your URL** with anyone for feedback
+- Every level from here builds on something that's **live on the internet**
+- Motivation: seeing your work live is the best fuel`,
     miniQuiz: [
       {
-        question:
-          "What should you always mention when prompting for a multi-page site?",
+        question: "When should you first deploy your app?",
         options: [
-          "The server configuration",
-          "Shared navigation and consistent styling",
-          "The JavaScript framework to use",
+          "After all features are done",
+          "As early as possible — even a landing page",
+          "Only when you're ready for paying users",
         ],
         correctIndex: 1,
       },
@@ -272,135 +413,129 @@ Trigger → Result. That's how AI understands what you want.`,
   {
     id: "L3B2",
     levelId: 3,
-    type: "prompt",
-    title: "Write a Multi-Page Prompt",
-    xp: 20,
+    type: "experiment",
+    title: "Set Up Vercel",
+    xp: 15,
     required: true,
     order: 2,
-    scaffold: "full",
-    goal: "Write a prompt for a 3-page site with navigation and interactivity",
-    referencePrompt:
-      "Create a 3-page website: index.html, about.html, and projects.html. Every page must have an identical navigation bar at the top with links to all 3 pages. The current page's link should be visually highlighted (bold or different color). Use consistent styling across all pages — same color scheme, fonts, and layout. On the home page, add a click counter: a button that shows a number starting at 0, incrementing on each click. Use vanilla JavaScript, no frameworks.",
-    template:
-      "Create a ___-page website: ___, ___, and ___. Every page must have an identical ___ at the top with links to all ___ pages. The current page's link should be visually ___. Use consistent ___ across all pages. On the home page, add a ___: a ___ that ___.",
-    hints: [
-      "List all page filenames",
-      "Mention shared navigation",
-      "Describe one interactive feature with trigger and result",
+    description: "Create a Vercel account and connect your GitHub repo.",
+    steps: [
+      {
+        id: "L3B2S1",
+        instruction:
+          "Go to **vercel.com** and click **Sign Up**. Use your **GitHub account** to sign up — this connects them automatically.",
+        expectedOutcome:
+          "You're logged into Vercel and can see the dashboard.",
+        question: "Are you logged into Vercel?",
+      },
+      {
+        id: "L3B2S2",
+        instruction:
+          'Click **Add New Project**. Select **Import Git Repository**. Find your vibeclod projects repo and click **Import**.\n\nLeave all settings as default and click **Deploy**.',
+        expectedOutcome:
+          "Vercel builds and deploys your repo. You see a success screen with a URL.",
+        question: "What URL did Vercel give you?",
+      },
+      {
+        id: "L3B2S3",
+        instruction:
+          "Click your new URL — you should see your site. Now push any change to GitHub and watch Vercel auto-deploy within seconds.\n\n**Every push = your site updates.** This is the magic.",
+        expectedOutcome:
+          "Your site is live on the internet. You can share the URL with anyone.",
+        question: "Can you open your site on your phone?",
+      },
     ],
-    passingThreshold: 2.5,
   },
   {
     id: "L3B3",
     levelId: 3,
-    type: "build",
-    title: "Build Your Multi-Page Site",
-    xp: 40,
+    type: "prompt",
+    title: "Build Your Landing Page",
+    xp: 20,
     required: true,
     order: 3,
-    mission:
-      "Create 3+ HTML pages with shared navigation and at least one interactive JavaScript feature.",
-    githubChecks: {
-      fileExists: ["index.html", "about.html"],
-      fileContains: [
-        { path: "index.html", contains: ["<a", "href", "<script"] },
-      ],
-      minCommits: 3,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for 3+ HTML pages with working navigation between them. Should have consistent styling, a shared nav bar, and at least one JavaScript interaction.",
-    passingScore: 55,
+    scaffold: "full",
+    goal: "Use your PRD and design brief to prompt AI to build a landing page. Should have: headline, description, features, CTA.",
+    referencePrompt: `Build a landing page for FocusFlow based on this PRD and design brief:
+
+PRD: FocusFlow is a Pomodoro timer for remote teams. Team leads see who's in deep work. Weekly focus reports. Target: remote team leads at startups.
+
+Design: Dark navy (#0F172A) background, indigo (#6366F1) primary, cyan (#22D3EE) accent. Inter font. Clean whitespace. Mobile-first (375px).
+
+The page needs:
+- Hero: headline "Your team's focus time, protected", subheadline, one "Start Free" CTA button
+- 3 feature cards: Focus Timer, Team Dashboard, Weekly Reports
+- Footer with copyright
+
+Single index.html file with inline CSS. Keep it simple — we'll improve it later.`,
+    passingThreshold: 2.5,
   },
   {
     id: "L3B4",
     levelId: 3,
-    type: "experiment",
-    title: "Break Something, See What Happens",
-    xp: 15,
+    type: "build",
+    title: "Push & Deploy",
+    xp: 40,
     required: true,
     order: 4,
-    description:
-      "Understanding what happens when things go wrong helps you debug later.",
-    steps: [
-      {
-        id: "L3B4S1",
-        instruction:
-          "Change a link's href to a file that doesn't exist (e.g., \"oops.html\"). Click it in your browser. What shows up?",
-        expectedOutcome:
-          "You'll see a 404 error or 'file not found' page. Links only work when the target file actually exists.",
-        question: "What did the browser show when you clicked the broken link?",
-      },
-      {
-        id: "L3B4S2",
-        instruction:
-          "Comment out the <script> tag by wrapping it in <!-- -->. Reload the page. What still works?",
-        expectedOutcome:
-          "The structure (HTML) and styling (CSS) still work fine. Only the interactive features (buttons, counters) stop working.",
-        question:
-          "What's the difference between what HTML/CSS do and what JavaScript does?",
-      },
-    ],
+    mission:
+      "Build a landing page using your PRD and design brief. Push to GitHub. Verify it's live on Vercel. Share the URL.",
+    githubChecks: {
+      fileExists: ["index.html"],
+      minCommits: 2,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for a landing page with: clear headline, product description, at least one feature section, CTA button. Custom styling (not default). Should be a real landing page, not a hello-world template.",
+    passingScore: 50,
   },
 
-  // ─── Level 4: Trust But Verify (4 blocks) ───
+  // ─── Level 4: Trust But Verify — Boss (4 blocks) ───
   {
     id: "L4B1",
     levelId: 4,
     type: "theory",
-    title: "Don't Blindly Trust AI",
+    title: "AI Makes Mistakes",
     xp: 10,
     required: true,
     order: 1,
-    content: `# Don't Blindly Trust AI
+    content: `# AI Makes Mistakes — Your Job is to Catch Them
 
-AI is like a **fast but careless intern**. It delivers quick, but it makes mistakes. Every. Single. Time.
+45% of AI-generated code has issues. Not "might have" — **does have.** Common problems:
 
-## Common AI Mistakes
+## The Usual Suspects
 
-- **Broken links** — wrong filenames (about.html vs About.html)
-- **Dead buttons** — looks clickable, does nothing (missing event handler)
-- **Inconsistent styling** — page 1 looks different from page 2
-- **Duplicate code** — copy-pasted blocks instead of reusing
+1. **Dead buttons** — looks like a button, does nothing when clicked
+2. **Broken links** — href="#" or links to pages that don't exist
+3. **Not responsive** — looks great on desktop, garbage on mobile
+4. **Hardcoded data** — "Lorem ipsum" or duplicate content instead of real data
+5. **Missing states** — no loading indicator, no error message, no empty state
 
-## Your Job: Always Test
+## Your Secret Weapon: DevTools
 
-After AI generates code, you are the **quality inspector**:
+Every browser has built-in developer tools. Right-click, **Inspect** (or press F12).
 
-1. **Click every link** — do they all go where they should?
-2. **Press every button** — does something actually happen?
-3. **Check on mobile** — resize the browser window. Does it still look good?
-4. **Compare pages** — is the nav identical? Same fonts and colors?
+### Console Tab
+Shows JavaScript errors in red. If something doesn't work, check here first:
+- \`TypeError: Cannot read property...\` = something is undefined
+- \`404 Not Found\` = a file or page is missing
+- \`CORS error\` = API request blocked
 
-The vibe coder who tests is the vibe coder who ships working products. The one who doesn't... ships broken ones.
+### Elements Tab
+Shows HTML structure. Hover over elements to see size and spacing. Useful for layout issues.
 
-## Your Browser Has Superpowers: DevTools
+### Network Tab
+Shows every request your page makes. If data isn't loading, check if the API call succeeded (200) or failed (400, 500).
 
-Your browser has a built-in toolkit that makes verification 10x easier. Right-click anywhere on a page and click **Inspect** (or press F12).
-
-### Console tab
-Shows **errors** in red. If a button does nothing, the Console usually tells you why. This is the first place to look when something breaks.
-
-### Elements tab
-Shows the **HTML structure** of the page. You can see every element, its classes, and its styles. Great for checking if AI put the right CSS on things.
-
-### Network tab
-Shows every **request** your page makes — API calls, images, scripts. If data isn't loading, check here to see if the request failed (red = bad).
-
-### How to use it
-1. Right-click → **Inspect** (or press F12)
-2. **Console** for errors
-3. **Elements** for HTML/CSS inspection
-4. **Network** for API calls and loading issues
-
-DevTools is your verification superpower. Use it every time you test AI-generated code.`,
+You don't need to understand everything in DevTools. Just check Console for red errors. That catches 80% of issues.`,
     miniQuiz: [
       {
-        question: "What should you do AFTER AI generates code?",
+        question:
+          "What's the first thing to check when something doesn't work?",
         options: [
-          "Immediately push it to GitHub",
-          "Test everything: click links, press buttons, check mobile",
-          "Rewrite it from scratch",
+          "Rewrite the entire feature from scratch",
+          "Check the DevTools Console for red error messages",
+          "Change the font to something nicer",
         ],
         correctIndex: 1,
       },
@@ -416,57 +551,85 @@ DevTools is your verification superpower. Use it every time you test AI-generate
     order: 2,
     code: `<!DOCTYPE html>
 <html>
-<head><title>My Site</title></head>
-<body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="About.html">About</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-
-  <h1>Welcome to My Site</h1>
-  <button id="cta-btn">Click Me</button>
-
+<head>
+  <title>TaskFlow</title>
   <style>
-    body { font-family: Arial; background: #1a1a2e; color: white; }
-    nav a { color: #8888ff; margin-right: 16px; }
+    body { font-family: Arial; margin: 0; background: #1a1a2e; color: white; }
+    .hero { text-align: center; padding: 80px 20px; }
+    .hero h1 { font-size: 48px; }
+    .hero p { font-size: 18px; color: #aaa; }
+    .btn { background: #6C63FF; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 40px; }
+    .card { background: #16213e; padding: 24px; border-radius: 12px; }
+    .card h3 { color: #6C63FF; }
+    .nav { display: flex; justify-content: space-between; padding: 20px 40px; }
+    .nav a { color: white; text-decoration: none; }
   </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="/">TaskFlow</a>
+    <div>
+      <a href="#features">Features</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+  </nav>
+  <div class="hero">
+    <h1>Ship Projects Faster</h1>
+    <p>The project tool for small teams who hate complexity.</p>
+    <button class="btn">Watch Demo</button>
+  </div>
+  <div class="features" id="features">
+    <div class="card">
+      <h3>Kanban Boards</h3>
+      <p>Drag and drop tasks across columns. Simple as sticky notes.</p>
+    </div>
+    <div class="card">
+      <h3>Time Tracking</h3>
+      <p>Know where your team's hours go. Built-in, not bolted on.</p>
+    </div>
+    <div class="card">
+      <h3>Kanban Boards</h3>
+      <p>Drag and drop tasks across columns. Simple as sticky notes.</p>
+    </div>
+  </div>
 </body>
 </html>`,
     language: "html",
     description:
-      "This HTML page was generated by AI. It looks fine at first glance — but there are real problems hiding in it. Can you find them?",
+      "This is a landing page AI generated for TaskFlow. Find the problems before shipping it.",
     knownIssues: [
       {
-        id: "L4B2I1",
-        lineRange: [7, 7],
+        id: "broken-link",
+        lineRange: [26, 26],
         description:
-          "Broken link: 'About.html' has a capital A but the actual file is probably 'about.html' — case sensitivity breaks links on most servers",
-        severity: "critical",
-      },
-      {
-        id: "L4B2I2",
-        lineRange: [12, 12],
-        description:
-          "Button has no onclick handler or event listener — clicking it does absolutely nothing",
-        severity: "critical",
-      },
-      {
-        id: "L4B2I3",
-        lineRange: [5, 9],
-        description:
-          "No way to tell which page is currently active — the nav looks identical on every page",
+          "Link to #testimonials but there's no testimonials section — clicking it does nothing.",
         severity: "warning",
       },
       {
-        id: "L4B2I4",
-        lineRange: [14, 17],
+        id: "dead-button",
+        lineRange: [33, 33],
         description:
-          "No responsive styling — this will look bad on mobile devices (no viewport meta tag, no media queries)",
+          "Watch Demo button has no onclick handler — clicking it does nothing.",
+        severity: "critical",
+      },
+      {
+        id: "no-responsive",
+        lineRange: [10, 10],
+        description:
+          "Features grid is always 3 columns. On mobile (375px) cards will be crushed. No responsive breakpoint.",
+        severity: "critical",
+      },
+      {
+        id: "duplicate-card",
+        lineRange: [40, 43],
+        description:
+          "Third feature card is a copy-paste of the first (Kanban Boards). AI duplicated instead of creating a unique third feature.",
         severity: "warning",
       },
     ],
-    minIssuesFound: 2,
+    minIssuesFound: 3,
   },
   {
     id: "L4B3",
@@ -478,188 +641,48 @@ DevTools is your verification superpower. Use it every time you test AI-generate
     order: 3,
     scenarios: [
       {
-        id: "L4B3D1",
-        title: "Navigation link points to wrong file",
+        id: "L4B3S1",
+        title: "Dead button",
         description:
-          "The 'About' link in the nav doesn't work. Clicking it gives a 404 error. The actual file is named 'about.html' (lowercase).",
-        brokenCode: `<nav>
-  <a href="index.html">Home</a>
-  <a href="About.html">About</a>
-  <a href="contact.html">Contact</a>
-</nav>`,
+          "The 'Watch Demo' button looks great but does nothing when clicked.",
+        brokenCode: `<button class="btn">Watch Demo</button>`,
         language: "html",
-        hint: "Look at the capitalization of the filename. Most web servers are case-sensitive.",
+        hint: "Add an onclick that does something — scroll to a section, open a modal, or navigate to a page.",
         expectedFix:
-          "Change 'About.html' to 'about.html' — filenames must match exactly, including case",
+          "Button should have an onclick handler or be wrapped in an anchor tag that does something when clicked.",
       },
       {
-        id: "L4B3D2",
-        title: "Button has onclick but function doesn't exist",
+        id: "L4B3S2",
+        title: "Broken on mobile",
         description:
-          "Clicking the 'Subscribe' button throws an error in the browser console: 'handleSubscribe is not defined'.",
-        brokenCode: `<button onclick="handleSubscribe()">Subscribe</button>
-
-<script>
-  function handleSubscription() {
-    alert("Subscribed!");
-  }
-</script>`,
-        language: "html",
-        hint: "Compare the function name in onclick with the function name in the script. Read carefully.",
+          "The features grid forces 3 columns even on a 375px phone. Cards are crushed and text overflows.",
+        brokenCode: `.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 40px; }`,
+        language: "css",
+        hint: "Add a responsive approach: 1 column on mobile, 3 on desktop.",
         expectedFix:
-          "The onclick calls 'handleSubscribe()' but the function is named 'handleSubscription()' — the names don't match",
+          "Should have responsive grid: single column on mobile, 3 columns on desktop. Cards readable on 375px.",
       },
     ],
-    passingCount: 1,
+    passingCount: 2,
   },
   {
     id: "L4B4",
     levelId: 4,
-    type: "quiz",
-    title: "World 1 Review",
-    xp: 25,
+    type: "build",
+    title: "Ship a Polished Landing Page",
+    xp: 100,
     required: true,
     order: 4,
-    questions: [
-      {
-        question: "What are the three parts of the Basic Prompt Pattern?",
-        options: [
-          "HTML, CSS, JavaScript",
-          "Task, Context, Format",
-          "Input, Process, Output",
-          "Header, Body, Footer",
-        ],
-        correctIndex: 1,
-        explanation:
-          "The Basic Prompt Pattern: [TASK] what to build + [CONTEXT] background details + [FORMAT] how to output it.",
-      },
-      {
-        question: "Why should you use specific hex color codes in styling prompts?",
-        options: [
-          "AI can only understand hex colors",
-          "Specific colors give predictable results instead of generic defaults",
-          "Hex colors load faster in browsers",
-          "It's required by HTML standards",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Vague requests like 'nice colors' give random results. Specific hex codes like #0f172a get you exactly what you want.",
-      },
-      {
-        question:
-          "When building a multi-page site, what should you always mention?",
-        options: [
-          "The JavaScript framework",
-          "Shared navigation and consistent styling",
-          "The server hosting provider",
-          "Browser compatibility requirements",
-        ],
-        correctIndex: 1,
-        explanation:
-          "AI often makes each page look slightly different. Explicitly mentioning shared nav and consistent styling prevents this.",
-      },
-      {
-        question: "What's a common AI mistake with buttons?",
-        options: [
-          "Making them too big",
-          "Adding a button that looks clickable but has no event handler",
-          "Using the wrong color",
-          "Placing them at the bottom of the page",
-        ],
-        correctIndex: 1,
-        explanation:
-          "AI frequently generates buttons that look perfect but do nothing — always click every button to check.",
-      },
-      {
-        question: "What is the core philosophy of vibe coding?",
-        options: [
-          "Write code faster than anyone else",
-          "Memorize every programming language",
-          "Describe what you want, let AI build it, verify and ship",
-          "Never look at the code AI generates",
-        ],
-        correctIndex: 2,
-        explanation:
-          "Vibe coding is about being a great director: describe clearly, generate with AI, verify it works, then ship.",
-      },
-    ],
-    passingScore: 3,
-  },
-
-  // ─── Level 5: Portfolio Boss (3 blocks) ───
-  {
-    id: "L5B1",
-    levelId: 5,
-    type: "prompt",
-    title: "Design Your Portfolio",
-    xp: 30,
-    required: true,
-    order: 1,
-    scaffold: "full",
-    goal: "Write a comprehensive prompt for a complete portfolio site",
-    referencePrompt:
-      "Build a complete personal portfolio website as a single index.html file with inline CSS and JavaScript. Include: 1) Hero section — my name in large text, a professional title, and a one-line tagline. 2) About section — short bio paragraph. 3) Projects section — at least 2 project cards, each with title, description, and a link. 4) Contact section — form with name, email, and message fields with basic validation (required fields). 5) Responsive design — works on mobile (single column) and desktop (wider layout). Style: modern dark theme (#0f172a background), sans-serif font, smooth scroll between sections, subtle hover animations on project cards and buttons.",
-    template:
-      "Build a complete personal portfolio website as a single ___ file with inline CSS and JavaScript. Include: 1) Hero section — ___. 2) About section — ___. 3) Projects section — at least ___ project cards with ___. 4) Contact section — form with ___ with ___. 5) Responsive design — ___. Style: ___.",
-    hints: [
-      "List every section and what goes in it",
-      "Specify the form fields and validation",
-      "Mention responsive behavior",
-      "Describe the overall theme and style",
-    ],
-    passingThreshold: 3.0,
-  },
-  {
-    id: "L5B2",
-    levelId: 5,
-    type: "build",
-    title: "Ship Your Portfolio",
-    xp: 200,
-    required: true,
-    order: 2,
     mission:
-      "Build a complete portfolio: hero, about, 2+ projects, contact form, responsive. Your first real ship.\n\nSuggested project: TaskFlow landing page (hero, features, contact form)",
+      "Boss level: fix all issues in your landing page. All links work, buttons function, responsive on mobile, no duplicates. Deploy to Vercel.",
     githubChecks: {
       fileExists: ["index.html"],
-      fileContains: [
-        {
-          path: "index.html",
-          contains: ["<form", "project", "style"],
-        },
-      ],
-      minCommits: 5,
-      minFiles: 3,
+      minCommits: 4,
+      minFiles: 2,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Boss level — be thorough. Check for: hero section with name/title, about section, at least 2 project cards, contact form with validation, responsive design, polished CSS. Should look like a real portfolio someone would be proud of.",
+      "Boss level. Check for: all links go somewhere real, all buttons have actions, responsive on mobile (375px), no duplicate content, no placeholder text. Should look professional and work completely.",
     passingScore: 60,
-  },
-  {
-    id: "L5B3",
-    levelId: 5,
-    type: "theory",
-    title: "What You Just Built",
-    xp: 10,
-    required: true,
-    order: 3,
-    content: `# What You Just Built
-
-You've now completed the vibe coding loop **five times**. Look at what you can do:
-
-1. Write a clear prompt
-2. Get AI to generate working code
-3. Verify it actually works
-4. Ship it to the world
-
-That's the foundation for **everything**. Every startup, every app, every product follows this same loop — just at a bigger scale.
-
-## What's Next
-
-You've been building with raw HTML files. That works for simple sites, but real projects need **professional tools**: a terminal, a package manager, version control.
-
-Don't worry — they're not scary. They're just tools that make bigger projects possible.
-
-You're not learning to code. You're learning to **build**.`,
   },
 ];

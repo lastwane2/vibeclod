@@ -40,7 +40,7 @@ export default function TermsPage() {
             <h2 className="text-lg font-bold text-[#2D2016] mb-2">3. Free and Pro Plans</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>Free</strong> — Worlds 1-2 (10 levels) are free forever.</li>
-              <li><strong>Pro</strong> — One-time payment of $29 for lifetime access to all 40 levels and future content.</li>
+              <li><strong>Pro</strong> — One-time payment of $29 for lifetime access to all 30 levels and future content.</li>
               <li>Prices may change for new customers. Existing purchases are honored.</li>
             </ul>
           </section>

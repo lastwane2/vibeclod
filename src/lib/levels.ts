@@ -2,8 +2,8 @@ import type { Level, World } from "@/types";
 import { getBlocksForLevel } from "@/lib/blocks";
 
 // ═══════════════════════════════════════
-// 8 Worlds — 40 Levels
-// Smooth curve from HTML to making money
+// 9 Worlds — 30 Levels
+// Product-first: idea → internet → money
 // ═══════════════════════════════════════
 
 export const WORLDS: World[] = [
@@ -18,8 +18,8 @@ export const WORLDS: World[] = [
   },
   {
     id: 1,
-    title: "Hello, Vibe",
-    subtitle: "Your first build with AI",
+    title: "Idea to Internet",
+    subtitle: "From zero to live site",
     color: "#E8A445",
     accentColor: "#D4932E",
     icon: "🌱",
@@ -27,8 +27,8 @@ export const WORLDS: World[] = [
   },
   {
     id: 2,
-    title: "Real Tools",
-    subtitle: "Terminal, npm, git — demystified",
+    title: "Your Toolkit",
+    subtitle: "Git, CLAUDE.md, DevTools",
     color: "#2AA198",
     accentColor: "#238E86",
     icon: "🔧",
@@ -36,56 +36,56 @@ export const WORLDS: World[] = [
   },
   {
     id: 3,
-    title: "Components",
-    subtitle: "Building with React",
+    title: "Give It Memory",
+    subtitle: "Database and real data",
     color: "#5B8DEF",
     accentColor: "#4A7AD6",
-    icon: "🧩",
+    icon: "🧠",
     requiredPlan: "PRO",
   },
   {
     id: 4,
-    title: "Level Up",
-    subtitle: "Bigger apps, smarter prompts",
+    title: "Lock the Door",
+    subtitle: "Auth and user data",
     color: "#6366F1",
     accentColor: "#5558D9",
-    icon: "⚡",
+    icon: "🔐",
     requiredPlan: "PRO",
   },
   {
     id: 5,
-    title: "Next Level",
-    subtitle: "Next.js — the real framework",
-    color: "#9B6EC6",
-    accentColor: "#8A5DB5",
-    icon: "🚀",
+    title: "Take Money",
+    subtitle: "Stripe and payments",
+    color: "#EAB308",
+    accentColor: "#CA9A06",
+    icon: "💰",
     requiredPlan: "PRO",
   },
   {
     id: 6,
-    title: "Full Stack",
-    subtitle: "Database, API, auth",
-    color: "#E06B6B",
-    accentColor: "#CC5555",
-    icon: "🗄️",
-    requiredPlan: "PRO",
-  },
-  {
-    id: 7,
-    title: "Ship It",
-    subtitle: "Deploy and polish",
+    title: "Ship & Polish",
+    subtitle: "SEO, analytics, domain",
     color: "#10B981",
     accentColor: "#0D9668",
     icon: "📦",
     requiredPlan: "PRO",
   },
   {
+    id: 7,
+    title: "Don't Get Hacked",
+    subtitle: "Security and legal",
+    color: "#E06B6B",
+    accentColor: "#CC5555",
+    icon: "🛡️",
+    requiredPlan: "PRO",
+  },
+  {
     id: 8,
-    title: "Get Paid",
-    subtitle: "Monetize what you built",
-    color: "#EAB308",
-    accentColor: "#CA9A06",
-    icon: "💰",
+    title: "Get Users",
+    subtitle: "Landing page, retention, growth",
+    color: "#9B6EC6",
+    accentColor: "#8A5DB5",
+    icon: "🚀",
     requiredPlan: "PRO",
   },
 ];
@@ -121,1214 +121,881 @@ export const LEVELS: Level[] = [
     buddyMood: "idle",
     icon: "⚙️",
   },
+
   // ═══════════════════════════════════════
-  // WORLD 1 — Hello, Vibe (L1-5) — FREE
-  // The basic loop: prompt → generate → push
+  // WORLD 1 — Idea to Internet (L1-4) — FREE
+  // PRD → first build → deploy → verify
   // ═══════════════════════════════════════
   {
     id: 1,
     worldId: 1,
-    title: "Your First Prompt",
-    subtitle: "Talk to AI, get a website",
-    type: "setup",
+    title: "What is Vibe Coding",
+    subtitle: "How AI builds software in 2026",
+    type: "theory",
     xp: 50,
     duration: "5 min",
-    teaches: "The basic vibe coding loop: describe what you want, AI builds it.",
+    teaches:
+      "Vibe coding = you describe, AI builds, you verify. Not coding — directing.",
     concepts: [
-      "Vibe coding = describing what you want to AI",
-      "A good prompt has: task, context, and format",
-      "AI writes code, you direct it",
+      "You're a director, AI is your team",
+      "AI has defaults and biases — learn to override them",
+      "PRD first, code second",
     ],
     mission:
-      "Use AI to generate an HTML page with a headline and button. Push to your repo as index.html.",
+      "Understand how vibe coding works and what makes a good AI prompt vs a bad one.",
     githubChecks: {
-      fileExists: ["index.html"],
-      fileContains: [{ path: "index.html", contains: ["<button", "<h1"] }],
-      minCommits: 1,
-      commitAfter: "level_start",
+      minCommits: 0,
     },
     aiReviewPrompt:
-      "Check if index.html is a valid HTML page with a visible heading and a button. It should look intentional, not a blank template.",
+      "Theory level — no code to review. Check conceptual understanding through quiz completion.",
     passingScore: 50,
     buddyMood: "idle",
-    icon: "💬",
+    icon: "💡",
   },
   {
     id: 2,
     worldId: 1,
-    title: "Make It Pretty",
-    subtitle: "Styling vocabulary for AI",
+    title: "Your Idea on Paper",
+    subtitle: "Write a PRD that AI understands",
     type: "practice",
     xp: 75,
     duration: "8 min",
-    teaches: "The right words to describe visual design to AI.",
+    teaches:
+      "How to write a Product Requirements Document that gives AI clear direction.",
     concepts: [
-      "Specific styling words → better AI output",
-      "Colors, layout, typography, effects",
-      "Be precise: hex codes > 'make it nice'",
+      "A PRD defines: problem, user, features, MVP scope",
+      "AI without a PRD builds generic garbage",
+      "A design brief controls how your app looks",
     ],
     mission:
-      "Add styling to your page — custom colors, fonts, centered layout. Should look like a real landing page.",
+      "Write a PRD for your SaaS idea and a design brief with your brand's look and feel.",
     githubChecks: {
-      fileExists: ["index.html"],
-      fileContains: [
-        { path: "index.html", contains: ["style", "color", "font"] },
-      ],
-      minCommits: 2,
-      commitAfter: "level_start",
+      minCommits: 0,
     },
     aiReviewPrompt:
-      "Review the CSS styling. Does it look intentional? Check for custom colors, fonts, centered layout. Should not look like unstyled HTML.",
-    passingScore: 55,
+      "Prompt-focused level — evaluate the quality of the student's PRD and design brief through the prompt blocks.",
+    passingScore: 50,
     buddyMood: "happy",
-    icon: "🎨",
+    icon: "📋",
   },
   {
     id: 3,
     worldId: 1,
-    title: "Pages & Clicks",
-    subtitle: "Multi-page sites with interactivity",
+    title: "First Deploy",
+    subtitle: "Live on the internet in 15 minutes",
     type: "practice",
     xp: 100,
-    duration: "10 min",
-    teaches: "How to describe multi-page sites and interactive behavior to AI.",
+    duration: "15 min",
+    teaches:
+      "Push code to GitHub → Vercel auto-deploys → your site is live. That's it.",
     concepts: [
-      "Multiple pages connected by navigation",
-      "Interactive = describe what triggers what",
-      "Tell AI exactly: 'when user clicks X, show Y'",
+      "Vercel deploys automatically from GitHub",
+      "Every push = your site updates",
+      "Your first live URL — share it with anyone",
     ],
     mission:
-      "Create 3+ HTML pages with shared navigation and at least one interactive feature (show/hide, counter, form validation).",
+      "Use your PRD to build a landing page, push to GitHub, deploy on Vercel. Get a live URL.",
     githubChecks: {
-      fileExists: ["index.html", "about.html"],
-      fileContains: [
-        { path: "index.html", contains: ["<a", "href", "<script"] },
-      ],
-      minCommits: 3,
+      fileExists: ["index.html"],
+      minCommits: 2,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for multiple pages with navigation, consistent styling, and at least one working JavaScript interaction.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "📄",
+      "Check that the student has a deployed landing page. Should have a headline, description, and at least one call-to-action. Should look intentional, not a blank template.",
+    passingScore: 50,
+    buddyMood: "happy",
+    icon: "🌐",
   },
   {
     id: 4,
     worldId: 1,
     title: "Trust But Verify",
-    subtitle: "Catching AI mistakes",
-    type: "practice",
-    xp: 75,
-    duration: "8 min",
-    teaches: "How to spot and fix common AI coding mistakes.",
+    subtitle: "Catch AI mistakes before users do",
+    type: "boss",
+    xp: 200,
+    duration: "12 min",
+    teaches:
+      "AI makes mistakes — broken links, dead buttons, no mobile. Always verify.",
     concepts: [
-      "AI makes mistakes — broken links, wrong styles, dead buttons",
-      "Always test what AI gives you",
-      "Describe the problem clearly to get a fix",
+      "Test every link, button, and form",
+      "Check mobile: open on your phone",
+      "DevTools Console shows hidden errors",
     ],
     mission:
-      "Review and fix your existing site — check all links work, buttons do what they should, and styling is consistent across pages.",
+      "Review and fix your landing page: all links work, buttons function, looks good on mobile. Boss level — ship a polished site.",
     githubChecks: {
       fileExists: ["index.html"],
       minCommits: 4,
+      minFiles: 2,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check the site for quality: all links work, interactive features function, styling is consistent, no obvious broken elements.",
-    passingScore: 50,
-    buddyMood: "think",
-    icon: "🔍",
+      "Boss level. Check for: working links, functional buttons/forms, responsive design, consistent styling, no obvious broken elements. Should look like a real landing page, not a demo.",
+    passingScore: 60,
+    buddyMood: "celebrate",
+    icon: "👑",
   },
+
+  // ═══════════════════════════════════════
+  // WORLD 2 — Your Toolkit (L5-7) — FREE
+  // Git, CLAUDE.md, code reading, DevTools
+  // ═══════════════════════════════════════
   {
     id: 5,
-    worldId: 1,
-    title: "Portfolio Boss",
-    subtitle: "Ship your first real site",
-    type: "boss",
-    xp: 200,
-    duration: "15 min",
-    teaches: "Combining everything into a polished portfolio.",
+    worldId: 2,
+    title: "Save Your Work",
+    subtitle: "Git saves and rollbacks",
+    type: "practice",
+    xp: 75,
+    duration: "8 min",
+    teaches:
+      "Git is save points for your code. When AI breaks everything — you can go back.",
     concepts: [
-      "Combine HTML, CSS, and JS into a real project",
-      "Portfolio = your proof of work",
-      "Polish matters — details make it professional",
+      "git commit = save point",
+      "git push = upload to GitHub",
+      "git revert = undo a mistake",
+      ".gitignore = files to never upload",
     ],
     mission:
-      "Build a complete portfolio: hero section, about, 2+ projects, contact form, responsive design. Your first real ship.",
+      "Make meaningful commits, break something on purpose, roll it back. Prove you can recover.",
     githubChecks: {
-      fileExists: ["index.html"],
-      fileContains: [
-        { path: "index.html", contains: ["<form", "project", "style"] },
-      ],
+      minCommits: 3,
+      fileExists: [".gitignore"],
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for multiple commits with descriptive messages. Should have .gitignore. Commit history should tell a story.",
+    passingScore: 50,
+    buddyMood: "think",
+    icon: "💾",
+  },
+  {
+    id: 6,
+    worldId: 2,
+    title: "Master Your AI",
+    subtitle: "CLAUDE.md, small steps, iteration",
+    type: "practice",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "CLAUDE.md is the most important file in your project. It tells AI how YOUR project works.",
+    concepts: [
+      "CLAUDE.md = persistent memory for AI",
+      "One small step > one giant prompt",
+      "Iteration: fix AI's output, don't regenerate",
+    ],
+    mission:
+      "Create a CLAUDE.md for your project. Use small-step prompting to add a feature. Iterate on the result.",
+    githubChecks: {
+      fileExists: ["CLAUDE.md"],
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for a CLAUDE.md file with project-specific rules (not a generic template). Should have multiple commits showing iterative development.",
+    passingScore: 50,
+    buddyMood: "happy",
+    icon: "🧠",
+  },
+  {
+    id: 7,
+    worldId: 2,
+    title: "Pro Setup",
+    subtitle: "Read code, use DevTools, ship clean",
+    type: "boss",
+    xp: 200,
+    duration: "12 min",
+    teaches:
+      "Reading code (not writing) and using DevTools are the two skills that separate amateurs from pros.",
+    concepts: [
+      "Scan code: find the return statement, understand structure",
+      "DevTools Console: see errors. Network: see requests. Elements: see layout",
+      "A clean project: CLAUDE.md, .gitignore, meaningful commits",
+    ],
+    mission:
+      "Boss level: spot and fix bugs in AI-generated code using DevTools. Ship a clean, organized project with CLAUDE.md and proper git history.",
+    githubChecks: {
+      fileExists: ["CLAUDE.md", ".gitignore"],
       minCommits: 5,
       minFiles: 3,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Boss level. Check for: hero section, about section, 2+ project cards, contact form, responsive design, polished CSS.",
+      "Boss level. Check for: CLAUDE.md with real project rules, .gitignore, clean file structure, meaningful commit messages. Code should be organized, not a single giant file.",
     passingScore: 60,
     buddyMood: "celebrate",
     icon: "👑",
   },
 
   // ═══════════════════════════════════════
-  // WORLD 2 — Real Tools (L6-10) — PRO
-  // Terminal, Node, npm, Git — demystified
+  // WORLD 3 — Give It Memory (L8-11) — PRO
+  // Supabase database, CRUD, states
   // ═══════════════════════════════════════
   {
-    id: 6,
-    worldId: 2,
-    title: "The Terminal",
-    subtitle: "Text chat with your computer",
+    id: 8,
+    worldId: 3,
+    title: "Your App Needs a Brain",
+    subtitle: "Databases and Supabase",
     type: "setup",
     xp: 50,
-    duration: "5 min",
-    teaches: "The terminal is just texting commands to your computer.",
+    duration: "8 min",
+    teaches:
+      "A database is permanent memory. Supabase gives you a free PostgreSQL database with a visual dashboard.",
     concepts: [
-      "Terminal = another way to talk to your computer",
-      "5 commands that matter: cd, ls, mkdir, touch, npm",
-      "You don't need to memorize — AI can help with commands",
+      "Without a database, data disappears on refresh",
+      "Supabase: free Postgres + visual editor + API",
+      "Data modeling: what entities, what connections",
     ],
     mission:
-      "Open the terminal, navigate to your project folder, and create a proper folder structure with subdirectories.",
+      "Create a Supabase project, design your data model, create tables using the dashboard.",
     githubChecks: {
       minCommits: 1,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check that the project has a logical folder structure with at least 2 subdirectories.",
-    passingScore: 50,
-    buddyMood: "idle",
-    icon: "💻",
-  },
-  {
-    id: 7,
-    worldId: 2,
-    title: "Projects Have Structure",
-    subtitle: "npm, packages, and dependencies",
-    type: "practice",
-    xp: 75,
-    duration: "8 min",
-    teaches: "How modern projects are organized with npm and package.json.",
-    concepts: [
-      "package.json = your project's ingredient list",
-      "npm install = get all the ingredients",
-      "node_modules = never upload (use .gitignore)",
-    ],
-    mission:
-      "Create a project with npm. Must have package.json with at least one dependency and .gitignore excluding node_modules.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: [".gitignore"],
-      fileContains: [
-        { path: ".gitignore", contains: ["node_modules"] },
-        { path: "package.json", contains: ["dependencies"] },
-      ],
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for valid package.json with a dependency, .gitignore with node_modules. Proper project structure.",
-    passingScore: 50,
-    buddyMood: "think",
-    icon: "📦",
-  },
-  {
-    id: 8,
-    worldId: 2,
-    title: "Save Points",
-    subtitle: "Git and version control",
-    type: "practice",
-    xp: 75,
-    duration: "8 min",
-    teaches: "Git is save points for your code. GitHub is the cloud backup.",
-    concepts: [
-      "Git commit = saving your progress",
-      "GitHub = cloud storage for code",
-      "You can always go back to any save point",
-    ],
-    mission:
-      "Make at least 3 meaningful commits with clear messages. Your commit history should tell the story of what you built.",
-    githubChecks: {
-      minCommits: 3,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check the commit history. Are there 3+ commits with descriptive messages? Do they tell a coherent story of progress?",
-    passingScore: 50,
-    buddyMood: "happy",
-    icon: "💾",
-  },
-  {
-    id: 9,
-    worldId: 2,
-    title: "The Full Workflow",
-    subtitle: "IDE → Terminal → Git → Ship",
-    type: "practice",
-    xp: 75,
-    duration: "8 min",
-    teaches: "The complete development workflow professionals use.",
-    concepts: [
-      "IDE + Terminal + AI = your cockpit",
-      "The loop: prompt AI → paste → test → commit → push",
-      "Practice the workflow, not the code",
-    ],
-    mission:
-      "Create a project from scratch using the full workflow: initialize with npm, add structure, make multiple commits with clear messages.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: [".gitignore"],
-      minCommits: 3,
-      minFiles: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for: proper npm project, clean file structure, .gitignore, meaningful commit history with 3+ commits.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "🔄",
-  },
-  {
-    id: 10,
-    worldId: 2,
-    title: "Setup Boss",
-    subtitle: "From zero to project",
-    type: "boss",
-    xp: 200,
-    duration: "12 min",
-    teaches: "Setting up a complete, professional project from scratch.",
-    concepts: [
-      "Professional projects have: npm, git, structure, README",
-      "The setup is the foundation for everything",
-      "AI can scaffold the whole thing if you ask right",
-    ],
-    mission:
-      "Set up a complete project from scratch: npm init, proper dependencies, .gitignore, organized folder structure, README, and at least 5 well-committed files.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: [".gitignore", "README.md"],
-      minCommits: 5,
-      minFiles: 8,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Boss level. Check for: complete npm setup, clean file structure, .gitignore, README with project description, 5+ meaningful commits.",
-    passingScore: 60,
-    buddyMood: "celebrate",
-    icon: "👑",
-  },
-
-  // ═══════════════════════════════════════
-  // WORLD 3 — Components (L11-15) — PRO
-  // React as LEGO blocks
-  // ═══════════════════════════════════════
-  {
-    id: 11,
-    worldId: 3,
-    title: "Building Blocks",
-    subtitle: "Components are LEGO for UI",
-    type: "setup",
-    xp: 75,
-    duration: "8 min",
-    teaches: "Components are reusable building blocks that make up your UI.",
-    concepts: [
-      "Components = LEGO blocks for your interface",
-      "React = the most popular component system",
-      "Tell AI what blocks you need, it builds them",
-    ],
-    mission:
-      "Create a React app with at least 3 custom components. Each component should do one thing well.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["react"] },
-      ],
-      minFiles: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for at least 3 custom React components, proper imports, clean structure. Components should be in separate files.",
-    passingScore: 55,
-    buddyMood: "idle",
-    icon: "🧩",
-  },
-  {
-    id: 12,
-    worldId: 3,
-    title: "Things That Change",
-    subtitle: "State and events in React",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "State tracks what changes, events trigger those changes.",
-    concepts: [
-      "State = things that change (counter, toggle, form input)",
-      "Events = user actions that cause changes",
-      "Describe triggers and results to AI",
-    ],
-    mission:
-      "Build a React app with interactive components — at least one counter/toggle and one form that does something when submitted.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["react"] },
-      ],
-      minFiles: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for React state (useState), event handlers, and actual interactivity. Should have a counter/toggle AND a form.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "⚡",
-  },
-  {
-    id: 13,
-    worldId: 3,
-    title: "Modern Styling",
-    subtitle: "Tailwind CSS — style with words",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "Tailwind lets you style by adding class names — no CSS files needed.",
-    concepts: [
-      "Tailwind = styling language in your HTML",
-      "Responsive = one app, every screen size",
-      "AI writes better UI with Tailwind",
-    ],
-    mission:
-      "Style your React app with Tailwind CSS. Responsive layout that works on mobile and desktop. No custom CSS files.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["tailwind"] },
-      ],
-      minCommits: 3,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for Tailwind usage across components. Look for responsive utilities (sm:, md:, lg:), consistent spacing, polished look.",
-    passingScore: 55,
-    buddyMood: "happy",
-    icon: "🌊",
-  },
-  {
-    id: 14,
-    worldId: 3,
-    title: "AI Makes Mistakes",
-    subtitle: "Spotting and fixing React bugs",
-    type: "practice",
-    xp: 75,
-    duration: "8 min",
-    teaches: "How to spot common mistakes AI makes in React code.",
-    concepts: [
-      "AI duplicates code instead of making components",
-      "AI forgets to handle loading and errors",
-      "The fix loop: spot issue → describe to AI → verify",
-    ],
-    mission:
-      "Review your app code, find at least 2 issues (duplicated code, missing error handling, etc.), and fix them. Push the improved version.",
-    githubChecks: {
-      minCommits: 3,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check if the code is well-organized: no major duplication, proper error handling, clean component structure.",
-    passingScore: 50,
-    buddyMood: "think",
-    icon: "🐛",
-  },
-  {
-    id: 15,
-    worldId: 3,
-    title: "App Boss",
-    subtitle: "Ship a polished React app",
-    type: "boss",
-    xp: 250,
-    duration: "15 min",
-    teaches: "Building a complete, polished React application.",
-    concepts: [
-      "Components + state + Tailwind = real app",
-      "Polish: hover effects, transitions, empty states",
-      "Ship something you'd show to others",
-    ],
-    mission:
-      "Build a polished React + Tailwind app: 3+ pages/views, interactive components, responsive design, consistent styling. Think: recipe app, task list, weather dashboard.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["react", "tailwind"] },
-      ],
-      minFiles: 10,
-      minCommits: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Boss level. Check for: 3+ views, interactive components with state, Tailwind styling, responsive design, polished UI with hover states.",
-    passingScore: 60,
-    buddyMood: "celebrate",
-    icon: "👑",
-  },
-
-  // ═══════════════════════════════════════
-  // WORLD 4 — Level Up (L16-20) — PRO
-  // Deeper patterns + TypeScript
-  // ═══════════════════════════════════════
-  {
-    id: 16,
-    worldId: 4,
-    title: "Multiple Pages",
-    subtitle: "Routing and navigation",
-    type: "setup",
-    xp: 75,
-    duration: "8 min",
-    teaches: "How apps show different content based on the URL.",
-    concepts: [
-      "Routing = URL decides what user sees",
-      "Navigation patterns: sidebar, tabs, top bar",
-      "Tell AI the URL structure you want",
-    ],
-    mission:
-      "Add routing to your React app. At least 4 pages with navigation, active link styling, and a 404 page.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["react-router"] },
-      ],
-      minFiles: 8,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for routing with 4+ pages, navigation component, active link styling, 404 handling.",
-    passingScore: 55,
-    buddyMood: "idle",
-    icon: "🗺️",
-  },
-  {
-    id: 17,
-    worldId: 4,
-    title: "Talking to the Internet",
-    subtitle: "APIs and data fetching",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "How your app gets data from other services.",
-    concepts: [
-      "APIs = your app asking another computer for data",
-      "Every data request has 3 states: loading, success, error",
-      "Always tell AI to handle all 3 states",
-    ],
-    mission:
-      "Build an app that fetches data from a public API and displays it. Must show loading state, error state, and the data.",
-    githubChecks: {
-      hasPackageJson: true,
-      minFiles: 6,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for API data fetching with all 3 states: loading indicator, error handling, and data display. Data should come from a real API.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "🌐",
-  },
-  {
-    id: 18,
-    worldId: 4,
-    title: "TypeScript = Better Prompts",
-    subtitle: "Types help AI write better code",
-    type: "practice",
-    xp: 75,
-    duration: "8 min",
-    teaches: "TypeScript adds labels to your code so AI makes fewer mistakes.",
-    concepts: [
-      "Types = labels that help AI understand your data",
-      ".tsx = same React, just with safety labels",
-      "You don't write TypeScript — AI does. You just say 'use TypeScript'",
-    ],
-    mission:
-      "Convert your app to TypeScript (.tsx files). All components should have typed props. AI does the conversion — you verify.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["typescript"] },
-      ],
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for TypeScript usage: .tsx files, typed props/interfaces, proper type annotations. Should compile without errors.",
-    passingScore: 55,
-    buddyMood: "happy",
-    icon: "🏷️",
-  },
-  {
-    id: 19,
-    worldId: 4,
-    title: "Smart Prompting",
-    subtitle: "Breaking down big tasks",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "How to break complex apps into step-by-step AI prompts.",
-    concepts: [
-      "Don't ask AI to build everything at once",
-      "Step-by-step prompts give better results",
-      "Each step: describe → generate → verify → next",
-    ],
-    mission:
-      "Build a medium-complexity app by breaking it into 4+ steps. Each step should be a separate commit showing incremental progress.",
-    githubChecks: {
-      hasPackageJson: true,
-      minCommits: 4,
-      minFiles: 8,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check commit history for incremental, step-by-step development. The app should show clear progression from simple to complex.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "🧠",
-  },
-  {
-    id: 20,
-    worldId: 4,
-    title: "Dashboard Boss",
-    subtitle: "Ship a complex web app",
-    type: "boss",
-    xp: 300,
-    duration: "15 min",
-    teaches: "Building a complex, multi-view application.",
-    concepts: [
-      "Dashboard = sidebar + cards + tables + charts",
-      "Complex apps need: routing, data, TypeScript",
-      "Polish makes it feel professional",
-    ],
-    mission:
-      "Build a dashboard app: sidebar navigation, 4+ pages, stat cards, data table, responsive design, TypeScript. Think: admin panel or analytics dashboard.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["react", "tailwind", "typescript"] },
-      ],
-      minFiles: 12,
-      minCommits: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Boss level. Check for: sidebar nav, 4+ pages, stat cards, data table/list, responsive Tailwind, TypeScript, hover states, transitions.",
-    passingScore: 60,
-    buddyMood: "celebrate",
-    icon: "👑",
-  },
-
-  // ═══════════════════════════════════════
-  // WORLD 5 — Next Level (L21-25) — PRO
-  // Next.js framework
-  // ═══════════════════════════════════════
-  {
-    id: 21,
-    worldId: 5,
-    title: "Why Frameworks?",
-    subtitle: "React alone isn't enough",
-    type: "setup",
-    xp: 75,
-    duration: "8 min",
-    teaches: "Why Next.js exists and what problems it solves.",
-    concepts: [
-      "React alone: slow first load, invisible to Google, no backend",
-      "Next.js = React + speed + SEO + backend",
-      "Tell AI: 'use Next.js with App Router'",
-    ],
-    mission:
-      "Create a Next.js project with at least 3 pages using the App Router. Explore the folder structure.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileContains: [
-        { path: "package.json", contains: ["next"] },
-      ],
-      fileExists: ["src/app/layout.tsx"],
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for proper Next.js App Router structure: layout.tsx, 3+ page.tsx files in route folders.",
-    passingScore: 50,
-    buddyMood: "idle",
-    icon: "🚀",
-  },
-  {
-    id: 22,
-    worldId: 5,
-    title: "Pages from Files",
-    subtitle: "File-based routing and layouts",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "In Next.js, creating a file automatically creates a page.",
-    concepts: [
-      "File = page (app/about/page.tsx → /about)",
-      "Layouts wrap pages (shared nav, footer)",
-      "No routing setup needed — folders ARE the URLs",
-    ],
-    mission:
-      "Build a Next.js app with 4+ pages, shared layout with navigation, and consistent styling across all pages.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: ["src/app/layout.tsx"],
-      minFiles: 8,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for 4+ pages using file-based routing, shared layout.tsx with navigation, consistent Tailwind styling.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "📁",
-  },
-  {
-    id: 23,
-    worldId: 5,
-    title: "Server & Client",
-    subtitle: "Two types of components",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "Server components are fast, client components are interactive.",
-    concepts: [
-      "Server components = pre-cooked, fast, can access database",
-      "Client components = interactive, run in browser",
-      "loading.tsx and error.tsx handle waiting and failures",
-    ],
-    mission:
-      "Add loading.tsx and error.tsx to your Next.js app. Have at least one client component with 'use client' and interactivity.",
-    githubChecks: {
-      hasPackageJson: true,
-      minFiles: 10,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for: loading.tsx, error.tsx, proper 'use client' usage, mix of server and client components.",
-    passingScore: 55,
-    buddyMood: "happy",
-    icon: "⚙️",
-  },
-  {
-    id: 24,
-    worldId: 5,
-    title: "App Architecture",
-    subtitle: "How real apps are organized",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "Organizing code by feature, not file type.",
-    concepts: [
-      "Organize by feature, not by type",
-      "Good structure makes AI output more consistent",
-      "Describe your folder structure in prompts",
-    ],
-    mission:
-      "Reorganize your app with a clean architecture. Components, utilities, and pages should be well-organized. Add a README describing the structure.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: ["README.md"],
-      minFiles: 12,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for clean project structure: organized folders, separated concerns, README. Should be easy to understand at a glance.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "🏗️",
-  },
-  {
-    id: 25,
-    worldId: 5,
-    title: "Next.js Boss",
-    subtitle: "Ship a complete Next.js app",
-    type: "boss",
-    xp: 300,
-    duration: "15 min",
-    teaches: "Building a complete, well-architected Next.js application.",
-    concepts: [
-      "Next.js + TypeScript + Tailwind = modern stack",
-      "Layouts, loading, error handling = professional feel",
-      "Clean architecture = maintainable code",
-    ],
-    mission:
-      "Build a complete Next.js app: 5+ pages, shared layout, loading/error states, responsive Tailwind, TypeScript, clean architecture. Think: blog, portfolio, or product showcase.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: ["src/app/layout.tsx"],
-      fileContains: [
-        { path: "package.json", contains: ["next", "tailwind"] },
-      ],
-      minFiles: 15,
-      minCommits: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Boss level. Check for: 5+ pages, layout.tsx, loading/error states, Tailwind, TypeScript, responsive design, clean structure.",
-    passingScore: 60,
-    buddyMood: "celebrate",
-    icon: "👑",
-  },
-
-  // ═══════════════════════════════════════
-  // WORLD 6 — Full Stack (L26-30) — PRO
-  // Database, API, Auth
-  // ═══════════════════════════════════════
-  {
-    id: 26,
-    worldId: 6,
-    title: "Your App Needs Memory",
-    subtitle: "What databases do",
-    type: "setup",
-    xp: 75,
-    duration: "8 min",
-    teaches: "Databases give your app permanent memory.",
-    concepts: [
-      "Database = permanent memory (data survives refresh)",
-      "Think about data BEFORE coding: what entities? how connected?",
-      "Prisma = you describe data, it handles the database",
-    ],
-    mission:
-      "Add Prisma to your Next.js project. Define a schema with at least 2 models and proper fields.",
-    githubChecks: {
-      fileExists: ["prisma/schema.prisma"],
-      fileContains: [
-        { path: "prisma/schema.prisma", contains: ["model"] },
-        { path: "package.json", contains: ["prisma"] },
-      ],
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for Prisma schema with at least 2 models, proper field types, and meaningful structure.",
+      "Check that the project has Supabase configured (environment variables or config file referencing Supabase). Data model should make sense for the student's app idea.",
     passingScore: 50,
     buddyMood: "idle",
     icon: "🗄️",
   },
   {
-    id: 27,
-    worldId: 6,
-    title: "Connected Data",
-    subtitle: "Relations between models",
+    id: 9,
+    worldId: 3,
+    title: "The Only 4 Things",
+    subtitle: "Create, Read, Update, Delete",
     type: "practice",
     xp: 100,
-    duration: "10 min",
-    teaches: "How different types of data connect to each other.",
-    concepts: [
-      "Relations = how data connects (User HAS Posts)",
-      "One-to-many: user has many tasks",
-      "Describe relationships in your prompt",
-    ],
-    mission:
-      "Update your Prisma schema with at least one relation between models. User should have related data (posts, tasks, or items).",
-    githubChecks: {
-      fileContains: [
-        { path: "prisma/schema.prisma", contains: ["@relation"] },
-      ],
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for at least one proper relation in Prisma schema. Models should be connected meaningfully.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "🔗",
-  },
-  {
-    id: 28,
-    worldId: 6,
-    title: "The API Layer",
-    subtitle: "Frontend talks to database",
-    type: "practice",
-    xp: 125,
     duration: "12 min",
-    teaches: "API routes are the bridge between your UI and database.",
+    teaches:
+      "Every feature in every app is one of four things: Create, Read, Update, or Delete.",
     concepts: [
-      "API = waiter between app and database",
-      "CRUD = create, read, update, delete (the 4 things apps do)",
-      "Every API route: what method + what it does + what it returns",
+      "CRUD: the foundation of all software",
+      "Supabase client: insert, select, update, delete",
+      "Connect your UI to real data",
     ],
     mission:
-      "Create API routes for full CRUD on one model. GET (list), POST (create), PUT (update), DELETE. All connected to Prisma.",
-    githubChecks: {
-      fileContains: [
-        { path: "package.json", contains: ["next", "prisma"] },
-      ],
-      minFiles: 10,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for CRUD API routes with Prisma queries: GET list, POST create, PUT update, DELETE. Proper HTTP methods and responses.",
-    passingScore: 55,
-    buddyMood: "happy",
-    icon: "🔌",
-  },
-  {
-    id: 29,
-    worldId: 6,
-    title: "Who Are You?",
-    subtitle: "Authentication and login",
-    type: "practice",
-    xp: 150,
-    duration: "15 min",
-    teaches: "Auth protects user data and personalizes the experience.",
-    concepts: [
-      "Auth = bouncer checking who you are",
-      "OAuth = let Google/GitHub verify identity (safer)",
-      "Protected routes redirect anonymous users to login",
-    ],
-    mission:
-      "Add authentication: sign-in page, user profile display, sign-out, protected routes that require login.",
-    githubChecks: {
-      fileContains: [
-        { path: "package.json", contains: ["next-auth"] },
-      ],
-      minFiles: 12,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for auth setup: sign-in page, sign-out, session handling, protected routes, user profile display.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "🔐",
-  },
-  {
-    id: 30,
-    worldId: 6,
-    title: "Full Stack Boss",
-    subtitle: "Ship a complete SaaS",
-    type: "boss",
-    xp: 350,
-    duration: "20 min",
-    teaches: "Building a complete full-stack application.",
-    concepts: [
-      "Full stack = frontend + backend + database + auth",
-      "SaaS = software people use (and pay for)",
-      "The goal: user can sign in, create data, see their data",
-    ],
-    mission:
-      "Build a complete SaaS: auth, database with Prisma, CRUD API, 3+ pages, responsive UI. Users sign in, create/edit/delete items, see their data.",
-    githubChecks: {
-      hasPackageJson: true,
-      fileExists: ["prisma/schema.prisma", "src/app/layout.tsx"],
-      fileContains: [
-        { path: "package.json", contains: ["next", "prisma", "next-auth"] },
-      ],
-      minFiles: 15,
-      minCommits: 8,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Boss level. Check for: auth flow, Prisma schema with relations, CRUD API routes, 3+ pages, forms, responsive Tailwind, error handling.",
-    passingScore: 60,
-    buddyMood: "celebrate",
-    icon: "👑",
-  },
-
-  // ═══════════════════════════════════════
-  // WORLD 7 — Ship It (L31-35) — PRO
-  // Deploy, errors, SEO, analytics
-  // ═══════════════════════════════════════
-  {
-    id: 31,
-    worldId: 7,
-    title: "Going Live",
-    subtitle: "Deploy to the internet",
-    type: "setup",
-    xp: 100,
-    duration: "10 min",
-    teaches: "Deployment makes your app accessible to everyone.",
-    concepts: [
-      "Deployment = putting your app on the internet",
-      "Environment variables = secrets your app needs",
-      "NEVER put secrets in code — always in platform settings",
-    ],
-    mission:
-      "Deploy your app to Vercel or Railway. Add deployment config and .env.example listing required variables.",
-    githubChecks: {
-      hasDeploy: true,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for deployment config (vercel.json, railway.toml, or Dockerfile). Look for .env.example and proper env variable handling.",
-    passingScore: 50,
-    buddyMood: "idle",
-    icon: "🌐",
-  },
-  {
-    id: 32,
-    worldId: 7,
-    title: "When Things Break",
-    subtitle: "Error handling and debugging",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "Good apps handle errors gracefully instead of crashing.",
-    concepts: [
-      "Errors are normal — handle them, don't fear them",
-      "error.tsx, loading.tsx, not-found.tsx = safety nets",
-      "Describe errors clearly to AI: what happened, what you expected",
-    ],
-    mission:
-      "Add error handling: error.tsx, loading.tsx, not-found.tsx, try/catch in API routes. No more white screens.",
-    githubChecks: {
-      minFiles: 12,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for: error.tsx, loading.tsx, not-found.tsx, try/catch in API routes, user-friendly error messages.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "🛡️",
-  },
-  {
-    id: 33,
-    worldId: 7,
-    title: "Get Found & Shared",
-    subtitle: "SEO and analytics",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "SEO helps Google find you. Analytics tells you if anyone came.",
-    concepts: [
-      "SEO = how Google finds and shows your site",
-      "OG tags = how links look when shared on social media",
-      "Analytics = tracking what users actually do",
-    ],
-    mission:
-      "Add SEO (meta tags, OG tags, sitemap, robots.txt) and basic analytics tracking to your app.",
-    githubChecks: {
-      fileExists: ["public/robots.txt"],
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for: metadata exports, OG tags, sitemap, robots.txt, analytics setup, unique page titles.",
-    passingScore: 55,
-    buddyMood: "happy",
-    icon: "🔍",
-  },
-  {
-    id: 34,
-    worldId: 7,
-    title: "Polish",
-    subtitle: "The details that matter",
-    type: "practice",
-    xp: 100,
-    duration: "10 min",
-    teaches: "Small details make apps feel 50% more professional.",
-    concepts: [
-      "Loading skeletons, hover effects, smooth transitions",
-      "Empty states: what shows when there's no data yet",
-      "Mobile-first: test on a phone-sized screen",
-    ],
-    mission:
-      "Polish your app: add loading skeletons, hover effects, empty states, smooth transitions. Test on mobile.",
+      "Connect your app to Supabase. Users can create, view, edit, and delete data. Real data, not hardcoded.",
     githubChecks: {
       minCommits: 3,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for polish: loading skeletons or spinners, hover effects on clickable elements, empty states, mobile responsiveness, smooth transitions.",
-    passingScore: 55,
-    buddyMood: "happy",
-    icon: "✨",
-  },
-  {
-    id: 35,
-    worldId: 7,
-    title: "Launch Boss",
-    subtitle: "Production-ready app",
-    type: "boss",
-    xp: 400,
-    duration: "20 min",
-    teaches: "Preparing a product for real users.",
-    concepts: [
-      "Launch readiness: errors, SEO, mobile, performance",
-      "Test everything a real user would do",
-      "Would you share this URL publicly?",
-    ],
-    mission:
-      "Make your app launch-ready: deployed, error handling, SEO, analytics, mobile responsive, polished UI. The full package.",
-    githubChecks: {
-      hasDeploy: true,
-      minFiles: 20,
-      minCommits: 10,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Boss level. Full audit: deployment, error handling, loading states, SEO, mobile responsiveness, analytics, polish. Launch-ready?",
-    passingScore: 60,
-    buddyMood: "celebrate",
-    icon: "👑",
-  },
-
-  // ═══════════════════════════════════════
-  // WORLD 8 — Get Paid (L36-40) — PRO
-  // Payments, landing, retention
-  // ═══════════════════════════════════════
-  {
-    id: 36,
-    worldId: 8,
-    title: "Money Moves",
-    subtitle: "Accept payments online",
-    type: "setup",
-    xp: 125,
-    duration: "12 min",
-    teaches: "How online payments work — you never touch credit cards.",
-    concepts: [
-      "Payment providers (Stripe) handle the money",
-      "Webhooks = Stripe tells your app 'they paid'",
-      "Never store credit card data, never trust client-side",
-    ],
-    mission:
-      "Add payment integration: pricing page, checkout flow, webhook handler for payment events.",
-    githubChecks: {
-      minFiles: 15,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for: pricing page, checkout redirect, webhook handler for payment events, plan field in user model.",
-    passingScore: 55,
-    buddyMood: "idle",
-    icon: "💳",
-  },
-  {
-    id: 37,
-    worldId: 8,
-    title: "The Landing Page",
-    subtitle: "Convert visitors to users",
-    type: "practice",
-    xp: 125,
-    duration: "15 min",
-    teaches: "Landing pages have one job: convince visitors to act.",
-    concepts: [
-      "Hero → Problem → Solution → Features → Proof → Pricing → CTA",
-      "One clear call-to-action, not five",
-      "Social proof builds trust (testimonials, numbers)",
-    ],
-    mission:
-      "Build a conversion-optimized landing page: hero, problem/solution, features, social proof, pricing, FAQ, clear CTAs.",
-    githubChecks: {
-      minCommits: 3,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Review for conversion: hero with value prop, problem/solution, features, social proof, pricing, FAQ, CTAs. Should feel real.",
-    passingScore: 55,
-    buddyMood: "think",
-    icon: "🎯",
-  },
-  {
-    id: 38,
-    worldId: 8,
-    title: "Keep Them Coming Back",
-    subtitle: "Retention and engagement",
-    type: "practice",
-    xp: 125,
-    duration: "15 min",
-    teaches: "Getting users to sign up is half the battle — keeping them is the other half.",
-    concepts: [
-      "Onboarding = guide new users to their 'aha moment'",
-      "Engagement hooks: emails, notifications, streaks",
-      "Gamification: points, progress bars, milestones",
-    ],
-    mission:
-      "Add retention features: onboarding flow for new users, email notifications, and at least one gamification element (streaks, progress, or badges).",
-    githubChecks: {
-      minFiles: 18,
-      minCommits: 5,
-      commitAfter: "level_start",
-    },
-    aiReviewPrompt:
-      "Check for: onboarding flow, email/notification triggers, gamification element. Integrated into app flow, not afterthoughts.",
+      "Check for Supabase integration with actual CRUD operations. Data should not be hardcoded. App should read from and write to the database.",
     passingScore: 55,
     buddyMood: "happy",
     icon: "🔄",
   },
   {
-    id: 39,
-    worldId: 8,
-    title: "The Complete Product",
-    subtitle: "From project to product",
+    id: 10,
+    worldId: 3,
+    title: "Handle Everything",
+    subtitle: "Loading, errors, and empty states",
     type: "practice",
-    xp: 150,
-    duration: "15 min",
-    teaches: "The gap between 'it works on my laptop' and 'strangers can use it'.",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "Always handle three states: loading (data coming), success (data here), error (something broke). Plus: what does a brand new user see?",
     concepts: [
-      "Projects work for you, products work for strangers",
-      "Edge cases: what if no data? what if slow connection?",
-      "Security: validate inputs, protect routes, verify webhooks",
+      "Loading → Success → Error: always handle ALL three",
+      "Empty state: first-time user sees helpful guidance, not a blank page",
+      "Never show a broken page — always show something useful",
     ],
     mission:
-      "Audit and fix your product: handle edge cases, validate inputs, secure webhook handlers, add empty states, test as a new user.",
+      "Add loading indicators, error messages, and empty states to all data-fetching features. A new user should know exactly what to do.",
     githubChecks: {
-      minCommits: 5,
+      minCommits: 2,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Check for product quality: input validation, secure webhooks, empty states, edge case handling. Would a stranger be able to use this?",
+      "Check for loading states (spinner/skeleton), error handling (user-friendly messages), and empty states (guidance for new users). No raw error dumps or blank screens.",
+    passingScore: 55,
+    buddyMood: "think",
+    icon: "⚡",
+  },
+  {
+    id: 11,
+    worldId: 3,
+    title: "Data Boss",
+    subtitle: "Ship your app with real data",
+    type: "boss",
+    xp: 250,
+    duration: "15 min",
+    teaches:
+      "A real app handles data professionally: validation, states, and clean code.",
+    concepts: [
+      "Validate input before saving",
+      "Every data feature needs loading/error/empty",
+      "Test: create, edit, delete, refresh — does it all work?",
+    ],
+    mission:
+      "Boss level: app with Supabase CRUD, all states handled, input validated. Deploy and test the full data flow.",
+    githubChecks: {
+      minCommits: 5,
+      minFiles: 5,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Boss level. Check for: working CRUD operations, loading/error/empty states on all data features, input validation, Supabase integration. No hardcoded data. App should feel complete.",
+    passingScore: 60,
+    buddyMood: "celebrate",
+    icon: "👑",
+  },
+
+  // ═══════════════════════════════════════
+  // WORLD 4 — Lock the Door (L12-14) — PRO
+  // Auth, user-scoped data, secrets
+  // ═══════════════════════════════════════
+  {
+    id: 12,
+    worldId: 4,
+    title: "Authentication",
+    subtitle: "Sign up, sign in, protect routes",
+    type: "practice",
+    xp: 100,
+    duration: "12 min",
+    teaches:
+      "Auth = knowing who is who. Use Supabase Auth or NextAuth — never build your own password system.",
+    concepts: [
+      "Authentication: who are you? Authorization: what can you do?",
+      "OAuth: sign in with Google/GitHub (let them handle passwords)",
+      "Protected routes: redirect to login if not signed in",
+    ],
+    mission:
+      "Add authentication to your app. Sign up, sign in, sign out. Protected routes redirect to login.",
+    githubChecks: {
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for authentication implementation (Supabase Auth, NextAuth, or similar). Should have: sign up, sign in, sign out, and at least one protected route.",
+    passingScore: 55,
+    buddyMood: "think",
+    icon: "🔑",
+  },
+  {
+    id: 13,
+    worldId: 4,
+    title: "Your Data, Their Data",
+    subtitle: "User isolation and secrets",
+    type: "practice",
+    xp: 100,
+    duration: "12 min",
+    teaches:
+      "Each user sees only their data. Secrets (API keys, DB passwords) NEVER go to GitHub.",
+    concepts: [
+      "User-scoped data: filter by userId in every query",
+      ".env.local = secrets on your machine",
+      ".env.example = template for others (no real values)",
+      "Vercel env vars = secrets in production",
+    ],
+    mission:
+      "Make all data user-scoped. Set up .env.local and .env.example. Verify: user A can't see user B's data.",
+    githubChecks: {
+      fileExists: [".env.example", ".gitignore"],
+      fileContains: [
+        { path: ".gitignore", contains: [".env"] },
+      ],
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for user-scoped data (queries filter by user ID). Must have .env.example (no real secrets). .gitignore must exclude .env files. No API keys or secrets in committed code.",
     passingScore: 55,
     buddyMood: "think",
     icon: "🔒",
   },
   {
-    id: 40,
-    worldId: 8,
-    title: "Graduate",
-    subtitle: "Your app is live and earning",
+    id: 14,
+    worldId: 4,
+    title: "Auth Boss",
+    subtitle: "Secure multi-user app",
     type: "boss",
-    xp: 500,
+    xp: 300,
     duration: "15 min",
-    teaches: "You built a real product. Ship it, share it, earn from it.",
+    teaches:
+      "A real SaaS: multiple users, isolated data, no secrets exposed.",
     concepts: [
-      "Ship > perfect — launch before you're ready",
-      "Your first revenue proves the model works",
-      "You just learned to build anything with AI",
+      "Every API route checks: is the user authenticated?",
+      "Every data query filters: is this the user's data?",
+      "Security audit: no secrets in code, no unprotected routes",
     ],
     mission:
-      "The final mission: live app, accepting payments, complete user journey from landing to paid feature. Deploy, share, start getting users. This is graduation.",
+      "Boss level: multi-user app with auth, user-scoped data, .env.example, no exposed secrets. Deploy and test with 2 accounts.",
     githubChecks: {
-      hasDeploy: true,
-      minFiles: 25,
-      minCommits: 15,
+      fileExists: [".env.example", ".gitignore"],
+      minCommits: 5,
+      minFiles: 8,
       commitAfter: "level_start",
     },
     aiReviewPrompt:
-      "Final boss. Full product audit: deployment, payments, complete user journey (landing → sign up → use → pay), polished UI, error handling, SEO, emails. Would this earn money?",
+      "Boss level. Check for: working auth (sign up/in/out), protected routes, user-scoped data, .env.example, .gitignore with .env. No secrets in code. Multiple users should see different data.",
+    passingScore: 60,
+    buddyMood: "celebrate",
+    icon: "👑",
+  },
+
+  // ═══════════════════════════════════════
+  // WORLD 5 — Take Money (L15-18) — PRO
+  // Stripe, pricing, webhooks, gating
+  // ═══════════════════════════════════════
+  {
+    id: 15,
+    worldId: 5,
+    title: "How Payments Work",
+    subtitle: "Stripe and pricing models",
+    type: "setup",
+    xp: 50,
+    duration: "8 min",
+    teaches:
+      "Stripe handles everything: cards, subscriptions, invoices. You never touch payment data.",
+    concepts: [
+      "Stripe Checkout: redirect user → Stripe handles payment → webhook tells you",
+      "Pricing: freemium (start free), subscription (recurring), one-time",
+      "Test mode: use fake cards to test without real money",
+    ],
+    mission:
+      "Create a Stripe account, get test API keys, understand the payment flow.",
+    githubChecks: {
+      minCommits: 1,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Setup level — check that the project references Stripe (env vars or config). Student should understand the payment flow.",
+    passingScore: 50,
+    buddyMood: "idle",
+    icon: "💳",
+  },
+  {
+    id: 16,
+    worldId: 5,
+    title: "Pricing & Checkout",
+    subtitle: "Plans page and Stripe integration",
+    type: "practice",
+    xp: 100,
+    duration: "12 min",
+    teaches:
+      "Build a pricing page with plans. When user clicks 'Buy', redirect to Stripe Checkout.",
+    concepts: [
+      "Pricing page: show plans clearly with one obvious CTA per plan",
+      "Stripe Checkout Session: create on your server, redirect user",
+      "Success/cancel URLs: where user goes after payment",
+    ],
+    mission:
+      "Build a pricing page with at least 2 plans. 'Buy' button creates a Stripe Checkout session and redirects.",
+    githubChecks: {
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for a pricing page with multiple plans and Stripe Checkout integration. Button should create a checkout session. Should have success and cancel redirect URLs.",
+    passingScore: 55,
+    buddyMood: "happy",
+    icon: "🏷️",
+  },
+  {
+    id: 17,
+    worldId: 5,
+    title: "Webhooks & Gating",
+    subtitle: "Stripe tells you who paid",
+    type: "practice",
+    xp: 100,
+    duration: "12 min",
+    teaches:
+      "A webhook is Stripe calling YOUR app to say 'they paid.' Feature gating: Free vs Pro in your code.",
+    concepts: [
+      "Webhook: Stripe POSTs to your endpoint when something happens",
+      "Always verify webhook signatures (prevent fake requests)",
+      "Feature gating: check plan in API, not just in UI",
+    ],
+    mission:
+      "Handle Stripe webhooks: update user plan in database. Gate features: Free users see upgrade prompt, Pro users see full features.",
+    githubChecks: {
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for webhook endpoint handling Stripe events. User plan should update in the database. Feature gating should check server-side, not just UI. Webhook signature verification is a plus.",
+    passingScore: 55,
+    buddyMood: "think",
+    icon: "🪝",
+  },
+  {
+    id: 18,
+    worldId: 5,
+    title: "Money Boss",
+    subtitle: "Full payment flow end-to-end",
+    type: "boss",
+    xp: 300,
+    duration: "15 min",
+    teaches:
+      "A real SaaS takes money: pricing → checkout → webhook → database → gated features.",
+    concepts: [
+      "Test the full flow with Stripe test cards",
+      "Webhook must verify signatures",
+      "Feature gating must be server-side (not just hiding buttons)",
+    ],
+    mission:
+      "Boss level: complete Stripe integration. Pricing page, checkout, webhooks, feature gating. Test with Stripe test cards end-to-end.",
+    githubChecks: {
+      minCommits: 5,
+      minFiles: 8,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Boss level. Check for: pricing page, Stripe Checkout, webhook handler, database plan update, feature gating (server-side). Full payment flow should work in test mode.",
+    passingScore: 60,
+    buddyMood: "celebrate",
+    icon: "👑",
+  },
+
+  // ═══════════════════════════════════════
+  // WORLD 6 — Ship & Polish (L19-22) — PRO
+  // SEO, domain, analytics, email, polish
+  // ═══════════════════════════════════════
+  {
+    id: 19,
+    worldId: 6,
+    title: "Get Found",
+    subtitle: "SEO and your own domain",
+    type: "practice",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "SEO makes Google find you. A custom domain makes you look real. OG tags make your links look good when shared.",
+    concepts: [
+      "Title + description = what Google shows",
+      "OG tags = what Twitter/LinkedIn show when you share a link",
+      "Custom domain: buy on Namecheap, connect to Vercel",
+    ],
+    mission:
+      "Add meta tags, OG tags, sitemap.xml, robots.txt. Connect a custom domain (or prepare the config).",
+    githubChecks: {
+      minCommits: 2,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for: meta title and description, OG tags (og:title, og:description, og:image), sitemap.xml, robots.txt. Domain setup is optional but should be referenced.",
+    passingScore: 50,
+    buddyMood: "happy",
+    icon: "🔍",
+  },
+  {
+    id: 20,
+    worldId: 6,
+    title: "Know Your Users",
+    subtitle: "Analytics and email",
+    type: "practice",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "PostHog tells you what users do. Resend sends them emails. Both are free to start.",
+    concepts: [
+      "PostHog: pageviews, events, funnels — free and privacy-friendly",
+      "Resend: transactional emails (welcome, receipt, password reset)",
+      "Track what matters: sign ups, key actions, payments",
+    ],
+    mission:
+      "Add PostHog analytics (track page views + key events). Add Resend for at least one email (welcome or receipt).",
+    githubChecks: {
+      minCommits: 2,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for analytics integration (PostHog, Plausible, or similar) with at least basic event tracking. Email setup (Resend or similar) with at least one transactional email template.",
+    passingScore: 50,
+    buddyMood: "happy",
+    icon: "📊",
+  },
+  {
+    id: 21,
+    worldId: 6,
+    title: "Polish the Details",
+    subtitle: "The 5% that makes 50% difference",
+    type: "practice",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "Loading skeletons, hover effects, smooth transitions, empty states — small touches that make your app feel professional.",
+    concepts: [
+      "Loading skeleton > blank screen",
+      "Hover effects and transitions make it feel alive",
+      "Test on mobile (375px) and slow connections (3G)",
+    ],
+    mission:
+      "Add loading skeletons, hover effects, transitions. Test on mobile. Fix everything that looks broken or feels janky.",
+    githubChecks: {
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for polish: loading states (skeletons or spinners), hover/focus effects, smooth transitions, empty states. Mobile responsive. No broken layouts or janky interactions.",
+    passingScore: 55,
+    buddyMood: "think",
+    icon: "✨",
+  },
+  {
+    id: 22,
+    worldId: 6,
+    title: "Launch Boss",
+    subtitle: "Ready for real users",
+    type: "boss",
+    xp: 350,
+    duration: "15 min",
+    teaches:
+      "A launch-ready app: SEO, analytics, email, polished, no broken pages.",
+    concepts: [
+      "10-point launch checklist: mobile, loading, errors, SEO, analytics, 404, favicon, images",
+      "Test the full user journey: land → sign up → use → pay",
+      "Every page should look intentional",
+    ],
+    mission:
+      "Boss level: pass the 10-point launch readiness audit. Polished, deployed, SEO-ready, analytics tracking, email working.",
+    githubChecks: {
+      minCommits: 5,
+      minFiles: 10,
+      hasDeploy: true,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Boss level. Check for: SEO (meta, OG), analytics setup, email integration, loading/error/empty states, mobile responsive, no broken links, favicon, polished design. App should feel launch-ready.",
+    passingScore: 60,
+    buddyMood: "celebrate",
+    icon: "👑",
+  },
+
+  // ═══════════════════════════════════════
+  // WORLD 7 — Don't Get Hacked (L23-25) — PRO
+  // Security, .env, legal
+  // ═══════════════════════════════════════
+  {
+    id: 23,
+    worldId: 7,
+    title: "Top 5 Vibe Code Fails",
+    subtitle: "Security mistakes AI makes for you",
+    type: "practice",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "45% of AI-generated code has security flaws. Know the top 5 mistakes before they cost you.",
+    concepts: [
+      "Secrets in code = instant hack",
+      "No auth on API routes = anyone can access your data",
+      "No input validation = SQL injection, XSS attacks",
+      "Error messages that leak internal details",
+    ],
+    mission:
+      "Find and fix security vulnerabilities in AI-generated code. Verify your own app doesn't have these issues.",
+    githubChecks: {
+      minCommits: 2,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check that the student has addressed common security issues: no secrets in code, auth on API routes, input validation, safe error messages.",
+    passingScore: 55,
+    buddyMood: "think",
+    icon: "🚨",
+  },
+  {
+    id: 24,
+    worldId: 7,
+    title: "The Full Audit",
+    subtitle: "Security checklist and legal basics",
+    type: "practice",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "A 10-point security checklist. Plus: Stripe requires Terms of Service and Privacy Policy.",
+    concepts: [
+      "Security audit: systematic check of all attack surfaces",
+      "Rate limiting: don't let bots spam your API",
+      "Terms of Service + Privacy Policy: AI can draft them, you review",
+    ],
+    mission:
+      "Run the full security audit on your app. Add Terms of Service and Privacy Policy pages (AI generates drafts).",
+    githubChecks: {
+      minCommits: 2,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for security hardening: auth on all sensitive routes, no secrets in code, .env.example, input validation. Bonus: ToS and Privacy Policy pages.",
+    passingScore: 55,
+    buddyMood: "think",
+    icon: "📋",
+  },
+  {
+    id: 25,
+    worldId: 7,
+    title: "Security Boss",
+    subtitle: "Hardened and ready for production",
+    type: "boss",
+    xp: 300,
+    duration: "15 min",
+    teaches:
+      "A production app handles attacks gracefully. Auth bypass, data leaks, exposed APIs — close every hole.",
+    concepts: [
+      "Test like a hacker: try to access other users' data",
+      "Try to call API routes without auth",
+      "Check: can you find any secret in the committed code?",
+    ],
+    mission:
+      "Boss level: pass the 10-point security audit. Fix all vulnerabilities. Deploy a hardened app.",
+    githubChecks: {
+      fileExists: [".env.example", ".gitignore"],
+      minCommits: 5,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Boss level. Security audit: no secrets in committed code, auth on all API routes, user data isolation, input validation, safe error messages, .env.example, .gitignore with .env. ToS/Privacy pages are a plus.",
+    passingScore: 60,
+    buddyMood: "celebrate",
+    icon: "👑",
+  },
+
+  // ═══════════════════════════════════════
+  // WORLD 8 — Get Users (L26-29) — PRO
+  // Landing page, retention, graduation
+  // ═══════════════════════════════════════
+  {
+    id: 26,
+    worldId: 8,
+    title: "The Landing Page",
+    subtitle: "Sell your product in 10 seconds",
+    type: "practice",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "A landing page has 8 sections. One CTA. One message. Make them care in 10 seconds.",
+    concepts: [
+      "Hero: headline + subheadline + CTA. That's all that matters above the fold",
+      "Problem → Solution → Features → Proof → Pricing → FAQ → CTA",
+      "One CTA per section. Not 4 buttons competing for attention",
+    ],
+    mission:
+      "Build a conversion-optimized landing page. Hero, problem, solution, features, social proof, pricing, FAQ, final CTA.",
+    githubChecks: {
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for landing page with: clear hero (headline + CTA), problem/solution section, features, social proof or testimonials, pricing section, FAQ, and final CTA. Should have one clear action per section.",
+    passingScore: 55,
+    buddyMood: "happy",
+    icon: "📄",
+  },
+  {
+    id: 27,
+    worldId: 8,
+    title: "Keep Them Coming Back",
+    subtitle: "Onboarding, emails, retention",
+    type: "practice",
+    xp: 75,
+    duration: "10 min",
+    teaches:
+      "Users leave because of confusion, no quick value, and forgetting you exist. Fix all three.",
+    concepts: [
+      "Onboarding wizard: guide new users to their 'aha moment'",
+      "Email sequences: welcome → tips → re-engage",
+      "Engagement hooks: streaks, progress bars, notifications",
+    ],
+    mission:
+      "Add onboarding flow for new users. Set up at least one retention mechanism (email sequence, streak, or progress tracking).",
+    githubChecks: {
+      minCommits: 3,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Check for: onboarding flow (wizard, tour, or guided first-use), and at least one retention feature (email drip, streak system, progress bar, or notifications).",
+    passingScore: 55,
+    buddyMood: "happy",
+    icon: "🔄",
+  },
+  {
+    id: 28,
+    worldId: 8,
+    title: "What's Next",
+    subtitle: "Planning, costs, and growing",
+    type: "theory",
+    xp: 50,
+    duration: "8 min",
+    teaches:
+      "How to plan features, what running a SaaS costs, when to use a boilerplate, when to hire a dev.",
+    concepts: [
+      "Feature planning: Must have / Nice to have / Out of scope",
+      "Monthly cost: hosting $0-20, DB $0-25, domain $10-15/year, Stripe 2.9%",
+      "SaaS boilerplates (MakerKit, ShipFast) = skip months of setup",
+    ],
+    mission:
+      "Plan your next 3 features using the feature planning pattern. Calculate your monthly costs. Decide: keep building solo or hire help?",
+    githubChecks: {
+      minCommits: 0,
+    },
+    aiReviewPrompt:
+      "Theory level — evaluate understanding through quiz and pattern exercises.",
+    passingScore: 50,
+    buddyMood: "think",
+    icon: "🗺️",
+  },
+  {
+    id: 29,
+    worldId: 8,
+    title: "Graduate",
+    subtitle: "Ship your SaaS to the world",
+    type: "boss",
+    xp: 500,
+    duration: "20 min",
+    teaches:
+      "Final boss. Your SaaS is live, accepts payments, has real users (or is ready for them).",
+    concepts: [
+      "Full product audit: user journey, payments, errors, mobile, SEO, security",
+      "Share: Product Hunt, Twitter/X, Reddit, communities",
+      "You built a real product. Not a tutorial project — a business.",
+    ],
+    mission:
+      "Graduate: live SaaS with auth, database, payments, SEO, analytics, security. Complete the full product audit. Ship it.",
+    githubChecks: {
+      hasDeploy: true,
+      minCommits: 10,
+      minFiles: 15,
+      commitAfter: "level_start",
+    },
+    aiReviewPrompt:
+      "Final boss. Comprehensive audit: deployed live, auth working, database with CRUD, Stripe payments, SEO (meta/OG), analytics, error handling, mobile responsive, security (no secrets, auth on routes, user isolation). This should be a real, shippable product.",
     passingScore: 65,
     buddyMood: "celebrate",
     icon: "🎓",
   },
 ];
 
+// ═══════════════════════════════════════
+// Helper functions
+// ═══════════════════════════════════════
+
+export function getLevelById(id: number): Level | undefined {
+  return LEVELS.find((l) => l.id === id);
+}
+export const getLevel = getLevelById;
+
 export function getLevelsForWorld(worldId: number): Level[] {
   return LEVELS.filter((l) => l.worldId === worldId);
 }
 
-export function getWorld(worldId: number): World | undefined {
-  return WORLDS.find((w) => w.id === worldId);
+export function getWorldById(id: number): World | undefined {
+  return WORLDS.find((w) => w.id === id);
+}
+export const getWorld = getWorldById;
+
+export function getNextLevel(currentLevelId: number): Level | undefined {
+  const idx = LEVELS.findIndex((l) => l.id === currentLevelId);
+  return idx >= 0 && idx < LEVELS.length - 1 ? LEVELS[idx + 1] : undefined;
 }
 
-export function getLevel(levelId: number): Level | undefined {
-  const level = LEVELS.find((l) => l.id === levelId);
-  if (level) {
-    return { ...level, blocks: getBlocksForLevel(levelId) };
-  }
-  return undefined;
-}
-
-/**
- * Check whether a world is unlocked for a user.
- * - Worlds 1-2 are free.
- * - Worlds 3+ require PRO plan.
- * - Previous world must be fully completed.
- */
-export function isWorldUnlocked(
-  worldId: number,
-  completions: { levelId: number }[],
-  plan: string
-): boolean {
-  if (worldId === 1) return true;
-  if (plan !== "PRO") return false;
-  const prevWorldLevels = getLevelsForWorld(worldId - 1);
-  const completedIds = new Set(completions.map((c) => c.levelId));
-  return prevWorldLevels.every((l) => completedIds.has(l.id));
+export function getLevelProgress(levelId: number): {
+  totalBlocks: number;
+  totalXP: number;
+} {
+  const blocks = getBlocksForLevel(levelId);
+  return {
+    totalBlocks: blocks.length,
+    totalXP: blocks.reduce((sum, b) => sum + b.xp, 0),
+  };
 }
