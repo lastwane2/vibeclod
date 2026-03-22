@@ -144,51 +144,51 @@ function SocialProof() {
 
 function TechLogos() {
   return (
-    <div className="relative w-full h-[360px] sm:h-[440px] rounded-3xl bg-white overflow-hidden">
+    <div className="relative w-full h-[280px] sm:h-[440px] rounded-3xl bg-white overflow-hidden">
       {/* Claude — center, biggest */}
       <img
         src="/images/stack/claude.png"
         alt="Claude"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 object-contain"
-        style={{ width: "11rem", height: "11rem", animation: "float 6s ease-in-out infinite" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 object-contain w-[6rem] h-[6rem] sm:w-[11rem] sm:h-[11rem]"
+        style={{ animation: "float 6s ease-in-out infinite" }}
       />
 
       {/* Scattered tighter around center */}
       <img
         src="/images/stack/nextjs.png"
         alt="Next.js"
-        className="absolute object-contain"
-        style={{ top: "8%", left: "12%", width: "7rem", height: "7rem", animation: "float 7s ease-in-out infinite 0.3s" }}
+        className="absolute object-contain w-[3.5rem] h-[3.5rem] sm:w-[7rem] sm:h-[7rem] top-[8%] left-[8%] sm:left-[12%]"
+        style={{ animation: "float 7s ease-in-out infinite 0.3s" }}
       />
       <img
         src="/images/stack/react.webp"
         alt="React"
-        className="absolute object-contain"
-        style={{ top: "5%", right: "10%", width: "8rem", height: "8rem", animation: "float 5.5s ease-in-out infinite 1s" }}
+        className="absolute object-contain w-[4rem] h-[4rem] sm:w-[8rem] sm:h-[8rem] top-[5%] right-[6%] sm:right-[10%]"
+        style={{ animation: "float 5.5s ease-in-out infinite 1s" }}
       />
       <img
         src="/images/stack/tailwind.svg"
         alt="Tailwind"
-        className="absolute object-contain"
-        style={{ bottom: "20%", left: "6%", width: "7rem", height: "7rem", animation: "float 6.5s ease-in-out infinite 0.7s" }}
+        className="absolute object-contain w-[3.5rem] h-[3.5rem] sm:w-[7rem] sm:h-[7rem] bottom-[18%] left-[4%] sm:bottom-[20%] sm:left-[6%]"
+        style={{ animation: "float 6.5s ease-in-out infinite 0.7s" }}
       />
       <img
         src="/images/stack/cursor.png"
         alt="Cursor"
-        className="absolute object-contain"
-        style={{ top: "35%", right: "4%", width: "7rem", height: "7rem", animation: "float 5s ease-in-out infinite 1.5s" }}
+        className="absolute object-contain w-[3.5rem] h-[3.5rem] sm:w-[7rem] sm:h-[7rem] top-[38%] right-[2%] sm:top-[35%] sm:right-[4%]"
+        style={{ animation: "float 5s ease-in-out infinite 1.5s" }}
       />
       <img
         src="/images/stack/supabase.png"
         alt="Supabase"
-        className="absolute object-contain"
-        style={{ bottom: "6%", left: "22%", width: "7.5rem", height: "7.5rem", animation: "float 7.5s ease-in-out infinite 0.5s" }}
+        className="absolute object-contain w-[3.5rem] h-[3.5rem] sm:w-[7.5rem] sm:h-[7.5rem] bottom-[4%] left-[18%] sm:bottom-[6%] sm:left-[22%]"
+        style={{ animation: "float 7.5s ease-in-out infinite 0.5s" }}
       />
       <img
         src="/images/stack/vercel.png"
         alt="Vercel"
-        className="absolute object-contain"
-        style={{ bottom: "8%", right: "12%", width: "7rem", height: "7rem", animation: "float 6s ease-in-out infinite 2s" }}
+        className="absolute object-contain w-[3.5rem] h-[3.5rem] sm:w-[7rem] sm:h-[7rem] bottom-[6%] right-[8%] sm:bottom-[8%] sm:right-[12%]"
+        style={{ animation: "float 6s ease-in-out infinite 2s" }}
       />
     </div>
   );
