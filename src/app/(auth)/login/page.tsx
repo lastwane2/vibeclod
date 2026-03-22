@@ -25,7 +25,7 @@ export default function LoginPage() {
             <img src="/logo.svg" alt="vibeclod" className="h-12 w-12 mb-3 mx-auto shadow-md rounded-xl" />
             <h1 className="text-xl font-pixel text-[#2D2016]">vibeclod</h1>
             <p className="text-sm text-[#8B7355] mt-1">
-              Duolingo, but for vibe coding
+              Learn to ship software with AI
             </p>
           </div>
 

@@ -7,7 +7,6 @@ import { StatsBar } from "@/components/layout/StatsBar";
 import { RepoStatus } from "@/components/layout/RepoStatus";
 import { PathView } from "@/components/path/PathView";
 import { PixelCharacter } from "@/components/pixel-buddy/PixelCharacter";
-import { EarlyBirdBadge } from "@/components/ui/EarlyBirdBadge";
 import { WelcomeModal } from "@/components/onboarding/WelcomeModal";
 
 interface DashboardClientProps {
@@ -92,7 +91,7 @@ export function DashboardClient({
   const buddyMood =
     completedLevelIds.length === 0
       ? "idle"
-      : completedLevelIds.length >= 40
+      : completedLevelIds.length >= 23
         ? "celebrate"
         : streakDays >= 3
           ? "happy"
@@ -143,9 +142,6 @@ export function DashboardClient({
       {plan === "FREE" && (
         <div className="mx-auto max-w-sm px-3 sm:px-4 mt-6 sm:mt-8">
           <div className="rounded-2xl bg-gradient-to-br from-[#2D2016] to-[#4A3728] p-4 sm:p-5 text-center shadow-xl">
-            <div className="flex justify-center mb-3">
-              <EarlyBirdBadge />
-            </div>
             <p className="text-base sm:text-lg font-bold text-white mb-1">
               Unlock All 23 Levels
             </p>

@@ -96,7 +96,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
           </ol>
 
           <p style="font-size: 14px; color: #4A3728; line-height: 1.6; margin: 0;">
-            Worlds 1-2 are free — 10 levels to get you shipping. By Level 40, you'll have a live, paying product.
+            Worlds 0-1 are free — 6 levels to get you shipping. By Level 22, you'll have a live, paying product.
           </p>
 
           <div style="text-align: center;">
@@ -107,7 +107,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
         </div>
 
         <p style="${footerText}">
-          vibeclod — Duolingo, but for vibe coding
+          vibeclod — Learn to ship software with AI
         </p>
       </div>
     `,
@@ -169,7 +169,7 @@ export function levelCompleteEmail(
         </div>
 
         <p style="${footerText}">
-          vibeclod — Duolingo, but for vibe coding
+          vibeclod — Learn to ship software with AI
         </p>
       </div>
     `,
@@ -216,7 +216,7 @@ export function streakReminderEmail(
         </div>
 
         <p style="${footerText}">
-          vibeclod — Duolingo, but for vibe coding
+          vibeclod — Learn to ship software with AI
         </p>
       </div>
     `,

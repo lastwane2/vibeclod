@@ -105,14 +105,14 @@ export async function GET() {
               lineHeight: 1.6,
             }}
           >
-            Duolingo, but for vibe coding
+            Learn to ship software with AI
           </div>
 
           {/* Feature cards */}
           <div style={{ display: "flex", gap: 32 }}>
             {[
-              { num: "40", label: "Levels" },
-              { num: "8", label: "Worlds" },
+              { num: "23", label: "Levels" },
+              { num: "6", label: "Worlds" },
               { num: "$29", label: "Lifetime" },
             ].map((item) => (
               <div

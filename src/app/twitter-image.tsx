@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { readFileSync } from "fs";
 import { join } from "path";
-export const alt = "vibeclod — Duolingo, but for vibe coding";
+export const alt = "vibeclod — Learn to ship software with AI";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -57,7 +57,7 @@ export default async function Image() {
           vibeclod
         </div>
         <div style={{ fontFamily: '"Press Start 2P"', fontSize: 18, color: "rgba(255,255,255,0.7)", marginBottom: 40 }}>
-          Duolingo, but for vibe coding
+          Learn to ship software with AI
         </div>
         <div style={{ display: "flex", gap: 40 }}>
           {["6 Worlds", "23 Levels", "Real Code"].map((stat) => (

@@ -23,7 +23,7 @@ const pressStart = Press_Start_2P({
 export const metadata: Metadata = {
   metadataBase: new URL("https://vibeclod.com"),
   title: {
-    default: "vibeclod — Duolingo, but for vibe coding",
+    default: "vibeclod — Learn to ship software with AI",
     template: "%s | vibeclod",
   },
   description:
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     "learn to code with AI",
     "coding bootcamp",
     "build with AI",
-    "duolingo for coding",
+    "learn to code",
     "learn vibe coding",
     "AI coding course",
     "non-tech founder",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false },
   alternates: { canonical: "/" },
   openGraph: {
-    title: "vibeclod — Duolingo, but for vibe coding",
+    title: "vibeclod — Learn to ship software with AI",
     description:
       "23 hands-on levels. 6 worlds. AI-verified code reviews. Ship real products or don't level up.",
     url: "https://vibeclod.com",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "vibeclod — Duolingo, but for vibe coding",
+    title: "vibeclod — Learn to ship software with AI",
     description:
       "23 hands-on levels. 6 worlds. AI-verified code reviews. Ship real products or don't level up.",
     creator: "@lastwaneX",
@@ -108,12 +108,6 @@ const jsonLd = {
           description: "Pro Lifetime — all 23 levels, 6 worlds, unlimited AI reviews",
         },
       ],
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.9",
-        reviewCount: "127",
-        bestRating: "5",
-      },
     },
     {
       "@type": "Organization",
