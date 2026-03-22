@@ -60,7 +60,7 @@ export default async function Image() {
           Duolingo, but for vibe coding
         </div>
         <div style={{ display: "flex", gap: 40 }}>
-          {["9 Worlds", "30 Levels", "Real Code"].map((stat) => (
+          {["6 Worlds", "23 Levels", "Real Code"].map((stat) => (
             <div
               key={stat}
               style={{

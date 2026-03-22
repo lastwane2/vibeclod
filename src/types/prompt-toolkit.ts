@@ -22,12 +22,12 @@ export interface ToolkitChapter {
 }
 
 export const PROMPT_PATTERNS: PromptPattern[] = [
-  // ── Chapter 1: World 1 — Idea to Internet ──
+  // ── Chapter 1: World 0 — Start ──
   {
     id: "prd-pattern",
     name: "PRD Pattern",
     description: "Write a Product Requirements Document that AI understands",
-    worldId: 1,
+    worldId: 0,
     chapter: 1,
     template: `# [Product Name]
 
@@ -75,7 +75,7 @@ A team lead can see their team's focus time at a glance. Each member can run the
     id: "design-brief",
     name: "Design Brief Pattern",
     description: "Tell AI exactly how your app should look and feel",
-    worldId: 1,
+    worldId: 0,
     chapter: 1,
     template: `## Visual Style
 - Mood: [modern/playful/serious/minimal/bold]
@@ -124,7 +124,7 @@ A team lead can see their team's focus time at a glance. Each member can run the
     id: "basic-prompt",
     name: "Basic Prompt Pattern",
     description: "The foundation: task + context + format",
-    worldId: 1,
+    worldId: 0,
     chapter: 1,
     template: `[TASK]: What you want the AI to build
 [CONTEXT]: Background info, tech stack, constraints
@@ -138,12 +138,12 @@ Format: Single page with sections: hero (headline + CTA), problem, solution, 3 f
       "Every time you start a new prompt. This is your baseline structure — task, context, format.",
   },
 
-  // ── Chapter 2: World 2 — Your Toolkit ──
+  // ── Chapter 2: World 1 — Zero to Link ──
   {
     id: "claudemd-pattern",
     name: "CLAUDE.md Pattern",
     description: "Project rules that make AI remember your preferences",
-    worldId: 2,
+    worldId: 1,
     chapter: 2,
     template: `# Project Rules
 
@@ -194,7 +194,7 @@ Format: Single page with sections: hero (headline + CTA), problem, solution, 3 f
     id: "breaking-down-complexity",
     name: "Breaking Down Complexity",
     description: "Split big tasks into small, testable steps",
-    worldId: 2,
+    worldId: 1,
     chapter: 2,
     template: `I'm building [big thing]. Let's do it step by step.
 
@@ -220,7 +220,7 @@ Start with Step 1 only. I'll tell you when to proceed.`,
     id: "iteration-pattern",
     name: "Iteration Pattern",
     description: "Fix specific problems in AI output instead of regenerating",
-    worldId: 2,
+    worldId: 1,
     chapter: 2,
     template: `The output has this problem:
 [describe what's wrong — be specific]
@@ -242,12 +242,12 @@ Making the Pro card scale(1.05) with a border highlight and badge. Change the Pr
       "When AI's output is close but not right. Don't regenerate from scratch — iterate on what you have. Faster and better results.",
   },
 
-  // ── Chapter 3: World 3 — Give It Memory ──
+  // ── Chapter 3: World 2 — Real Data ──
   {
     id: "data-schema",
     name: "Data Schema Pattern",
     description: "Plan your database before writing code",
-    worldId: 3,
+    worldId: 2,
     chapter: 3,
     template: `Design a database for [app type]:
 
@@ -284,12 +284,12 @@ Rules:
       "Before touching any database code. Think about your data first, then build. Changes later are painful.",
   },
 
-  // ── Chapter 4: World 5 — Take Money ──
+  // ── Chapter 4: World 4 — Money ──
   {
     id: "payment-pattern",
     name: "Payment Pattern",
     description: "Integrate Stripe payments safely",
-    worldId: 5,
+    worldId: 4,
     chapter: 4,
     template: `Add Stripe to [app]:
 
@@ -337,12 +337,12 @@ Security:
       "When adding payments. Get the webhook handling right — it's the most common source of bugs.",
   },
 
-  // ── Chapter 5: World 6/7 — Ship & Secure ──
+  // ── Chapter 5: World 1 — Debugging ──
   {
     id: "error-fix",
     name: "Error Fix Pattern",
     description: "How to report errors to AI so it actually fixes them",
-    worldId: 6,
+    worldId: 1,
     chapter: 5,
     template: `I'm getting this error:
 
@@ -375,12 +375,12 @@ The tasks variable seems to be undefined on first render before the data loads.`
       "Every time you hit an error. Never just paste the error alone — AI needs context to help you.",
   },
 
-  // ── Chapter 6: World 8 — Get Users ──
+  // ── Chapter 6: World 5 — Launch ──
   {
     id: "landing-page",
     name: "Landing Page Pattern",
     description: "Structure a conversion-optimized page",
-    worldId: 8,
+    worldId: 5,
     chapter: 6,
     template: `Build a landing page for [product]:
 
@@ -417,7 +417,7 @@ Target audience: remote team leads at startups (5-20 people)`,
     id: "feature-planning",
     name: "Feature Planning Pattern",
     description: "Plan features before building them",
-    worldId: 8,
+    worldId: 5,
     chapter: 6,
     template: `Plan the [feature name] feature:
 
@@ -453,38 +453,38 @@ Technical:
 export const TOOLKIT_CHAPTERS: ToolkitChapter[] = [
   {
     id: 1,
-    worldId: 1,
+    worldId: 0,
     title: "The Basics",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 1),
   },
   {
     id: 2,
-    worldId: 2,
+    worldId: 1,
     title: "Directing AI",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 2),
   },
   {
     id: 3,
-    worldId: 3,
+    worldId: 2,
     title: "Data & Backend",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 3),
   },
   {
     id: 4,
-    worldId: 5,
+    worldId: 4,
     title: "Getting Paid",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 4),
   },
   {
     id: 5,
-    worldId: 6,
-    title: "Ship & Fix",
+    worldId: 1,
+    title: "Debugging",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 5),
   },
   {
     id: 6,
-    worldId: 8,
-    title: "Growth",
+    worldId: 5,
+    title: "Launch",
     patterns: PROMPT_PATTERNS.filter((p) => p.chapter === 6),
   },
 ];

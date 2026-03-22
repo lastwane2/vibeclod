@@ -242,7 +242,7 @@ export default function LandingPage() {
 
           <Reveal delay={200}>
             <p className="mx-auto max-w-lg text-base sm:text-lg text-white/40 leading-relaxed mb-10">
-              30 missions. 9 worlds. Push real code to GitHub.
+              23 missions. 6 worlds. Push real code to GitHub.
               <br className="hidden sm:block" />
               AI reviews every commit. Ship a real product or don&apos;t level
               up.
@@ -519,7 +519,7 @@ export default function LandingPage() {
         <Reveal>
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              9 worlds. One product.
+              6 worlds. One product.
             </h2>
             <p className="text-base sm:text-lg text-white/40">
               Each world builds on the last. By the end, you have a live, paying
@@ -602,7 +602,7 @@ export default function LandingPage() {
               </p>
               <ul className="space-y-3 text-sm text-white/60 mb-8 flex-1">
                 {[
-                  "Worlds 1–2 — 10 levels",
+                  "Worlds 0–1 — 6 levels",
                   "GitHub verification",
                   "AI code review (3/day)",
                   "Streak tracking",
@@ -652,7 +652,7 @@ export default function LandingPage() {
                 </p>
                 <ul className="space-y-3 text-sm text-white/70 mb-8 flex-1">
                   {[
-                    "All 30 levels — 9 worlds",
+                    "All 23 levels — 6 worlds",
                     "Unlimited AI reviews",
                     "Boss fights & challenges",
                     "Full Prompt Toolkit",

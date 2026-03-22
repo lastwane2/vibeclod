@@ -243,8 +243,8 @@ export function getBlockMinutes(block: BaseBlock): number {
 // ─── Scaffold helpers ──────────────────
 
 export function getScaffoldLevel(levelId: number): ScaffoldLevel {
-  if (levelId <= 10) return "full";
-  if (levelId <= 20) return "template";
-  if (levelId <= 30) return "hints";
+  if (levelId <= 5) return "full";
+  if (levelId <= 13) return "template";
+  if (levelId <= 22) return "hints";
   return "none";
 }

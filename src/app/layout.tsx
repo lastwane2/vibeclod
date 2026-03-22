@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | vibeclod",
   },
   description:
-    "Learn to build real software products with AI. 30 hands-on levels across 9 worlds. Real GitHub repos. AI-verified code. Ship or don't level up.",
+    "Learn to build real software products with AI. 23 hands-on levels across 6 worlds. Real GitHub repos. AI-verified code. Ship or don't level up.",
   keywords: [
     "vibe coding",
     "learn to code with AI",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "vibeclod — Duolingo, but for vibe coding",
     description:
-      "30 hands-on levels. 9 worlds. AI-verified code reviews. Ship real products or don't level up.",
+      "23 hands-on levels. 6 worlds. AI-verified code reviews. Ship real products or don't level up.",
     url: "https://vibeclod.com",
     siteName: "vibeclod",
     type: "website",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "vibeclod — Duolingo, but for vibe coding",
     description:
-      "30 hands-on levels. 9 worlds. AI-verified code reviews. Ship real products or don't level up.",
+      "23 hands-on levels. 6 worlds. AI-verified code reviews. Ship real products or don't level up.",
     creator: "@lastwaneX",
     site: "@lastwaneX",
   },
@@ -91,7 +91,7 @@ const jsonLd = {
       name: "vibeclod",
       url: "https://vibeclod.com",
       description:
-        "Learn to build real software products with AI. 30 hands-on levels across 9 worlds. Real GitHub repos. AI-verified code.",
+        "Learn to build real software products with AI. 23 hands-on levels across 6 worlds. Real GitHub repos. AI-verified code.",
       applicationCategory: "EducationalApplication",
       operatingSystem: "Web",
       offers: [
@@ -99,13 +99,13 @@ const jsonLd = {
           "@type": "Offer",
           price: "0",
           priceCurrency: "USD",
-          description: "Free — 10 levels across 2 worlds",
+          description: "Free — 6 levels across 2 worlds",
         },
         {
           "@type": "Offer",
           price: "29",
           priceCurrency: "USD",
-          description: "Pro Lifetime — all 30 levels, 9 worlds, unlimited AI reviews",
+          description: "Pro Lifetime — all 23 levels, 6 worlds, unlimited AI reviews",
         },
       ],
       aggregateRating: {
@@ -126,13 +126,13 @@ const jsonLd = {
       "@type": "Course",
       name: "Vibe Coding — From Zero to Shipping",
       description:
-        "Learn to build and ship real software products using AI tools. 30 hands-on levels, 9 worlds, from idea to payments.",
+        "Learn to build and ship real software products using AI tools. 23 hands-on levels, 6 worlds, from idea to payments.",
       provider: {
         "@type": "Organization",
         name: "vibeclod",
         url: "https://vibeclod.com",
       },
-      numberOfCredits: 30,
+      numberOfCredits: 23,
       hasCourseInstance: {
         "@type": "CourseInstance",
         courseMode: "online",

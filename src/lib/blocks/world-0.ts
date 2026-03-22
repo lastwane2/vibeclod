@@ -1,225 +1,205 @@
 import type { Block } from "@/types/blocks";
 
 // ═══════════════════════════════════════
-// World 0 — Setup (Level 0)
-// GitHub, Claude Code, repo connection
-// Must complete before World 1
+// WORLD 0 — Start (L0-L1)
+// Tools setup + idea/PRD
 // ═══════════════════════════════════════
 
 export const WORLD_0_BLOCKS: Block[] = [
-  // ─── Level 0: Get Ready (5 blocks) ───
+  // ─── Level 0: Your Tools ──────────────
   {
     id: "L0B1",
     levelId: 0,
     type: "theory",
-    title: "Your Toolkit",
+    title: "What You Need",
     xp: 5,
     required: true,
     order: 1,
-    content: `# Your Toolkit
+    estimatedMinutes: 2,
+    content: `# Three Tools. That's It.
 
-Before you build anything, you need three things. All free.
+You need three things to start building:
 
-## 1. GitHub Account
+**1. GitHub** — where your code lives online
+- Create an account at github.com (if you don't have one)
+- Think of it as Google Drive, but for code
 
-GitHub is where your code lives online. Every project you build in this course gets pushed to your GitHub — it becomes your portfolio.
+**2. AI coding tool** — the thing that actually writes code for you
+- **Claude Code** (terminal, most powerful, steeper learning curve)
+- **Cursor** (code editor, easier for beginners)
+- **Bolt.new / Lovable** (browser-based, easiest start)
 
-If you don't have an account: go to **github.com** and sign up. Use a real name — recruiters and clients will see this.
+Pick ONE. You can always switch later. All our prompts work with any of them.
 
-## 2. AI Coding Tool
+**3. Vercel** — where your site lives on the internet
+- Sign up at vercel.com using your GitHub account
+- Free tier is more than enough
 
-You need a tool where AI writes code for you. We recommend **Claude Code** — it runs in your terminal, writes files directly, and pushes to GitHub automatically.
-
-Other options that work: **Cursor**, **Windsurf**, **ChatGPT + copy/paste**. Any AI that can write code works. Claude Code is just the fastest because it edits your files directly.
-
-## 3. A Browser
-
-Chrome or any browser with DevTools (F12). You'll use this to test everything you build.
-
-That's it. **GitHub + AI tool + browser.** Let's set them up.
-
-> You'll create **Vercel** (hosting) and **Supabase** (database) accounts later when you need them — Level 3 and Level 8.`,
-    miniQuiz: [
-      {
-        question: "What three things do you need to start vibe coding?",
-        options: [
-          "Photoshop, a server, and a domain name",
-          "GitHub account, an AI coding tool, and a browser",
-          "A computer science degree, 3 monitors, and a mechanical keyboard",
-        ],
-        correctIndex: 1,
-      },
-    ],
+That's it. No other tools needed right now.`,
   },
   {
     id: "L0B2",
     levelId: 0,
     type: "experiment",
-    title: "Create Your GitHub Repository",
-    xp: 10,
+    title: "Set Up Everything",
+    xp: 15,
     required: true,
     order: 2,
-    description:
-      "Create the repository where all your vibeclod projects will live.",
+    estimatedMinutes: 5,
+    description: "Create accounts and connect your tools.",
     steps: [
       {
-        id: "L0B2S1",
+        id: "github",
         instruction:
-          "Go to **github.com**. If you don't have an account, click **Sign up** and create one. If you already have one, sign in.\n\n![GitHub signup](/images/setup/github-new-repo.png)",
+          "Create a GitHub account (or log in if you have one). Create a new repository — name it after your app idea, or just 'my-app' for now.",
         expectedOutcome:
-          "You're logged into GitHub and can see your dashboard.",
-        question: "Are you logged into GitHub?",
+          "You have a GitHub repo at github.com/yourname/your-repo",
       },
       {
-        id: "L0B2S2",
+        id: "ai-tool",
         instruction:
-          "Click the **+** button in the top-right corner → **New repository**.\n\nFill in:\n- **Repository name:** `vibeclod-projects` (or any name you like)\n- **Description:** \"My vibe coding projects\"\n- **Visibility:** Public (so vibeclod can verify your code)\n- Click **Create repository**\n\n![Create repo form](/images/setup/github-create-form.png)",
-        expectedOutcome:
-          "GitHub creates your repo and shows you the empty repository page.",
-        question: "What did you name your repository?",
+          "Install your AI coding tool. Claude Code: follow the official setup guide. Cursor: download from cursor.com. Bolt/Lovable: just open the site.",
+        expectedOutcome: "Your AI tool is installed and ready to use",
       },
       {
-        id: "L0B2S3",
+        id: "vercel",
         instruction:
-          "On the new repo page, you'll see a URL like `https://github.com/yourname/vibeclod-projects`. This is your repo's address.\n\nNow **clone it** to your computer. Open a terminal and run:\n\n```\ngit clone https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git\ncd YOUR-REPO-NAME\n```\n\n![Repo URL](/images/setup/github-repo-url.png)",
-        expectedOutcome:
-          "You have a folder on your computer linked to your GitHub repo. Running `git status` shows you're on the main branch.",
-        question: "Did `git clone` work? Can you see the folder on your computer?",
+          "Go to vercel.com — sign up with GitHub. That's it — we'll connect a project later.",
+        expectedOutcome: "You have a Vercel account connected to GitHub",
       },
     ],
   },
   {
     id: "L0B3",
     levelId: 0,
-    type: "experiment",
-    title: "Connect Repo to vibeclod",
+    type: "build",
+    title: "Connect Your Repo",
+    xp: 15,
+    required: true,
+    order: 3,
+    estimatedMinutes: 3,
+    mission:
+      "Connect your GitHub repo to vibeclod. Go to Settings → connect your repo. Push at least one commit (even a README) so we can verify it works.",
+    githubChecks: {
+      minCommits: 1,
+    },
+    aiReviewPrompt:
+      "Setup level — any connected repo with at least one commit counts as passing.",
+    passingScore: 50,
+  },
+
+  // ─── Level 1: Your Idea ───────────────
+  {
+    id: "L1B1",
+    levelId: 1,
+    type: "theory",
+    title: "Why You Need a Plan",
+    xp: 5,
+    required: true,
+    order: 1,
+    estimatedMinutes: 2,
+    content: `# AI Without a Plan = Random Garbage
+
+If you tell AI "build me an app," you'll get something generic and useless.
+
+AI needs **direction**. That direction is a **PRD** — Product Requirements Document.
+
+A PRD is just a short plan that answers:
+- **What problem** does this solve?
+- **Who** is it for?
+- **What features** does the MVP need? (3-5, no more)
+- **What are we NOT building?** (this is the most important part)
+
+The "not building" list prevents AI from adding random features you didn't ask for.
+
+**You also need CLAUDE.md** — a file in your project that AI reads automatically. It contains:
+- Your tech stack (we use Next.js + Tailwind + Supabase)
+- Project rules (commit after every change, mobile-first, etc.)
+
+Think of CLAUDE.md as standing instructions for your AI assistant.`,
+  },
+  {
+    id: "L1B2",
+    levelId: 1,
+    type: "prompt",
+    title: "Generate Your PRD",
+    xp: 15,
+    required: true,
+    order: 2,
+    estimatedMinutes: 5,
+    scaffold: "full",
+    goal: "Create a clear PRD for your app idea that AI can build from.",
+    referencePrompt: `I want to build [your app idea]. Help me write a short plan:
+1. What problem does this solve?
+2. Who specifically will use this? (not "everyone")
+3. 3-5 key features for the MVP (minimum viable product)
+4. What are we NOT building yet? (at least 3 things to skip)
+
+Keep it short — one paragraph per section. No marketing fluff.`,
+    hints: [
+      "Be specific about WHO uses it — 'remote team leads with 5-20 people' is better than 'teams'",
+      "Features should describe WHAT it does, not HOW it's built",
+      "The NOT building list is the most important part — it keeps scope small",
+    ],
+    passingThreshold: 3,
+  },
+  {
+    id: "L1B3",
+    levelId: 1,
+    type: "prompt",
+    title: "Create CLAUDE.md",
     xp: 10,
     required: true,
     order: 3,
-    description:
-      "Link your GitHub repo so vibeclod can verify your code submissions.",
-    steps: [
-      {
-        id: "L0B3S1",
-        instruction:
-          "In vibeclod, click your **profile picture** in the top-right corner → **Settings**.",
-        expectedOutcome:
-          "You see the Settings page with a 'Connected Repository' section.",
-        question: "Can you see the Settings page?",
-      },
-      {
-        id: "L0B3S2",
-        instruction:
-          "In the **Connected Repository** section, click the dropdown. You'll see a list of your GitHub repos. Select the one you just created (e.g., `vibeclod-projects`).\n\nClick **Save**.",
-        expectedOutcome:
-          "The page confirms your repo is connected. You'll see a green checkmark and your repo name.",
-        question: "Does it show your repo name with a green checkmark?",
-      },
-      {
-        id: "L0B3S3",
-        instruction:
-          "Go back to the **Dashboard** (click the logo or 'My Path' in the menu). You should see a banner at the top showing your connected repo instead of 'No repository connected'.",
-        expectedOutcome:
-          "The dashboard shows your connected repository. You're ready to start building.",
-        question: "Is your repo showing on the dashboard?",
-      },
-    ],
+    estimatedMinutes: 3,
+    scaffold: "template",
+    goal: "Create a CLAUDE.md file that sets up your project rules.",
+    referencePrompt: `# [Your App Name]
+
+## Stack
+Next.js 14 + Tailwind CSS + Supabase + Vercel
+
+## What It Does
+[One sentence from your PRD]
+
+## Rules
+- Write TypeScript
+- Use shadcn/ui for components
+- Commit after every feature
+- Everything must work on mobile (375px)
+- Never put secrets in code — use .env.local`,
+    template: `# ___
+
+## Stack
+Next.js 14 + Tailwind CSS + Supabase + Vercel
+
+## What It Does
+___
+
+## Rules
+- Write TypeScript
+- Use shadcn/ui for components
+- ___
+- ___`,
+    passingThreshold: 3,
   },
   {
-    id: "L0B4",
-    levelId: 0,
-    type: "theory",
-    title: "Set Up Claude Code",
-    xp: 5,
+    id: "L1B4",
+    levelId: 1,
+    type: "build",
+    title: "Push PRD + CLAUDE.md",
+    xp: 15,
     required: true,
     order: 4,
-    content: `# Set Up Your AI Coding Tool
-
-You need a tool where AI writes code for you. We recommend **Claude Code** — it runs in your terminal, writes files directly, and pushes to GitHub automatically.
-
-## Claude Code
-
-Follow the official setup guide: **[docs.anthropic.com/claude-code](https://docs.anthropic.com/en/docs/claude-code/overview)**
-
-Once installed, start it inside your project folder:
-
-\`\`\`
-cd your-repo-folder
-claude
-\`\`\`
-
-## Make It Push Automatically
-
-Create a file called **CLAUDE.md** in your project root. This tells Claude Code how to behave:
-
-\`\`\`
-# Project Rules
-
-- After making changes, always commit and push to GitHub
-- Use descriptive commit messages
-- Keep code clean and simple
-\`\`\`
-
-Now every time Claude Code makes changes, it will commit and push for you.
-
-## Using a Different Tool?
-
-**Cursor**, **Windsurf**, or any other AI coding tool works too. You'll just need to commit and push manually:
-
-\`\`\`
-git add .
-git commit -m "describe what changed"
-git push
-\`\`\`
-
-The important thing is: **your code ends up on GitHub**. That's how vibeclod verifies your work.`,
-    miniQuiz: [
-      {
-        question: "What does CLAUDE.md do?",
-        options: [
-          "It's a secret file that gives you extra XP",
-          "It tells Claude Code how to behave — like always pushing to GitHub after changes",
-          "It replaces the need for a GitHub account",
-        ],
-        correctIndex: 1,
-      },
-    ],
-  },
-  {
-    id: "L0B5",
-    levelId: 0,
-    type: "experiment",
-    title: "Test Your Setup",
-    xp: 10,
-    required: true,
-    order: 5,
-    description:
-      "Verify everything works end-to-end before starting World 1.",
-    steps: [
-      {
-        id: "L0B5S1",
-        instruction:
-          "Open your terminal in your project folder. If you're using Claude Code, type `claude` and then ask it:\n\n**\"Create a file called hello.txt with the text 'vibeclod setup complete'\"**\n\nIf you're using another tool, create the file manually and save it.",
-        expectedOutcome:
-          "A file called hello.txt appears in your project folder.",
-        question: "Is hello.txt in your project folder?",
-      },
-      {
-        id: "L0B5S2",
-        instruction:
-          "Push the file to GitHub. If Claude Code has CLAUDE.md set up, it already pushed. Otherwise run:\n\n```\ngit add .\ngit commit -m \"setup complete\"\ngit push\n```\n\nNow go to your repo on **github.com** and check — is hello.txt there?",
-        expectedOutcome:
-          "hello.txt shows up on GitHub. Your local folder → GitHub pipeline works.",
-        question: "Can you see hello.txt on GitHub?",
-      },
-      {
-        id: "L0B5S3",
-        instruction:
-          "Clean up: delete hello.txt and push again.\n\n```\nrm hello.txt\ngit add .\ngit commit -m \"clean slate for level 1\"\ngit push\n```\n\nYour repo is now empty and ready for your first real project in Level 1.",
-        expectedOutcome:
-          "Your repo is clean. The full loop works: create → push → verify → clean. You're ready.",
-        question: "Is your repo clean and ready for Level 1?",
-      },
-    ],
+    estimatedMinutes: 3,
+    mission:
+      "Save your PRD (as a file or in CLAUDE.md) and push CLAUDE.md to your GitHub repo. This is the foundation everything else builds on.",
+    githubChecks: {
+      minCommits: 1,
+      fileExists: ["CLAUDE.md"],
+    },
+    aiReviewPrompt:
+      "Check that CLAUDE.md exists and contains: project name, tech stack, and at least 2 rules. Check for a PRD (can be in CLAUDE.md or separate file) that mentions: what the app does, who it's for, and features.",
+    passingScore: 50,
   },
 ];
