@@ -691,7 +691,7 @@ export default function LandingPage() {
                   >
                     Get Lifetime Access — $29
                   </Link>
-                  <p className="text-[10px] text-white/20 text-center mt-3">30-day money-back guarantee. No questions asked.</p>
+                  <p className="text-[10px] text-white/20 text-center mt-3">One payment. Lifetime access. No subscriptions.</p>
                 </div>
               </div>
             </Reveal>
