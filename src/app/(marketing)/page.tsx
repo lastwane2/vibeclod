@@ -594,15 +594,14 @@ export default function LandingPage() {
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="mx-auto max-w-3xl aspect-video rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center overflow-hidden backdrop-blur-sm">
-              <div className="text-center">
-                <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer">
-                  <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-                <p className="text-sm text-white/30">Demo video coming soon</p>
-              </div>
+            <div className="mx-auto max-w-3xl aspect-video rounded-2xl border border-white/[0.08] overflow-hidden">
+              <iframe
+                src="https://www.youtube.com/embed/AmnNhB_wIDc"
+                title="vibeclod demo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
             </div>
           </Reveal>
         </div>
