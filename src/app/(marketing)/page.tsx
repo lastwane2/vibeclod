@@ -319,17 +319,17 @@ export default function LandingPage() {
                   </div>
 
                   <blockquote className="text-base sm:text-lg text-white/80 leading-relaxed mb-6">
-                    &ldquo;Zero coding experience. I just followed the missions
-                    and used AI to build everything. 8 weeks later — live SaaS,
-                    real users, $8,100/mo in revenue.
-                    vibeclod gave me a step-by-step path when I had no idea where to start.&rdquo;
+                    &ldquo;I literally didn&apos;t know what a repository was before this.
+                    Went through the levels, shipped my thing, put up a landing page.
+                    Hit $800 MRR last month — not life-changing money yet, but it&apos;s real
+                    and it&apos;s growing. vibeclod just kept me from getting lost.&rdquo;
                   </blockquote>
 
                   <div className="flex items-center gap-3">
                     <img src="/images/testimonial-avatar.jpg" alt="Daniel K." className="w-10 h-10 rounded-full object-cover ring-2 ring-white/10" />
                     <div>
                       <p className="text-sm font-semibold text-white/90">Daniel K.</p>
-                      <p className="text-xs text-white/40">Non-tech founder</p>
+                      <p className="text-xs text-white/40">Non-tech founder · started Jan 2025</p>
                     </div>
                   </div>
                 </div>
@@ -338,7 +338,7 @@ export default function LandingPage() {
                 <div className="rounded-xl overflow-hidden border border-white/[0.08]">
                   <img
                     src="/images/testimonial-revenue.png"
-                    alt="$8,142 MRR dashboard"
+                    alt="$800 MRR dashboard"
                     className="w-full h-auto"
                   />
                 </div>
